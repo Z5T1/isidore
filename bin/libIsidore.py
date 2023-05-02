@@ -260,6 +260,34 @@ class Tag:
     def getGroup(self):
         return self.group
 
+    # Gets all the hosts assigned to this tag
+    # @return   An array containing all the hosts assigned to this tag
+    def getHosts(self):
+        hosts = list()
+
+        stmt = '''\
+            SELECT
+                Host.HostID,
+                Hostname,
+                CommissionDate,
+                DecommissionDate,
+                Description
+            FROM Host
+            INNER JOIN HostHasTag
+                ON Host.HostID = HostHasTag.HostID
+            WHERE TagID = %s
+            '''
+
+        cursor = self.isidore.conn.cursor()
+        cursor.execute(stmt, [self.tagId])
+        for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
+            host = Host(hostId, hostname, commissionDate,
+                    decommissionDate, description, self)
+            hosts.append(host)
+        cursor.close()
+
+        return hosts
+
     def setDescription(self, description):
         cursor = self.isidore.conn.cursor()
         stmt = "UPDATE Tag SET Description = %s WHERE TagID = %s"

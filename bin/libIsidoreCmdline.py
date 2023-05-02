@@ -336,12 +336,28 @@ remove      remove a tag from this host''')
         elif args[2] == '?':
             print('''\
 ?           print this help message
+host        display and modify hosts that have this tag
 set         modify tag attributes
 show        display tag attributes''')
+        elif args[2] == 'host':
+            self.tag_host(args)
         elif args[2] == 'set':
             self.tag_set(args)
         elif args[2] == 'show':
             self.tag_show(args)
+
+    # > tag <tagname> host
+    def tag_host(self, args):
+        tag = self.isidore.getTag(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.tag)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+list        display all hosts that have this tag''')
+        elif args[3] == 'list':
+            for host in tag.getHosts():
+                print(host.getHostname())
 
     # > tag <tagname> show
     def tag_show(self, args):
