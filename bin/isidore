@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+import readline
+import shlex
+
+from libIsidoreCmdline import *
+
+# Setup
+readline.parse_and_bind('set editing-mode vi')
+line = 'x'
+isidore = Isidore('isidore', 'password', 'localhost', 'isidore')
+cmd = IsidoreCmdline(isidore)
+
+# Main loop to read commands
+while line != ['quit']:
+    # Get input
+    try:
+        line = shlex.split(input('> '))
+    except EOFError:
+        exit();
+
+    # Parse inut
+    #print(line)
+    if line == []:
+        continue
+    if line[0] == '?':
+        cmd.help(line)
+    if line[0] == 'create':
+        cmd.create(line)
+    if line[0] == 'echo':
+        cmd.echo(line)
+    if line[0] == 'help':
+        cmd.help(line)
+    if line[0] == 'host':
+        cmd.host(line)
+    if line[0] == 'show':
+        cmd.show(line)
+    if line[0] == 'tag':
+        cmd.tag(line)
+
+
+
+
+
+
