@@ -140,3 +140,20 @@ tag         create a new tag''')
                 print(traceback.format_exc(),
                         file=sys.stderr)
 
+    # > create tag
+    def create_tag(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.create)
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+<name>      the name of the new tag to create''')
+        else:
+            try:
+                self.isidore.createTag(args[2])
+            except:
+                print('Failed to create tag '+args[2],
+                        file=sys.stderr)
+                print(traceback.format_exc(),
+                        file=sys.stderr)
+

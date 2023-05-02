@@ -23,6 +23,15 @@ class Isidore:
         self.conn.commit()
         cursor.close()
 
+    # Creates a new tag in the database
+    # @param name               The name for the new tag
+    def createTag(self, name):
+        cursor = self.conn.cursor()
+        stmt = "INSERT INTO Tag (TagName) VALUES (%s)"
+        cursor.execute(stmt, [ name ])
+        self.conn.commit()
+        cursor.close()
+
     # Gets all the hosts in the database
     # @return   An array containing all the hosts in the database
     def getHosts(self):
