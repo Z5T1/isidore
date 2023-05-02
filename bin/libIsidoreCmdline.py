@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import shlex
+import sys
+import traceback
 
 from libIsidore import *
 
@@ -105,4 +107,35 @@ tags        print all tags in the database''')
     def show_tags(self, args):
         for tag in self.isidore.getTags():
             print(tag.getName())
+
+    # > create
+    def create(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.create)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+host        create a new host
+tag         create a new tag''')
+        elif args[1] == 'host':
+            self.create_host(args)
+        elif args[1] == 'tag':
+            self.create_tag(args)
+
+    # > create host
+    def create_host(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.create)
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+<hostname>  the hostname for the new host to create''')
+        else:
+            try:
+                self.isidore.createHost(args[2])
+            except:
+                print('Failed to create host '+args[2],
+                        file=sys.stderr)
+                print(traceback.format_exc(),
+                        file=sys.stderr)
 

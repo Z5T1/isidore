@@ -4,6 +4,8 @@ import mysql.connector
 
 class Isidore:
 
+    conn = None
+
     def __init__(self, user, password, host, database):
         self.conn = mysql.connector.connect(
                 user = user,
@@ -11,6 +13,15 @@ class Isidore:
                 host = host,
                 database = database
         )
+
+    # Creates a new host in the database
+    # @param hostname           The hostname for the new host
+    def createHost(self, hostname):
+        cursor = self.conn.cursor()
+        stmt = "INSERT INTO Host (Hostname) VALUES (%s)"
+        cursor.execute(stmt, [ hostname ])
+        self.conn.commit()
+        cursor.close()
 
     # Gets all the hosts in the database
     # @return   An array containing all the hosts in the database
