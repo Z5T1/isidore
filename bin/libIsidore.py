@@ -38,7 +38,7 @@ class Isidore:
         hosts = list()
 
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM Host")
+        cursor.execute("SELECT * FROM Host ORDER BY Hostname ASC")
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate, decommissionDate, description)
             hosts.append(host)
@@ -52,7 +52,7 @@ class Isidore:
         tags = list()
 
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM Tag")
+        cursor.execute("SELECT * FROM Tag ORDER BY TagName ASC")
         for (tagId, name, group, description) in cursor:
             tag = Tag(tagId, name, group, description)
             tags.append(tag)
