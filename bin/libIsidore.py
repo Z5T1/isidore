@@ -26,6 +26,20 @@ class Isidore:
 
         return hosts
 
+    # Gets all the tags in the database
+    # @return   An array containing all the tags in the database
+    def getTags(self):
+        tags = list()
+
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM Tag")
+        for (tagId, name, group, description) in cursor:
+            tag = Tag(tagId, name, group, description)
+            tags.append(tag)
+        cursor.close()
+
+        return tags
+
 class Host:
 
     hostId = None
@@ -52,6 +66,31 @@ class Host:
 
     def getDecommissionDate(self):
         return self.decommissionDate
+
+    def getDescription(self):
+        return self.description
+
+class Tag:
+    
+    tagId = None
+    name = None
+    group = None
+    description = None
+
+    def __init__(self, tagId, name, group, description):
+        self.tagId = tagId
+        self.name = name
+        self.group = group
+        self.description = description
+
+    def getTagId(self):
+        return self.tagId
+
+    def getName(self):
+        return self.name
+
+    def getGroup(self):
+        return self.group
 
     def getDescription(self):
         return self.description
