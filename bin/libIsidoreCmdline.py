@@ -30,6 +30,8 @@ class IsidoreCmdline:
 
             if line == []:
                 continue
+            elif line == ['end']:
+                return
             elif line == ['quit']:
                 exit()
             elif line[0] == '?':
