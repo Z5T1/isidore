@@ -99,6 +99,9 @@ tags        print all tags in the database''')
         elif args[1] == 'hosts':
             self.show_hosts(args[1])
 
+        elif args[1] == 'inventory':
+            self.show_inventory(args[1])
+
         elif args[1] == 'graveyard':
             self.show_graveyard(args[1])
 
@@ -117,6 +120,10 @@ tags        print all tags in the database''')
     def show_hosts(self, args):
         for host in self.isidore.getCommissionedHosts():
             print(host.getHostname())
+
+    # > show inventory
+    def show_inventory(self, args):
+        print(self.isidore.getInventory())
 
     # > show tag-groups
     def show_taggroups(self, args):
@@ -424,7 +431,8 @@ group           set the tag's group''')
             self.subprompt(args, self.tag)
         elif args[4] == '?':
             print('''\
-<group>     the tag group''')
+<group>     the tag group
+none        remove tag group''')
         elif args[4] == 'none':
             tag.setGroup(None)
         else:

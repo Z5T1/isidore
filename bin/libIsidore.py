@@ -98,6 +98,27 @@ class Isidore:
 
         return hosts
 
+    # Builds an Ansible inventory from all hosts and tags in the
+    # database
+    # @return       the Ansible inventory as a string
+    def getInventory(self):
+        inv = ""
+
+        # Add all the hosts without a group header to ensure every
+        # system is included, even those without any tags.
+        for host in self.getHosts():
+            inv += host.getHostname() + "\n"
+        inv += "\n"
+
+        # Print each tag and its hosts as a group
+        for tag in self.getTags():
+            inv += "["+tag.getName()+"]\n"
+            for host in tag.getHosts():
+                inv += host.getHostname() + "\n"
+            inv += "\n"
+
+        return inv
+
     # Gets a tag in the database
     # @param name       The name of the tag to get
     # @return           The Tag object, or None if the tag does
@@ -140,7 +161,7 @@ class Isidore:
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM Tag ORDER BY TagName ASC")
         for (tagId, name, group, description) in cursor:
-            tag = Tag(tagId, name, group, description)
+            tag = Tag(tagId, name, group, description, self)
             tags.append(tag)
         cursor.close()
 
@@ -275,8 +296,9 @@ class Tag:
     def getGroup(self):
         return self.group
 
-    # Gets all the hosts assigned to this tag
-    # @return   An array containing all the hosts assigned to this tag
+    # Gets all the commissioned hosts assigned to this tag
+    # @return   An array containing all the commissioned hosts
+    #           assigned to this tag
     def getHosts(self):
         hosts = list()
 
@@ -290,7 +312,9 @@ class Tag:
             FROM Host
             INNER JOIN HostHasTag
                 ON Host.HostID = HostHasTag.HostID
-            WHERE TagID = %s
+            WHERE
+                TagID = %s AND
+                DecommissionDate IS NULL
             ORDER BY Hostname ASC
             '''
 
