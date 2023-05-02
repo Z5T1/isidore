@@ -49,7 +49,6 @@ tag         manipulate a tag''')
     # > show
     def show(self, args):
         if len(args) == 1:
-
             self.subprompt(args, self.show)
 
         elif args[1] == '?':
