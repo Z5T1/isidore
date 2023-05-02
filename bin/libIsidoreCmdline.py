@@ -157,3 +157,14 @@ tag         create a new tag''')
                 print(traceback.format_exc(),
                         file=sys.stderr)
 
+    # > echo
+    def echo(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.echo)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+<test>      text to print''')
+        else:
+            print(' '.join(args[1:]))
+
