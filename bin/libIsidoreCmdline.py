@@ -108,14 +108,14 @@ tags        print all tags in the database''')
         elif args[1] == 'tags':
             self.show_tags(args[1])
 
-    # > show hosts
-    def show_hosts(self, args):
-        for host in self.isidore.getCommissionedHosts():
-            print(host.getHostname())
-
     # > show graveyard
     def show_graveyard(self, args):
         for host in self.isidore.getDecommissionedHosts():
+            print(host.getHostname())
+
+    # > show hosts
+    def show_hosts(self, args):
+        for host in self.isidore.getCommissionedHosts():
             print(host.getHostname())
 
     # > show tag-groups
