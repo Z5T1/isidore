@@ -91,7 +91,6 @@ tag         manipulate a tag''')
 ?           print this help message
 hosts       print all hosts in the database
 inventory   print the full Ansible inventory file
-quit        exit
 tags        print all tags in the database''')
 
         elif args[1] == 'hosts':
