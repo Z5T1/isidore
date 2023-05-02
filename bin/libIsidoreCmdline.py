@@ -26,14 +26,45 @@ class IsidoreCmdline:
                 print()
                 return
 
-            if line == ['quit']:
+            if line == []:
+                continue
+            elif line == ['quit']:
                 exit()
             elif line[0] == '?':
                 print('''\
-end         Go back one prompt level
+^D          alias for end
+end         go back one prompt level
 quit        exit''')
 
             func(prompt + line)
+
+    # Start an interactive prompt
+    def prompt(self):
+        self.subprompt([], self.rootprompt)
+
+    # >
+    def rootprompt(self, args):
+
+        # Parse inut
+        if args[0] == '?':
+            self.help(args)
+        if args[0] == 'create':
+            self.create(args)
+        if args[0] == 'echo':
+            self.echo(args)
+        if args[0] == 'help':
+            print('''\
+Pst! You should really use ? to display the help message. ? will
+work at every subprompt level. help only works at the root
+prompt.
+''')
+            self.help(args)
+        if args[0] == 'host':
+            self.host(args)
+        if args[0] == 'show':
+            self.show(args)
+        if args[0] == 'tag':
+            self.tag(args)
 
     # > ?
     def help(self, args):
