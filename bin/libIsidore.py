@@ -148,6 +148,13 @@ class Host:
         self.description = description
         self.isidore = isidore
 
+    def addTag(self, tag):
+        cursor = self.isidore.conn.cursor()
+        stmt = "INSERT INTO HostHasTag (HostID, TagID) VALUES (%s, %s)"
+        cursor.execute(stmt, [ self.hostId, tag.getTagId() ])
+        self.isidore.conn.commit()
+        cursor.close()
+
     def getHostId(self):
         return self.hostId
 
@@ -162,6 +169,44 @@ class Host:
 
     def getDescription(self):
         return self.description
+
+    # Gets all the tags assigned to this host
+    # @return   An array containing all the tags assigned to this
+    #           host
+    def getTags(self):
+        tags = list()
+
+        stmt = '''\
+            SELECT
+                Tag.TagID,
+                TagName,
+                TagGroup,
+                Description
+            FROM Tag
+            INNER JOIN HostHasTag
+                ON Tag.TagID = HostHasTag.TagID
+            WHERE HostID = %s
+            ORDER BY TagName ASC'''
+        cursor = self.isidore.conn.cursor()
+        cursor.execute(stmt, [self.hostId])
+        for (tagId, name, group, description) in cursor:
+            tag = Tag(tagId, name, group, description)
+            tags.append(tag)
+        cursor.close()
+
+        return tags
+
+    def removeTag(self, tag):
+        cursor = self.isidore.conn.cursor()
+        stmt = '''\
+            DELETE FROM HostHasTag
+            WHERE 
+                HostID = %s AND
+                TagId = %s
+            '''
+        cursor.execute(stmt, [ self.hostId, tag.getTagId() ])
+        self.isidore.conn.commit()
+        cursor.close()
 
     def setCommissionDate(self, date):
         cursor = self.isidore.conn.cursor()

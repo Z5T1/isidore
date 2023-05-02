@@ -38,7 +38,7 @@ class IsidoreCmdline:
             elif line[0] == '?':
                 print('''\
 ^D          alias for end
-end         go back one prompt level
+end         go back to the previous prompt
 quit        exit''')
 
             func(prompt + line)
@@ -192,11 +192,14 @@ tag         create a new tag''')
             print('''\
 ?           print this help message
 set         modify host attributes
-show        display information about this host''')
+show        display host attributes
+tag         display and modify this host's tags''')
         elif args[2] == 'set':
             self.host_set(args)
         elif args[2] == 'show':
             self.host_show(args)
+        elif args[2] == 'tag':
+            self.host_tag(args)
 
     # > host <hostname> show
     def host_show(self, args):
@@ -282,6 +285,44 @@ now         use the current date''')
             except:
                 print("Failed to set decommission date")
 
+    # > host <hostname> tag
+    def host_tag(self, args):
+        host = self.isidore.getHost(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.host)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+add         add a tag to this host
+list        list the tags currently assigned to this host
+list-detail display a detailed list of tags currently assigned to this host
+remove      remove a tag from this host''')
+        elif args[3] == 'add':
+            if len(args) == 4:
+                print("<tag>           name of the tag to add")
+                return
+            tag = self.isidore.getTag(args[4])
+            if tag == None:
+                print("Tag "+args[4]+" does not exist")
+                return
+            host.addTag(tag)
+        elif args[3] == 'list':
+            for tag in host.getTags():
+                print(tag.getName())
+        elif args[3] == 'list-detail':
+            print("Name\t\tGroup\t\tDescription")
+            for tag in host.getTags():
+                print(tag.getName()+"\t"+tag.getGroup()+"\t\t"+tag.getDescription())
+        elif args[3] == 'remove':
+            if len(args) == 4:
+                print("<tag>           name of the tag to remove")
+                return
+            tag = self.isidore.getTag(args[4])
+            if tag == None:
+                print("Tag "+args[4]+" does not exist")
+                return
+            host.removeTag(tag)
+
     # > tag
     def tag(self, args):
         if len(args) == 1:
@@ -296,7 +337,7 @@ now         use the current date''')
             print('''\
 ?           print this help message
 set         modify tag attributes
-show        display information about this tag''')
+show        display tag attributes''')
         elif args[2] == 'set':
             self.tag_set(args)
         elif args[2] == 'show':
