@@ -98,6 +98,25 @@ class Isidore:
 
         return hosts
 
+    # Gets a tag in the database
+    # @param name       The name of the tag to get
+    # @return           The Tag object, or None if the tag does
+    #                   not exist.
+    def getTag(self, name):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM Tag WHERE TagName = %s",
+                [name])
+
+        row = cursor.fetchone()
+        if row == None:
+            return None
+
+        tag = Tag(row[0], row[1], row[2], row[3], 
+                self)
+        cursor.fetchall()
+        cursor.close()
+        return tag
+
     # Gets all the tags in the database
     # @return   An array containing all the tags in the database
     def getTags(self):
@@ -174,12 +193,15 @@ class Tag:
     name = None
     group = None
     description = None
+    isidore = None
 
-    def __init__(self, tagId, name, group, description):
+    def __init__(self, tagId, name, group, description,
+            isidore=None):
         self.tagId = tagId
         self.name = name
         self.group = group
         self.description = description
+        self.isidore = isidore
 
     def getTagId(self):
         return self.tagId
@@ -187,9 +209,25 @@ class Tag:
     def getName(self):
         return self.name
 
+    def getDescription(self):
+        return self.description
+
     def getGroup(self):
         return self.group
 
-    def getDescription(self):
-        return self.description
+    def setDescription(self, description):
+        cursor = self.isidore.conn.cursor()
+        stmt = "UPDATE Tag SET Description = %s WHERE TagID = %s"
+        cursor.execute(stmt, [ description, self.tagId ])
+        self.isidore.conn.commit()
+        cursor.close()
+        self.description = description
+
+    def setGroup(self, group):
+        cursor = self.isidore.conn.cursor()
+        stmt = "UPDATE Tag SET TagGroup = %s WHERE TagID = %s"
+        cursor.execute(stmt, [ group, self.tagId ])
+        self.isidore.conn.commit()
+        cursor.close()
+        self.group = group
 

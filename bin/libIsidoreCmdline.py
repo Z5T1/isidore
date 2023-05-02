@@ -282,3 +282,80 @@ now         use the current date''')
             except:
                 print("Failed to set decommission date")
 
+    # > tag
+    def tag(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.tag)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+<tagname>  the name of the tag to edit''')
+        elif len(args) == 2:
+            self.subprompt(args, self.tag)
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+set         modify tag attributes
+show        display information about this tag''')
+        elif args[2] == 'set':
+            self.tag_set(args)
+        elif args[2] == 'show':
+            self.tag_show(args)
+
+    # > tag <tagname> show
+    def tag_show(self, args):
+        tag = self.isidore.getTag(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.tag)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+all         print all the information about the tag
+description     print the tag's description
+group       print the date the tag was commissioned''')
+        elif args[3] == 'all':
+            print(
+            tag.getName()+":\n"
+            "  group: '"+str(tag.getGroup()).replace("'",
+                "\\'")+"'\n"
+            "  description: '"+tag.getDescription().replace("'",
+                "\\'")+"'")
+        elif args[3] == 'description':
+            print(tag.getDescription())
+        elif args[3] == 'group':
+            print(tag.getGroup())
+
+    # > tag <tagname> set
+    def tag_set(self, args):
+        tag = self.isidore.getTag(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.tag)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+description     set the tag's description
+group           set the tag's group''')
+        elif args[3] == 'group':
+            self.tag_set_group(args)
+        elif args[3] == 'description':
+            if len(args) == 4:
+                print("<description>   the description")
+            else:
+                tag.setDescription(args[4])
+
+    # > tag <tagname> set group
+    def tag_set_group(self, args):
+        tag = self.isidore.getTag(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.tag)
+        elif args[4] == '?':
+            print('''\
+<group>     the tag group''')
+        elif args[4] == 'none':
+            tag.setGroup(None)
+        else:
+            try:
+                tag.setGroup(args[4])
+            except:
+                print("Failed to set group")
+
