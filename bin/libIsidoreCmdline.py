@@ -392,7 +392,7 @@ list        display all hosts that have this tag''')
             print('''\
 ?           print this help message
 all         print all the information about the tag
-description     print the tag's description
+description print the tag's description
 group       print the date the tag was commissioned''')
         elif args[3] == 'all':
             print(
