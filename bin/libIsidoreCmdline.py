@@ -109,7 +109,7 @@ tags        print all tags in the database''')
         for host in self.isidore.getCommissionedHosts():
             print(host.getHostname())
 
-    # > show hosts
+    # > show graveyard
     def show_graveyard(self, args):
         for host in self.isidore.getDecommissionedHosts():
             print(host.getHostname())
