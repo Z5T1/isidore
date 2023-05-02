@@ -22,3 +22,16 @@ CREATE TABLE HostHasTag (
 		REFERENCES Tag(TagID)
 );
 
+CREATE VIEW HostHasTagView AS
+	SELECT
+		Host.HostID,
+		Host.Hostname,
+		Tag.TagID,
+		Tag.TagName
+	FROM Host
+	INNER JOIN HostHasTag
+		ON Host.HostID = HostHasTag.HostID
+	LEFT JOIN Tag
+		ON HostHasTag.TagID = Tag.TagID
+	WHERE Host.DecommissionDate IS NULL;
+
