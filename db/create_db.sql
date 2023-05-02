@@ -36,3 +36,15 @@ CREATE VIEW HostHasTagView AS
 		ON HostHasTag.TagID = Tag.TagID
 	WHERE Host.DecommissionDate IS NULL;
 
+CREATE VIEW TagByGroup AS
+	SELECT
+		TagGroup,
+		GROUP_CONCAT(
+			TagName
+			ORDER BY TagName
+			SEPARATOR ', ')
+		AS 'Tags'
+	FROM Tag
+	GROUP BY TagGroup
+	ORDER BY TagGroup;
+

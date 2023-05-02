@@ -117,6 +117,21 @@ class Isidore:
         cursor.close()
         return tag
 
+    # Gets all the tag groups in the database and which tags
+    # belong to them.
+    # @return   A list of (group, tagnames) tuples where tagnames
+    #           is a comma separated list of tags in the group.
+    def getTagGroups(self):
+        groups = list()
+
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM TagByGroup ORDER BY TagGroup ASC")
+        for (groupName, tags) in cursor:
+            groups.append( (groupName, tags) )
+        cursor.close()
+
+        return groups
+
     # Gets all the tags in the database
     # @return   An array containing all the tags in the database
     def getTags(self):

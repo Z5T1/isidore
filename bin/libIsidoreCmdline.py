@@ -93,6 +93,7 @@ tag         manipulate a tag''')
 hosts       print all commissioned hosts in the database
 graveyard   print all decommissioned hosts in the database
 inventory   print the full Ansible inventory file
+tag-groups  print all the tag groups in the database
 tags        print all tags in the database''')
 
         elif args[1] == 'hosts':
@@ -100,6 +101,9 @@ tags        print all tags in the database''')
 
         elif args[1] == 'graveyard':
             self.show_graveyard(args[1])
+
+        elif args[1] == 'tag-groups':
+            self.show_taggroups(args[1])
 
         elif args[1] == 'tags':
             self.show_tags(args[1])
@@ -113,6 +117,11 @@ tags        print all tags in the database''')
     def show_graveyard(self, args):
         for host in self.isidore.getDecommissionedHosts():
             print(host.getHostname())
+
+    # > show tag-groups
+    def show_taggroups(self, args):
+        for group in self.isidore.getTagGroups():
+            print(group[0]+" ("+group[1]+")")
 
     # > show tags
     def show_tags(self, args):
