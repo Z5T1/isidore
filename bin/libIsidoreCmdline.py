@@ -306,7 +306,11 @@ remove      remove a tag from this host''')
             if tag == None:
                 print("Tag "+args[4]+" does not exist")
                 return
-            host.addTag(tag)
+            try:
+                host.addTag(tag)
+            except:
+                print(traceback.format_exc(),
+                        file=sys.stderr)
 
         elif args[3] == 'list':
             for tag in host.getTags():
