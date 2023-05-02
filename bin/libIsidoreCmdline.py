@@ -297,6 +297,7 @@ add         add a tag to this host
 list        list the tags currently assigned to this host
 list-detail display a detailed list of tags currently assigned to this host
 remove      remove a tag from this host''')
+
         elif args[3] == 'add':
             if len(args) == 4:
                 print("<tag>           name of the tag to add")
@@ -306,13 +307,16 @@ remove      remove a tag from this host''')
                 print("Tag "+args[4]+" does not exist")
                 return
             host.addTag(tag)
+
         elif args[3] == 'list':
             for tag in host.getTags():
                 print(tag.getName())
+
         elif args[3] == 'list-detail':
             print("Name\t\tGroup\t\tDescription")
             for tag in host.getTags():
                 print(tag.getName()+"\t"+tag.getGroup()+"\t\t"+tag.getDescription())
+
         elif args[3] == 'remove':
             if len(args) == 4:
                 print("<tag>           name of the tag to remove")
