@@ -90,19 +90,28 @@ tag         manipulate a tag''')
         elif args[1] == '?':
             print('''\
 ?           print this help message
-hosts       print all hosts in the database
+hosts       print all commissioned hosts in the database
+graveyard   print all decommissioned hosts in the database
 inventory   print the full Ansible inventory file
 tags        print all tags in the database''')
 
         elif args[1] == 'hosts':
-            self.show_hosts(args[1:])
+            self.show_hosts(args[1])
+
+        elif args[1] == 'graveyard':
+            self.show_graveyard(args[1])
 
         elif args[1] == 'tags':
-            self.show_tags(args[1:])
+            self.show_tags(args[1])
 
     # > show hosts
     def show_hosts(self, args):
-        for host in self.isidore.getHosts():
+        for host in self.isidore.getCommissionedHosts():
+            print(host.getHostname())
+
+    # > show hosts
+    def show_graveyard(self, args):
+        for host in self.isidore.getDecommissionedHosts():
             print(host.getHostname())
 
     # > show tags

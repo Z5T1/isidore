@@ -32,6 +32,38 @@ class Isidore:
         self.conn.commit()
         cursor.close()
 
+    # Gets all the commissioned hosts in the database
+    # @return   An array containing all the commissioned hosts in
+    #           the database
+    def getCommissionedHosts(self):
+        hosts = list()
+
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM Host WHERE DecommissionDate IS NULL ORDER BY Hostname ASC")
+        for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
+            host = Host(hostId, hostname, commissionDate,
+                    decommissionDate, description, self)
+            hosts.append(host)
+        cursor.close()
+
+        return hosts
+
+    # Gets all the decommissioned hosts in the database
+    # @return   An array containing all the decommissioned hosts in
+    #           the database
+    def getDecommissionedHosts(self):
+        hosts = list()
+
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM Host WHERE DecommissionDate IS NOT NULL ORDER BY Hostname ASC")
+        for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
+            host = Host(hostId, hostname, commissionDate,
+                    decommissionDate, description, self)
+            hosts.append(host)
+        cursor.close()
+
+        return hosts
+
     # Gets a host in the database
     # @param hostname   The hostname of the system to get
     # @return           The Host object, or None if the host does
