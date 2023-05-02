@@ -3,6 +3,7 @@
 import shlex
 import sys
 import traceback
+import datetime
 
 from libIsidore import *
 
@@ -164,7 +165,80 @@ tag         create a new tag''')
         elif args[1] == '?':
             print('''\
 ?           print this help message
-<test>      text to print''')
+<text>      text to print''')
         else:
             print(' '.join(args[1:]))
+
+    # > host
+    def host(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.host)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+<hostname>  the name of the host to edit''')
+        elif len(args) == 2:
+            self.subprompt(args, self.host)
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+set         modify host attributes
+show        display information about this host''')
+        elif args[2] == 'set':
+            self.host_set(args)
+        elif args[2] == 'show':
+            self.host_show(args)
+
+    # > host <hostname> show
+    def host_show(self, args):
+        host = self.isidore.getHost(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.host)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+all         print all the information about the host
+commissioned    print the date the host was commissioned
+description     print the host's description
+decommissioned  print the date the host was decommissioned''')
+        elif args[3] == 'all':
+            print(
+            host.getHostname()+":\n"
+            "  commissioned: '"+str(host.getCommissionDate())+"'\n"
+            "  decommissioned: '"+str(host.getDecommissionDate())+"'\n"
+            "  description: '"+host.getDescription().replace("'",
+                "\\'"))
+        elif args[3] == 'commissioned':
+            print(host.getCommissionDate())
+        elif args[3] == 'description':
+            print(host.getDescription())
+        elif args[3] == 'decommissioned':
+            print(host.getDecommissionDate())
+
+    # > host <hostname> set
+    def host_set(self, args):
+        host = self.isidore.getHost(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.host)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+commissioned    set the date the host was commissioned
+description     set the host's description
+decommissioned  set the date the host was decommissioned''')
+        elif args[3] == 'commissioned':
+            if len(args) == 4:
+                print("<date>          the commission date")
+            else:
+                host.setCommissionDate(args[4])
+        elif args[3] == 'decommissioned':
+            if len(args) == 4:
+                print("<date>          the decommission date")
+            else:
+                host.setDecommissionDate(args[4])
+        elif args[3] == 'description':
+            if len(args) == 4:
+                print("<description>   the description")
+            else:
+                host.setDescription(args[4])
 

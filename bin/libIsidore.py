@@ -32,6 +32,25 @@ class Isidore:
         self.conn.commit()
         cursor.close()
 
+    # Gets a host in the database
+    # @param hostname   The hostname of the system to get
+    # @return           The Host object, or None if the host does
+    #                   not exist.
+    def getHost(self, hostname):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM Host WHERE Hostname = %s",
+                [hostname])
+
+        row = cursor.fetchone()
+        if row == None:
+            return None
+
+        host = Host(row[0], row[1], row[2], row[3], row[4],
+                self)
+        cursor.fetchall()
+        cursor.close()
+        return host
+
     # Gets all the hosts in the database
     # @return   An array containing all the hosts in the database
     def getHosts(self):
@@ -40,7 +59,8 @@ class Isidore:
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM Host ORDER BY Hostname ASC")
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
-            host = Host(hostId, hostname, commissionDate, decommissionDate, description)
+            host = Host(hostId, hostname, commissionDate,
+                    decommissionDate, description, self)
             hosts.append(host)
         cursor.close()
 
@@ -67,13 +87,15 @@ class Host:
     commissionDate = None
     decommissionDate = None
     description = None
+    isidore = None
 
-    def __init__(self, hostId, hostname, commissionDate, decommissionDate, description):
+    def __init__(self, hostId, hostname, commissionDate, decommissionDate, description, isidore=None):
         self.hostId = hostId
         self.hostname = hostname
         self.commissionDate = commissionDate
         self.decommissionDate = decommissionDate
         self.description = description
+        self.isidore = isidore
 
     def getHostId(self):
         return self.hostId
@@ -89,6 +111,30 @@ class Host:
 
     def getDescription(self):
         return self.description
+
+    def setCommissionDate(self, date):
+        cursor = self.isidore.conn.cursor()
+        stmt = "UPDATE Host SET CommissionDate = %s WHERE HostID = %s"
+        cursor.execute(stmt, [ date, self.hostId ])
+        self.isidore.conn.commit()
+        cursor.close()
+        self.commissionDate = date
+
+    def setDecommissionDate(self, date):
+        cursor = self.isidore.conn.cursor()
+        stmt = "UPDATE Host SET DecommissionDate = %s WHERE HostID = %s"
+        cursor.execute(stmt, [ date, self.hostId ])
+        self.isidore.conn.commit()
+        cursor.close()
+        self.decommissionDate = date
+
+    def setDescription(self, description):
+        cursor = self.isidore.conn.cursor()
+        stmt = "UPDATE Host SET Description = %s WHERE HostID = %s"
+        cursor.execute(stmt, [ description, self.hostId ])
+        self.isidore.conn.commit()
+        cursor.close()
+        self.description = description
 
 class Tag:
     
