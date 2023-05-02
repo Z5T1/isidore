@@ -276,6 +276,7 @@ class Tag:
             INNER JOIN HostHasTag
                 ON Host.HostID = HostHasTag.HostID
             WHERE TagID = %s
+            ORDER BY Hostname ASC
             '''
 
         cursor = self.isidore.conn.cursor()
