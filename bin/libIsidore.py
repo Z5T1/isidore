@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import mysql.connector
+import yaml
 
 class Isidore:
 
@@ -208,6 +209,29 @@ class Host:
 
     def getDecommissionDate(self):
         return self.decommissionDate
+
+    # Gets a YAML string containing all the details about this
+    # host
+    # @return   A YAML string containing the details
+    def getDetails(self):
+        txt = self.hostname + ":\n"
+
+        # Host attributes
+        txt += "  commissioned: '"+str(self.commissionDate)+"'\n"
+        txt += "  decommissioned: '"+str(self.decommissionDate)+"'\n"
+        txt += "  description: '"+self.description.replace("'", "'\"'\"'")
+        txt += "\n"
+
+        # Tags
+        txt += "  tags:\n"
+        for tag in self.getTags(True):
+            txt += "    - '" + \
+                str(tag.getGroup()).replace("'", "'\"'\"'") + \
+                "': '" + \
+                str(tag.getName()).replace("'", "'\"'\"'") + \
+                "'\n"
+
+        return txt
 
     def getDescription(self):
         return self.description

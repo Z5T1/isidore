@@ -250,12 +250,7 @@ commissioned    print the date the host was commissioned
 description     print the host's description
 decommissioned  print the date the host was decommissioned''')
         elif args[3] == 'all':
-            print(
-            host.getHostname()+":\n"
-            "  commissioned: '"+str(host.getCommissionDate())+"'\n"
-            "  decommissioned: '"+str(host.getDecommissionDate())+"'\n"
-            "  description: '"+host.getDescription().replace("'",
-                "\\'")+"'")
+            print(host.getDetails())
         elif args[3] == 'commissioned':
             print(host.getCommissionDate())
         elif args[3] == 'description':
