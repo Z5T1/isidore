@@ -315,18 +315,7 @@ list-detail display a detailed list of tags currently assigned to this host
 remove      remove a tag from this host''')
 
         elif args[3] == 'add':
-            if len(args) == 4:
-                print("<tag>           name of the tag to add")
-                return
-            tag = self.isidore.getTag(args[4])
-            if tag == None:
-                print("Tag "+args[4]+" does not exist")
-                return
-            try:
-                host.addTag(tag)
-            except:
-                print(traceback.format_exc(),
-                        file=sys.stderr)
+            self.host_tag_add(args)
 
         elif args[3] == 'list':
             for tag in host.getTags():
@@ -338,14 +327,49 @@ remove      remove a tag from this host''')
                 print(tag.getName()+"\t"+tag.getGroup()+"\t\t"+tag.getDescription())
 
         elif args[3] == 'remove':
-            if len(args) == 4:
-                print("<tag>           name of the tag to remove")
-                return
-            tag = self.isidore.getTag(args[4])
-            if tag == None:
-                print("Tag "+args[4]+" does not exist")
-                return
-            host.removeTag(tag)
+            self.host_tag_remove(args)
+
+    # > host <hostname> tag add
+    def host_tag_add(self, args):
+        host = self.isidore.getHost(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.host)
+            return
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+<tag>       name of the tag to add''')
+            return
+
+        tag = self.isidore.getTag(args[4])
+        if tag == None:
+            print("Tag "+args[4]+" does not exist")
+            return
+        try:
+            host.addTag(tag)
+        except mysql.connector.Error as e:
+            if e.errno == 1062:
+                print(host.getHostname()+" already has tag "+args[4], file=sys.stderr)
+        except:
+            print(traceback.format_exc(),
+                    file=sys.stderr)
+
+    # > host <hostname> tag remove
+    def host_tag_remove(self, args):
+        host = self.isidore.getHost(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.host)
+            return
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+<tag>       name of the tag to remove''')
+            return
+        tag = self.isidore.getTag(args[4])
+        if tag == None:
+            print("Tag "+args[4]+" does not exist")
+            return
+        host.removeTag(tag)
 
     # > tag
     def tag(self, args):
