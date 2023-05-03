@@ -219,8 +219,7 @@ class Host:
         # Host attributes
         txt += "  commissioned: '"+str(self.commissionDate)+"'\n"
         txt += "  decommissioned: '"+str(self.decommissionDate)+"'\n"
-        txt += "  description: '"+self.description.replace("'", "'\"'\"'")
-        txt += "\n"
+        txt += "  description: '"+self.description.replace("'", "'\"'\"'")+"'\n"
 
         # Tags
         txt += "  tags:\n"
