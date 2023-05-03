@@ -11,6 +11,8 @@ System Requirements
 
 ### Required Packages
 
+The following versions or higher of the following packages are required:
+
 * Python 3.7
 * Either MariaDB 10.3 or MySQL 5.7
 
