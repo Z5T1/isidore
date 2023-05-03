@@ -300,9 +300,9 @@ now         use the current date''')
         elif args[4] == '?':
             print('''\
 <date>      the decommission date
-never       clear the decommission date
+none        clear the decommission date
 now         use the current date''')
-        elif args[4] == 'never':
+        elif args[4] == 'none':
             host.setDecommissionDate(None)
         elif args[4] == 'now':
             host.setDecommissionDate(datetime.datetime.now())
