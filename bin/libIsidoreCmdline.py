@@ -343,8 +343,8 @@ remove      remove a tag from this host''')
 
         elif args[3] == 'list-detail':
             print("Name\t\tGroup\t\tDescription")
-            for tag in host.getTags():
-                print(tag.getName()+"\t"+tag.getGroup()+"\t\t"+tag.getDescription())
+            for tag in host.getTags(True):
+                print(tag.getName()+"\t"+str(tag.getGroup())+"\t\t"+str(tag.getDescription()))
 
         elif args[3] == 'remove':
             self.host_tag_remove(args)
