@@ -156,12 +156,23 @@ class Isidore:
         return groups
 
     # Gets all the tags in the database
+    # @param groupSort=False    If true, sort the tags first by
+    #                           group name and then by tag name.
+    #                           Otherwise just sort by tag name.
     # @return   An array containing all the tags in the database
-    def getTags(self):
+    def getTags(self, groupSort=False):
         tags = list()
 
+        # Build statement
+        stmt = "SELECT * FROM Tag "
+        if groupSort == True:
+            stmt += 'ORDER BY TagGroup ASC, TagName ASC'
+        else:
+            stmt += 'ORDER BY TagName ASC'
+
+        # Fetch data
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM Tag ORDER BY TagName ASC")
+        cursor.execute(stmt)
         for (tagId, name, group, description) in cursor:
             tag = Tag(tagId, name, group, description, self)
             tags.append(tag)
