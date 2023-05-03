@@ -2,12 +2,28 @@
 
 import readline
 import shlex
+import configparser
+import os
 
 from libIsidoreCmdline import *
 
+# Read config file
+config = configparser.ConfigParser()
+config.read( [
+    "/etc/isidore.cfg",
+    "/usr/local/etc/isidore.cfg",
+    os.path.expanduser("~/.isidore.cfg"),
+    os.path.dirname(os.path.realpath(__file__))+"/isidore.cfg",
+    "isidore.cfg"
+    ] )
+
 # Setup
 readline.parse_and_bind('set editing-mode vi')
-isidore = Isidore('isidore', 'password', 'localhost', 'isidore')
+isidore = Isidore(
+        config['database']['user'],
+        config['database']['password'],
+        config['database']['host'],
+        config['database']['database'])
 cmd = IsidoreCmdline(isidore)
 
 # Main loop to read commands
