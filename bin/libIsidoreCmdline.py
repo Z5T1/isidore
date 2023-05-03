@@ -23,12 +23,23 @@ class IsidoreCmdline:
     def subprompt(self, prompt, func):
         line = []
         while line != ['end']:
+            # Determine prompt
+            if sys.stdin.isatty():
+                display_prompt = ' '.join(prompt) + '> '
+            else:
+                display_prompt = ''
+
+            # Read input
             try:
-                line = shlex.split(input(' '.join(prompt) + '> '))
+                line = shlex.split(input(display_prompt))
             except EOFError:
                 print()
                 return
+            except:
+                print("Malformed command", file=sys.stderr)
+                continue
 
+            # Process input
             if line == []:
                 continue
             elif line == ['end']:
