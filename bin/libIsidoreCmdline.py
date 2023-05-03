@@ -10,9 +10,15 @@ from libIsidore import *
 class IsidoreCmdline:
 
     isidore = None
+    _version = '0.0.0'
 
     def __init__(self, isidore):
         self.isidore = isidore
+
+    # Gets the Isidore Command Prompt version
+    # @return       The Isidore Command Prompt version
+    def getVersion(self):
+        return self._version
 
     # Start a subprompt.
     # @param prompt     The existing arguments to display at the
@@ -81,6 +87,8 @@ prompt.
             self.show(args)
         if args[0] == 'tag':
             self.tag(args)
+        if args[0] == 'version':
+            self.version(args)
 
     # > ?
     def help(self, args):
@@ -91,7 +99,8 @@ echo        print text back to the console
 help        alias for ?
 host        manipulate a host
 show        print various data
-tag         manipulate a tag''')
+tag         manipulate a tag
+version     display Isidore version information''')
 
     # > show
     def show(self, args):
@@ -503,4 +512,9 @@ none        remove tag group''')
                 tag.setGroup(args[4])
             except:
                 print("Failed to set group")
+
+    # > version
+    def version(self, args):
+            print('Isidore Command Prompt version: '+self.getVersion())
+            print('libIsidore version: '+self.isidore.getVersion())
 

@@ -5,6 +5,7 @@ import mysql.connector
 class Isidore:
 
     conn = None
+    _version = '0.0.0'
 
     def __init__(self, user, password, host, database):
         self.conn = mysql.connector.connect(
@@ -166,6 +167,11 @@ class Isidore:
         cursor.close()
 
         return tags
+
+    # Gets the libIsidore version
+    # @return       The libIsidore version
+    def getVersion(self):
+        return self._version
 
 class Host:
 
