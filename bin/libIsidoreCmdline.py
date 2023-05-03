@@ -110,11 +110,16 @@ version     display Isidore version information''')
         elif args[1] == '?':
             print('''\
 ?           print this help message
+config      print the commmands to populate the database with the current 
+            configuration
 hosts       print all commissioned hosts in the database
 graveyard   print all decommissioned hosts in the database
 inventory   print the full Ansible inventory file
 tag-groups  print all the tag groups in the database
 tags        print all tags in the database''')
+
+        elif args[1] == 'config':
+            self.show_config(args[1])
 
         elif args[1] == 'hosts':
             self.show_hosts(args[1])
@@ -130,6 +135,40 @@ tags        print all tags in the database''')
 
         elif args[1] == 'tags':
             self.show_tags(args[1])
+
+    # > show config
+    def show_config(self, args):
+        hosts = self.isidore.getHosts()
+        tags = self.isidore.getTags()
+
+        # Create Hosts
+        for host in hosts:
+            name = "'"+host.getHostname().replace("'", "'\"'\"'")+"'"
+            print("create host "+name)
+            print("host "+name+" set commissioned '"+\
+                    str(host.getCommissionDate())+"'")
+            print("host "+name+" set decommissioned '"+\
+                    str(host.getDecommissionDate()).lower()+"'")
+            print("host "+name+" set description '"+\
+                    str(host.getDescription()).replace("'", "'\"'\"'")+"'")
+        print()
+
+        # Create Tags
+        for tag in tags:
+            name = "'"+tag.getName().replace("'", "'\"'\"'")+"'"
+            print("create tag "+name)
+            print("tag "+name+" set group '"+\
+                    str(tag.getGroup())+"'")
+            print("tag "+name+" set description '"+\
+                    str(tag.getDescription()).replace("'", "'\"'\"'")+"'")
+        print()
+
+        # Assign Tags to Hosts
+        for host in hosts:
+            hostname = "'"+host.getHostname().replace("'", "'\"'\"'")+"'"
+            for tag in host.getTags():
+                print("host "+hostname+" tag add '"+\
+                        str(tag.getName()).replace("'", "'\"'\"'")+"'")
 
     # > show graveyard
     def show_graveyard(self, args):
