@@ -237,32 +237,6 @@ class Host:
         return self.description
 
     # Gets all the tags assigned to this host
-    # @return   An array containing all the tags assigned to this
-    #           host
-    def getTags(self):
-        tags = list()
-
-        stmt = '''\
-            SELECT
-                Tag.TagID,
-                TagName,
-                TagGroup,
-                Description
-            FROM Tag
-            INNER JOIN HostHasTag
-                ON Tag.TagID = HostHasTag.TagID
-            WHERE HostID = %s
-            ORDER BY TagName ASC'''
-        cursor = self.isidore.conn.cursor()
-        cursor.execute(stmt, [self.hostId])
-        for (tagId, name, group, description) in cursor:
-            tag = Tag(tagId, name, group, description)
-            tags.append(tag)
-        cursor.close()
-
-        return tags
-
-    # Gets all the tags assigned to this host
     # @param groupSort=False    If true, sort the tags first by
     #                           group name and then by tag name.
     #                           Otherwise just sort by tag name.
