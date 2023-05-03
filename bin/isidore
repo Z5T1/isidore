@@ -7,7 +7,6 @@ from libIsidoreCmdline import *
 
 # Setup
 readline.parse_and_bind('set editing-mode vi')
-line = 'x'
 isidore = Isidore('isidore', 'password', 'localhost', 'isidore')
 cmd = IsidoreCmdline(isidore)
 
