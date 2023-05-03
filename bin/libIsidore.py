@@ -108,13 +108,26 @@ class Isidore:
 
         # Add all the hosts without a group header to ensure every
         # system is included, even those without any tags.
+        inv += "# All Host\n"
         for host in self.getHosts():
             inv += host.getHostname() + "\n"
         inv += "\n"
 
         # Print each tag and its hosts as a group
-        for tag in self.getTags():
+        for tag in self.getTags(True):
+            # Comment
+            group = tag.getGroup()
+            if group == None:
+                inv += "# "+tag.getName()+\
+                        " ("+tag.getDescription()+")\n"
+            else:
+                inv += "# "+tag.getGroup()+": "+tag.getName()+\
+                        " ("+tag.getDescription()+")\n"
+
+            # Header
             inv += "["+tag.getName()+"]\n"
+
+            # Hosts
             for host in tag.getHosts():
                 inv += host.getHostname() + "\n"
             inv += "\n"
