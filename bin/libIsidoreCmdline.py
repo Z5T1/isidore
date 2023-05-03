@@ -402,10 +402,38 @@ show        display tag attributes''')
         elif args[3] == '?':
             print('''\
 ?           print this help message
+add         assign hosts to this tag
 list        display all hosts that have this tag''')
+        elif args[3] == 'add':
+            self.tag_host_add(args)
         elif args[3] == 'list':
             for host in tag.getHosts():
                 print(host.getHostname())
+
+    # > tag <tagname> host add
+    def tag_host_add(self, args):
+        tag = self.isidore.getTag(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.tag)
+            return
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+<host>      name of the host to add''')
+            return
+
+        host = self.isidore.getHost(args[4])
+        if host == None:
+            print("Host "+args[4]+" does not exist")
+            return
+        try:
+            host.addTag(tag)
+        except mysql.connector.Error as e:
+            if e.errno == 1062:
+                print(host.getHostname()+" already has tag "+args[4], file=sys.stderr)
+        except:
+            print(traceback.format_exc(),
+                    file=sys.stderr)
 
     # > tag <tagname> show
     def tag_show(self, args):
