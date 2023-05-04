@@ -22,4 +22,5 @@ Appendecies
 
 1. About
 2. [Authors](authors.md)
+3. [Example Configuration](example.md)
 
