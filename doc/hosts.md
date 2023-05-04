@@ -19,7 +19,7 @@ advantage of subprompts:
     create host> luke
     create host> leia
     create host> obi-wan
-    create host> hand
+    create host> han
     create host> chewy
     create host> beru
     create host> end
