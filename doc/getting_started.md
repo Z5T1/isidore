@@ -1,11 +1,9 @@
-2. Getting Started
-==================
+# 2. Getting Started
 
 1. [Overview of Isidore's Design](#1. Overview of Isidore's Design)
 2. [Isidore Command Prompt Basics](#2. Isidore Command Prompt Basics)
 
-1. Overview of Isidore's Design
--------------------------------
+## 1. Overview of Isidore's Design
 
 ### Ths Issue with Ansible Inventory Management
 
@@ -220,6 +218,5 @@ The hosts would have the following tags:
   * virtual
   * server
 
-2. Isidore Command Prompt Basics
---------------------------------
+## 2. Isidore Command Prompt Basics
 
