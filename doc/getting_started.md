@@ -220,3 +220,121 @@ The hosts would have the following tags:
 
 ## 2. Isidore Command Prompt Basics
 
+### 1. Starting the Command Prompt
+
+The Isidore command prompt is started by running the `isidore` command. Once
+started, you will find yourself at the root prompt, delineated by `> `.
+
+    > 
+
+### 2. Entering Commands
+
+The command prompt supports standard, shell like syntax for entering commands
+like so:
+
+    > command arg1 arg2 arg3
+
+Quoting or escaping can be used for multi word arguments:
+
+    > command "Argument 1" 'Argument 2' Argument\ 3
+
+The command prompt uses GNU Readline, so command history and reverse searching
+work the same way they do in a Bash shell.
+
+Additionally, Vi like editing is supported. Press `escape` to activate it and
+`i` to go back into insert mode.
+
+### 3. Getting Help
+
+At any point, you can view a summary of all the available commands or arguments
+by entering a single `?` character.
+
+For help at the root prompt:
+
+    > ?
+    ^D          alias for end
+    end         go back to the previous prompt
+    quit        exit
+    ?           print this help message
+    create      create various objects (such as hosts and tags)
+    echo        print text back to the console
+    help        alias for ?
+    host        manipulate a host
+    show        print various data
+    tag         manipulate a tag
+    version     display Isidore version information
+
+To see what the valid arguments are to the show command.
+
+    > show ?
+    ^D          alias for end
+    end         go back to the previous prompt
+    quit        exit
+    ?           print this help message
+    config      print the commmands to populate the database with the current
+                configuration
+    hosts       print all commissioned hosts in the database
+    graveyard   print all decommissioned hosts in the database
+    inventory   print the full Ansible inventory file
+    tag-groups  print all the tag groups in the database
+    tags        print all tags in the database
+
+### 4. Subprompts
+
+To save users from having to enter the same prefix to a command over and over,
+Isidore supports entering into subprompt levels. This is very similar to the
+subprompt feature of the Cisco IOS.
+
+When an incomplete command is entered, Isidore drops you to a subprompt. For
+example, entering the following command will drop you to the `show` level
+subprompt:
+
+    > show
+    show>
+
+Now every command you run will have `show` prefixed to it as the first
+argument. Entering `?` now is akin to entering `show ?` at the root prompt:
+
+    show> ?
+    ^D          alias for end
+    end         go back to the previous prompt
+    quit        exit
+    ?           print this help message
+    config      print the commmands to populate the database with the current
+                configuration
+    hosts       print all commissioned hosts in the database
+    graveyard   print all decommissioned hosts in the database
+    inventory   print the full Ansible inventory file
+    tag-groups  print all the tag groups in the database
+    tags        print all tags in the database
+    show>
+
+When in a subprompt, the current subprompt string will be displayed before the
+`>` symbol. To exit the subprompt and go back to the previous prompt, enter the
+`end` command:
+
+    show> end
+    >
+
+### 5. Super Commands
+
+Generally the commands that are available differ depending on your subprompt;
+however, there are a few super commands that work the same at every subprompt.
+They are as follows:
+
+#### end
+
+Returns you to your previous prompt.
+
+#### quit
+
+Immediately quits the Isidore command prompt.
+
+#### ^D (control + D)
+
+Does the same thing as `end`.
+
+#### ?
+
+Lists the valid commands at the current prompt.
+
