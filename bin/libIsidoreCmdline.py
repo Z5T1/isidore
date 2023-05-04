@@ -149,8 +149,11 @@ tags        print all tags in the database''')
                     str(host.getCommissionDate())+"'")
             print("host "+name+" set decommissioned '"+\
                     str(host.getDecommissionDate()).lower()+"'")
-            print("host "+name+" set description '"+\
-                    str(host.getDescription()).replace("'", "'\"'\"'")+"'")
+            if host.getDescription() == None:
+                print("host "+name+" set description none")
+            else:
+                print("host "+name+" set description '"+\
+                        str(host.getDescription()).replace("'", "'\"'\"'")+"'")
         print()
 
         # Create Tags
@@ -159,8 +162,11 @@ tags        print all tags in the database''')
             print("create tag "+name)
             print("tag "+name+" set group '"+\
                     str(tag.getGroup())+"'")
-            print("tag "+name+" set description '"+\
-                    str(tag.getDescription()).replace("'", "'\"'\"'")+"'")
+            if tag.getDescription() == None:
+                print("tag "+name+" set description none")
+            else:
+                print("tag "+name+" set description '"+\
+                        str(tag.getDescription()).replace("'", "'\"'\"'")+"'")
         print()
 
         # Assign Tags to Hosts
