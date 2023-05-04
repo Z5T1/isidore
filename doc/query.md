@@ -1,9 +1,9 @@
 # 6. Querying Data
 
-1. [Listing Hosts](#listing-hosts)
-2. [Listing Tags](#listing-tags)
-3. [Printing the Inventory](#printing-the-inventory)
-4. [Printing the Isidore Configuration](#printing-the-isidore-configuration)
+1. [Listing Hosts](#1-listing-hosts)
+2. [Listing Tags](#2-listing-tags)
+3. [Printing the Inventory](#3-printing-the-inventory)
+4. [Printing the Isidore Configuration](#4-printing-the-isidore-configuration)
 
 ## 1. Listing Hosts
 
