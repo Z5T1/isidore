@@ -109,7 +109,7 @@ class Isidore:
         # Add all the hosts without a group header to ensure every
         # system is included, even those without any tags.
         inv += "# All Host\n"
-        for host in self.getHosts():
+        for host in self.getCommissionedHosts():
             inv += host.getHostname() + "\n"
         inv += "\n"
 
