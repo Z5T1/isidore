@@ -57,7 +57,6 @@ inventory` command:
 
     > show inventory
     # All Host
-    beru
     chewy
     han
     leia
@@ -65,7 +64,7 @@ inventory` command:
     obi-wan
     yoda
     
-    # location: cherryhill (None)
+    # location: cherryhill (Cherry Hill, NJ)
     [cherryhill]
     chewy
     han
@@ -75,12 +74,12 @@ inventory` command:
     luke
     yoda
     
-    # location: princeton (None)
+    # location: princeton (Princeton, NJ)
     [princeton]
     leia
     obi-wan
     
-    # physicality: physical (None)
+    # physicality: physical (Physical Machines)
     [physical]
     chewy
     han
@@ -88,21 +87,21 @@ inventory` command:
     obi-wan
     yoda
     
-    # physicality: virtual (None)
+    # physicality: virtual (Virtual Machines)
     [virtual]
     luke
     
-    # type: laptop (None)
+    # type: laptop (Laptops)
     [laptop]
     han
     
-    # type: server (None)
+    # type: server (Servers)
     [server]
     chewy
     luke
     yoda
     
-    # type: workstation (None)
+    # type: workstation (Workstations)
     [workstation]
     leia
     obi-wan
