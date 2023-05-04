@@ -119,10 +119,10 @@ class Isidore:
             group = tag.getGroup()
             if group == None:
                 inv += "# "+tag.getName()+\
-                        " ("+tag.getDescription()+")\n"
+                        " ("+str(tag.getDescription())+")\n"
             else:
                 inv += "# "+tag.getGroup()+": "+tag.getName()+\
-                        " ("+tag.getDescription()+")\n"
+                        " ("+str(tag.getDescription())+")\n"
 
             # Header
             inv += "["+tag.getName()+"]\n"
