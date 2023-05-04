@@ -9,11 +9,11 @@ from libIsidore import *
 
 class IsidoreCmdline:
 
-    isidore = None
+    _isidore = None
     _version = '0.0.0'
 
     def __init__(self, isidore):
-        self.isidore = isidore
+        self._isidore = isidore
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -138,8 +138,8 @@ tags        print all tags in the database''')
 
     # > show config
     def show_config(self, args):
-        hosts = self.isidore.getHosts()
-        tags = self.isidore.getTags()
+        hosts = self._isidore.getHosts()
+        tags = self._isidore.getTags()
 
         # Create Hosts
         for host in hosts:
@@ -178,26 +178,26 @@ tags        print all tags in the database''')
 
     # > show graveyard
     def show_graveyard(self, args):
-        for host in self.isidore.getDecommissionedHosts():
+        for host in self._isidore.getDecommissionedHosts():
             print(host.getHostname())
 
     # > show hosts
     def show_hosts(self, args):
-        for host in self.isidore.getCommissionedHosts():
+        for host in self._isidore.getCommissionedHosts():
             print(host.getHostname())
 
     # > show inventory
     def show_inventory(self, args):
-        print(self.isidore.getInventory())
+        print(self._isidore.getInventory())
 
     # > show tag-groups
     def show_taggroups(self, args):
-        for group in self.isidore.getTagGroups():
+        for group in self._isidore.getTagGroups():
             print(str(group[0])+" ("+group[1]+")")
 
     # > show tags
     def show_tags(self, args):
-        for tag in self.isidore.getTags():
+        for tag in self._isidore.getTags():
             print(tag.getName())
 
     # > create
@@ -224,7 +224,7 @@ tag         create a new tag''')
 <hostname>  the hostname for the new host to create''')
         else:
             try:
-                self.isidore.createHost(args[2])
+                self._isidore.createHost(args[2])
             except:
                 print('Failed to create host '+args[2],
                         file=sys.stderr)
@@ -241,7 +241,7 @@ tag         create a new tag''')
 <name>      the name of the new tag to create''')
         else:
             try:
-                self.isidore.createTag(args[2])
+                self._isidore.createTag(args[2])
             except:
                 print('Failed to create tag '+args[2],
                         file=sys.stderr)
@@ -284,7 +284,7 @@ tag         display and modify this host's tags''')
 
     # > host <hostname> show
     def host_show(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 3:
             self.subprompt(args, self.host)
         elif args[3] == '?':
@@ -305,7 +305,7 @@ decommissioned  print the date the host was decommissioned''')
 
     # > host <hostname> set
     def host_set(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 3:
             self.subprompt(args, self.host)
         elif args[3] == '?':
@@ -326,7 +326,7 @@ decommissioned  set the date the host was decommissioned''')
 
     # > host <hostname> set commissioned
     def host_set_commissioned(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 4:
             self.subprompt(args, self.host)
         elif args[4] == '?':
@@ -343,7 +343,7 @@ now         use the current date''')
 
     # > host <hostname> set decommissioned
     def host_set_decommissioned(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 4:
             self.subprompt(args, self.host)
         elif args[4] == '?':
@@ -363,7 +363,7 @@ now         use the current date''')
 
     # > host <hostname> tag
     def host_tag(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 3:
             self.subprompt(args, self.host)
         elif args[3] == '?':
@@ -391,7 +391,7 @@ remove      remove a tag from this host''')
 
     # > host <hostname> tag add
     def host_tag_add(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 4:
             self.subprompt(args, self.host)
             return
@@ -401,7 +401,7 @@ remove      remove a tag from this host''')
 <tag>       name of the tag to add''')
             return
 
-        tag = self.isidore.getTag(args[4])
+        tag = self._isidore.getTag(args[4])
         if tag == None:
             print("Tag "+args[4]+" does not exist")
             return
@@ -416,7 +416,7 @@ remove      remove a tag from this host''')
 
     # > host <hostname> tag remove
     def host_tag_remove(self, args):
-        host = self.isidore.getHost(args[1])
+        host = self._isidore.getHost(args[1])
         if len(args) == 4:
             self.subprompt(args, self.host)
             return
@@ -425,7 +425,7 @@ remove      remove a tag from this host''')
 ?           print this help message
 <tag>       name of the tag to remove''')
             return
-        tag = self.isidore.getTag(args[4])
+        tag = self._isidore.getTag(args[4])
         if tag == None:
             print("Tag "+args[4]+" does not exist")
             return
@@ -456,7 +456,7 @@ show        display tag attributes''')
 
     # > tag <tagname> host
     def tag_host(self, args):
-        tag = self.isidore.getTag(args[1])
+        tag = self._isidore.getTag(args[1])
         if len(args) == 3:
             self.subprompt(args, self.tag)
         elif args[3] == '?':
@@ -475,7 +475,7 @@ remove      remove hosts from this tag''')
 
     # > tag <tagname> host add
     def tag_host_add(self, args):
-        tag = self.isidore.getTag(args[1])
+        tag = self._isidore.getTag(args[1])
         if len(args) == 4:
             self.subprompt(args, self.tag)
             return
@@ -485,7 +485,7 @@ remove      remove hosts from this tag''')
 <host>      name of the host to add''')
             return
 
-        host = self.isidore.getHost(args[4])
+        host = self._isidore.getHost(args[4])
         if host == None:
             print("Host "+args[4]+" does not exist")
             return
@@ -500,7 +500,7 @@ remove      remove hosts from this tag''')
 
     # > tag <tagname> host remove
     def tag_host_remove(self, args):
-        tag = self.isidore.getTag(args[1])
+        tag = self._isidore.getTag(args[1])
         if len(args) == 4:
             self.subprompt(args, self.tag)
             return
@@ -509,7 +509,7 @@ remove      remove hosts from this tag''')
 ?           print this help message
 <host>      name of the host to remove''')
             return
-        host = self.isidore.getHost(args[4])
+        host = self._isidore.getHost(args[4])
         if host == None:
             print("Host "+args[4]+" does not have tag "+args[1])
             return
@@ -517,7 +517,7 @@ remove      remove hosts from this tag''')
 
     # > tag <tagname> show
     def tag_show(self, args):
-        tag = self.isidore.getTag(args[1])
+        tag = self._isidore.getTag(args[1])
         if len(args) == 3:
             self.subprompt(args, self.tag)
         elif args[3] == '?':
@@ -540,7 +540,7 @@ group       print the date the tag was commissioned''')
 
     # > tag <tagname> set
     def tag_set(self, args):
-        tag = self.isidore.getTag(args[1])
+        tag = self._isidore.getTag(args[1])
         if len(args) == 3:
             self.subprompt(args, self.tag)
         elif args[3] == '?':
@@ -558,7 +558,7 @@ group           set the tag's group''')
 
     # > tag <tagname> set group
     def tag_set_group(self, args):
-        tag = self.isidore.getTag(args[1])
+        tag = self._isidore.getTag(args[1])
         if len(args) == 4:
             self.subprompt(args, self.tag)
         elif args[4] == '?':
@@ -576,5 +576,5 @@ none        remove tag group''')
     # > version
     def version(self, args):
             print('Isidore Command Prompt version: '+self.getVersion())
-            print('libIsidore version: '+self.isidore.getVersion())
+            print('libIsidore version: '+self._isidore.getVersion())
 

@@ -5,11 +5,11 @@ import yaml
 
 class Isidore:
 
-    conn = None
+    _conn = None
     _version = '0.0.0'
 
     def __init__(self, user, password, host, database):
-        self.conn = mysql.connector.connect(
+        self._conn = mysql.connector.connect(
                 user = user,
                 password = password,
                 host = host,
@@ -19,19 +19,19 @@ class Isidore:
     # Creates a new host in the database
     # @param hostname           The hostname for the new host
     def createHost(self, hostname):
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         stmt = "INSERT INTO Host (Hostname) VALUES (%s)"
         cursor.execute(stmt, [ hostname ])
-        self.conn.commit()
+        self._conn.commit()
         cursor.close()
 
     # Creates a new tag in the database
     # @param name               The name for the new tag
     def createTag(self, name):
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         stmt = "INSERT INTO Tag (TagName) VALUES (%s)"
         cursor.execute(stmt, [ name ])
-        self.conn.commit()
+        self._conn.commit()
         cursor.close()
 
     # Gets all the commissioned hosts in the database
@@ -40,7 +40,7 @@ class Isidore:
     def getCommissionedHosts(self):
         hosts = list()
 
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM Host WHERE DecommissionDate IS NULL ORDER BY Hostname ASC")
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
@@ -56,7 +56,7 @@ class Isidore:
     def getDecommissionedHosts(self):
         hosts = list()
 
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM Host WHERE DecommissionDate IS NOT NULL ORDER BY Hostname ASC")
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
@@ -71,7 +71,7 @@ class Isidore:
     # @return           The Host object, or None if the host does
     #                   not exist.
     def getHost(self, hostname):
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM Host WHERE Hostname = %s",
                 [hostname])
 
@@ -90,7 +90,7 @@ class Isidore:
     def getHosts(self):
         hosts = list()
 
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM Host ORDER BY Hostname ASC")
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
@@ -139,7 +139,7 @@ class Isidore:
     # @return           The Tag object, or None if the tag does
     #                   not exist.
     def getTag(self, name):
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM Tag WHERE TagName = %s",
                 [name])
 
@@ -160,7 +160,7 @@ class Isidore:
     def getTagGroups(self):
         groups = list()
 
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM TagByGroup ORDER BY TagGroup ASC")
         for (groupName, tags) in cursor:
             groups.append( (groupName, tags) )
@@ -184,7 +184,7 @@ class Isidore:
             stmt += 'ORDER BY TagName ASC'
 
         # Fetch data
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         cursor.execute(stmt)
         for (tagId, name, group, description) in cursor:
             tag = Tag(tagId, name, group, description, self)
@@ -200,50 +200,50 @@ class Isidore:
 
 class Host:
 
-    hostId = None
-    hostname = None
-    commissionDate = None
-    decommissionDate = None
-    description = None
-    isidore = None
+    _hostId = None
+    _hostname = None
+    _commissionDate = None
+    _decommissionDate = None
+    _description = None
+    _isidore = None
 
     def __init__(self, hostId, hostname, commissionDate, decommissionDate, description, isidore=None):
-        self.hostId = hostId
-        self.hostname = hostname
-        self.commissionDate = commissionDate
-        self.decommissionDate = decommissionDate
-        self.description = description
-        self.isidore = isidore
+        self._hostId = hostId
+        self._hostname = hostname
+        self._commissionDate = commissionDate
+        self._decommissionDate = decommissionDate
+        self._description = description
+        self._isidore = isidore
 
     def addTag(self, tag):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = "INSERT INTO HostHasTag (HostID, TagID) VALUES (%s, %s)"
-        cursor.execute(stmt, [ self.hostId, tag.getTagId() ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ self._hostId, tag.getTagId() ])
+        self._isidore._conn.commit()
         cursor.close()
 
     def getHostId(self):
-        return self.hostId
+        return self._hostId
 
     def getHostname(self):
-        return self.hostname
+        return self._hostname
 
     def getCommissionDate(self):
-        return self.commissionDate
+        return self._commissionDate
 
     def getDecommissionDate(self):
-        return self.decommissionDate
+        return self._decommissionDate
 
     # Gets a YAML string containing all the details about this
     # host
     # @return   A YAML string containing the details
     def getDetails(self):
-        txt = self.hostname + ":\n"
+        txt = self._hostname + ":\n"
 
         # Host attributes
-        txt += "  commissioned: '"+str(self.commissionDate)+"'\n"
-        txt += "  decommissioned: '"+str(self.decommissionDate)+"'\n"
-        txt += "  description: '"+str(self.description).replace("'", "'\"'\"'")+"'\n"
+        txt += "  commissioned: '"+str(self._commissionDate)+"'\n"
+        txt += "  decommissioned: '"+str(self._decommissionDate)+"'\n"
+        txt += "  description: '"+str(self._description).replace("'", "'\"'\"'")+"'\n"
 
         # Tags
         txt += "  tags:\n"
@@ -257,7 +257,7 @@ class Host:
         return txt
 
     def getDescription(self):
-        return self.description
+        return self._description
 
     # Gets all the tags assigned to this host
     # @param groupSort=False    If true, sort the tags first by
@@ -285,8 +285,8 @@ class Host:
         else:
             stmt += 'ORDER BY TagName ASC'
 
-        cursor = self.isidore.conn.cursor()
-        cursor.execute(stmt, [self.hostId])
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [self._hostId])
         for (tagId, name, group, description) in cursor:
             tag = Tag(tagId, name, group, description)
             tags.append(tag)
@@ -295,68 +295,68 @@ class Host:
         return tags
 
     def removeTag(self, tag):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = '''\
             DELETE FROM HostHasTag
             WHERE 
                 HostID = %s AND
                 TagId = %s
             '''
-        cursor.execute(stmt, [ self.hostId, tag.getTagId() ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ self._hostId, tag.getTagId() ])
+        self._isidore._conn.commit()
         cursor.close()
 
     def setCommissionDate(self, date):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET CommissionDate = %s WHERE HostID = %s"
-        cursor.execute(stmt, [ date, self.hostId ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ date, self._hostId ])
+        self._isidore._conn.commit()
         cursor.close()
-        self.commissionDate = date
+        self._commissionDate = date
 
     def setDecommissionDate(self, date):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET DecommissionDate = %s WHERE HostID = %s"
-        cursor.execute(stmt, [ date, self.hostId ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ date, self._hostId ])
+        self._isidore._conn.commit()
         cursor.close()
-        self.decommissionDate = date
+        self._decommissionDate = date
 
     def setDescription(self, description):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET Description = %s WHERE HostID = %s"
-        cursor.execute(stmt, [ description, self.hostId ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ description, self._hostId ])
+        self._isidore._conn.commit()
         cursor.close()
-        self.description = description
+        self._description = description
 
 class Tag:
     
-    tagId = None
-    name = None
-    group = None
-    description = None
-    isidore = None
+    _tagId = None
+    _name = None
+    _group = None
+    _description = None
+    _isidore = None
 
     def __init__(self, tagId, name, group, description,
             isidore=None):
-        self.tagId = tagId
-        self.name = name
-        self.group = group
-        self.description = description
-        self.isidore = isidore
+        self._tagId = tagId
+        self._name = name
+        self._group = group
+        self._description = description
+        self._isidore = isidore
 
     def getTagId(self):
-        return self.tagId
+        return self._tagId
 
     def getName(self):
-        return self.name
+        return self._name
 
     def getDescription(self):
-        return self.description
+        return self._description
 
     def getGroup(self):
-        return self.group
+        return self._group
 
     # Gets all the commissioned hosts assigned to this tag
     # @return   An array containing all the commissioned hosts
@@ -380,8 +380,8 @@ class Tag:
             ORDER BY Hostname ASC
             '''
 
-        cursor = self.isidore.conn.cursor()
-        cursor.execute(stmt, [self.tagId])
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [self._tagId])
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
                     decommissionDate, description, self)
@@ -391,18 +391,18 @@ class Tag:
         return hosts
 
     def setDescription(self, description):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Tag SET Description = %s WHERE TagID = %s"
-        cursor.execute(stmt, [ description, self.tagId ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ description, self._tagId ])
+        self._isidore._conn.commit()
         cursor.close()
-        self.description = description
+        self._description = description
 
     def setGroup(self, group):
-        cursor = self.isidore.conn.cursor()
+        cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Tag SET TagGroup = %s WHERE TagID = %s"
-        cursor.execute(stmt, [ group, self.tagId ])
-        self.isidore.conn.commit()
+        cursor.execute(stmt, [ group, self._tagId ])
+        self._isidore._conn.commit()
         cursor.close()
-        self.group = group
+        self._group = group
 
