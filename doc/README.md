@@ -32,7 +32,7 @@ Table of Contents
 Appendecies
 -----------
 
-1. About
+1. [About](about.md)
 2. [Authors](authors.md)
 3. [Example Configuration](example.md)
 
