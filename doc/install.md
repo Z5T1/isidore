@@ -79,6 +79,7 @@ Create the MySQL user and grant him access to the database:
 
     MariaDB [(none)]> CREATE USER 'isidore'@'localhost'
         -> IDENTIFIED BY 'ChangeThisToAMoreSecurePassword';
+    MariaDB [(none)]> GRANT ALL PRIVILEGES ON isidore.* TO 'isidore'@'localhost';
     MariaDB [(none)]> FLUSH PRIVILEGES;
 
 Populate the database with the initial tables:
