@@ -18,7 +18,7 @@ Table of Contents
    2. [Setting Tag Attributes](tags.md#2-setting-tag-attributes)
    3. [Viewing Tag Attributes](tags.md#3-viewing-tag-attributes)
    4. [Tag Groups](tags.md#4-tag-groups)
-5. Assigning Tags to Hosts
+5. [Assigning Tags to Hosts](assigning.md)
 6. Querying Data
 
 Appendecies
