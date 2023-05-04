@@ -23,7 +23,11 @@ Table of Contents
    2. [Listing Tags Assigned to a Host](assigning.md#2-listing-tags-assigned-to-a-host)
    3. [Assigning Hosts to a Tag](assigning.md#3-assigning-hosts-to-a-tag)
    4. [Listing Hosts Assigned to a Tag](assigning.md#4-listing-hosts-assigned-to-a-tag)
-6. Querying Data
+6. [Querying Data](query.md)
+   1. [Listing Hosts](query.md#listing-hosts)
+   2. [Listing Tags](query.md#listing-tags)
+   3. [Printing the Inventory](query.md#printing-the-inventory)
+   4. [Printing the Isidore Configuration](query.md#printing-the-isidore-configuration)
 
 Appendecies
 -----------
