@@ -62,6 +62,9 @@ To recommission a host, clear its decommissioned attribute:
 
     > host beru set decommissioned none
 
+Note that decommissioned hosts will not show up when listing hosts or
+generating the Ansible inventory.
+
 ## 3. Viewing Host Attributes
 
 To view an attribute, use the `host <hostname> show <attribute>` command. For
