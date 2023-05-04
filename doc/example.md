@@ -33,6 +33,15 @@ documentation. The raw file can be accessed [here](example.isi).
     tag workstation set group type
     tag laptop set group type
     
+    tag newark set description 'Newark, NJ'
+    tag cherryhill set description 'Cherry Hill, NJ'
+    tag princeton set description 'Princeton, NJ'
+    tag physical set description 'Physical Machines'
+    tag virtual set description 'Virtual Machines'
+    tag server set description 'Servers'
+    tag workstation set description 'Workstations'
+    tag laptop set description 'Laptops'
+    
     host yoda tag add
     newark
     physical
@@ -62,6 +71,7 @@ documentation. The raw file can be accessed [here](example.isi).
     physical
     laptop
     end
+    host han set description 'Disorganized development laptop. Sorry about this mess.'
     
     host chewy tag add
     cherryhill
@@ -74,5 +84,5 @@ documentation. The raw file can be accessed [here](example.isi).
     virtual
     server
     end
-     
-
+    host beru set decommissioned 1977-05-25
+ 
