@@ -1,9 +1,9 @@
 # 3. Hosts
 
-1. [Creating Hosts](1-creating-hosts)
-2. [Setting Host Attributes](2-setting-host-attributes)
-   1. [Decommissioning a Host](1-decommissioning-a-host)
-3. [Viewing Host Attributes](3-viewing-host-attributes)
+1. [Creating Hosts](#1-creating-hosts)
+2. [Setting Host Attributes](#2-setting-host-attributes)
+   1. [Decommissioning a Host](#1-decommissioning-a-host)
+3. [Viewing Host Attributes](#3-viewing-host-attributes)
 
 ## 1. Creating Hosts
 
