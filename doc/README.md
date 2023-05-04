@@ -13,7 +13,11 @@ Table of Contents
    2. [Setting Host Attributes](hosts.md#2-setting-host-attributes)
       1. [Decommissioning a Host](hosts.md#1-decommissioning-a-host)
    3. [Viewing Host Attributes](hosts.md#3-viewing-host-attributes)
-4. Managing Tags
+4. [Managing Tags](tags.md)
+   1. [Creating Tags](tags.md#1-creating-tags)
+   2. [Setting Tag Attributes](tags.md#2-setting-tag-attributes)
+   3. [Viewing Tag Attributes](tags.md#3-viewing-tag-attributes)
+   4. [Tag Groups](tags.md#4-tag-groups)
 5. Assigning Tags to Hosts
 6. Querying Data
 
