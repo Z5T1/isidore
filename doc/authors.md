@@ -1,8 +1,8 @@
 # Appendix 1: Authors
 
-1. [Project Leads](#1. Project Leads)
-2. [Contributors](#2. Contributors)
-3. [Special Thanks](#3. Special Thanks)
+1. [Project Leads](#1-project-leads)
+2. [Contributors](#2-contributors)
+3. [Special Thanks](#3-special-thanks)
 
 [Back](README.md)
 

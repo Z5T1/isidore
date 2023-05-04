@@ -1,7 +1,7 @@
 # 2. Getting Started
 
-1. [Overview of Isidore's Design](#1. Overview of Isidore's Design)
-2. [Isidore Command Prompt Basics](#2. Isidore Command Prompt Basics)
+1. [Overview of Isidore's Design](#1-overview-of-isidores-design)
+2. [Isidore Command Prompt Basics](#2-isidore-command-prompt-basics)
 
 ## 1. Overview of Isidore's Design
 
