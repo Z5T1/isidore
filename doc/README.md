@@ -15,5 +15,5 @@ Appendecies
 -----------
 
 1. About
-2. Authors
+2. [Authors](authors.md)
 
