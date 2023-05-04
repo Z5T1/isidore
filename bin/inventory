@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import configparser
+import os
+
+from libIsidore import *
+
+# Read config file
+config = configparser.ConfigParser()
+config.read( [
+    "/etc/isidore.cfg",
+    "/usr/local/etc/isidore.cfg",
+    os.path.expanduser("~/.isidore.cfg"),
+    os.path.dirname(os.path.realpath(__file__))+"/isidore.cfg",
+    "isidore.cfg"
+    ] )
+
+# Print inventory
+isidore = Isidore(
+        config['database']['user'],
+        config['database']['password'],
+        config['database']['host'],
+        config['database']['database'])
+print(isidore.getInventory())
+
