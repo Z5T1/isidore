@@ -525,7 +525,7 @@ group       print the date the tag was commissioned''')
             tag.getName()+":\n"
             "  group: '"+str(tag.getGroup()).replace("'",
                 "\\'")+"'\n"
-            "  description: '"+tag.getDescription().replace("'",
+            "  description: '"+str(tag.getDescription()).replace("'",
                 "\\'")+"'")
         elif args[3] == 'description':
             print(tag.getDescription())
