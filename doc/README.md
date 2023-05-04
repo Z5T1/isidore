@@ -19,6 +19,10 @@ Table of Contents
    3. [Viewing Tag Attributes](tags.md#3-viewing-tag-attributes)
    4. [Tag Groups](tags.md#4-tag-groups)
 5. [Assigning Tags to Hosts](assigning.md)
+   1. [Assigning Tags to a Host](assigning.md#1-assigning-tags-to-a-host)
+   2. [Listing Tags Assigned to a Host](assigning.md#2-listing-tags-assigned-to-a-host)
+   3. [Assigning Hosts to a Tag](assigning.md#3-assigning-hosts-to-a-tag)
+   4. [Listing Hosts Assigned to a Tag](assigning.md#4-listing-hosts-assigned-to-a-tag)
 6. Querying Data
 
 Appendecies
