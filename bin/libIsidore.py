@@ -22,6 +22,7 @@
 
 import mysql.connector
 import yaml
+import json
 
 class Isidore:
 
@@ -153,6 +154,38 @@ class Isidore:
             inv += "\n"
 
         return inv
+
+    # Builds an Ansible inventory in JSON format from all hosts
+    # and tags in the database
+    # @return       the Ansible JSON inventory as a string
+    def getInventoryJson(self):
+        inv = dict()
+
+        # Add meta section
+        inv['_meta'] = {
+                'hostvars': {}
+        }
+
+        # Add all the hosts without a group header to ensure every
+        # system is included, even those without any tags.
+        inv['all'] = {
+                'hosts': list()
+        }
+        for host in self.getCommissionedHosts():
+            inv['all']['hosts'].append(host.getHostname())
+
+        # Add each tag and its hosts as a group
+        for tag in self.getTags(True):
+            name = tag.getName()
+            inv[name] = {
+                    'hosts': list()
+            }
+
+            # Hosts
+            for host in tag.getHosts():
+                inv[name]['hosts'].append(host.getHostname())
+
+        return json.dumps(inv)
 
     # Gets a tag in the database
     # @param name       The name of the tag to get
