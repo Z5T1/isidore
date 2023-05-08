@@ -252,6 +252,7 @@ by entering a single `?` character.
 For help at the root prompt:
 
     > ?
+    ^C          clear the current command
     ^D          alias for end
     end         go back to the previous prompt
     quit        exit
@@ -267,6 +268,7 @@ For help at the root prompt:
 To see what the valid arguments are to the show command.
 
     > show ?
+    ^C          clear the current command
     ^D          alias for end
     end         go back to the previous prompt
     quit        exit
@@ -296,6 +298,7 @@ Now every command you run will have `show` prefixed to it as the first
 argument. Entering `?` now is akin to entering `show ?` at the root prompt:
 
     show> ?
+    ^C          clear the current command
     ^D          alias for end
     end         go back to the previous prompt
     quit        exit
