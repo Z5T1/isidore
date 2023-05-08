@@ -41,5 +41,5 @@ isidore = Isidore(
         config['database']['password'],
         config['database']['host'],
         config['database']['database'])
-print(isidore.getInventory())
+print(isidore.getInventoryJson())
 
