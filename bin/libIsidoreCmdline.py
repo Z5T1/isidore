@@ -281,12 +281,21 @@ tag         create a new tag''')
 
     # > host
     def host(self, args):
+        # Handle arg #1 (host <ARG1>)
         if len(args) == 1:
             self.subprompt(args, self.host)
+            return
         elif args[1] == '?':
             print('''\
 ?           print this help message
 <hostname>  the name of the host to edit''')
+            return
+        host = self._isidore.getHost(args[1])
+        if host == None:
+            print('Host '+args[1]+' does not exist!')
+            return
+
+        # Handle arg #2 (host foo <ARG2>)
         elif len(args) == 2:
             self.subprompt(args, self.host)
         elif args[2] == '?':
@@ -453,12 +462,21 @@ remove      remove a tag from this host''')
 
     # > tag
     def tag(self, args):
+        # Handle arg #1 (tag <ARG1>)
         if len(args) == 1:
             self.subprompt(args, self.tag)
+            return
         elif args[1] == '?':
             print('''\
 ?           print this help message
 <tagname>  the name of the tag to edit''')
+            return
+        tag = self._isidore.getTag(args[1])
+        if tag == None:
+            print('Tag '+args[1]+' does not exist!')
+            return
+
+        # Handle arg #2 (tag foo <ARG2>)
         elif len(args) == 2:
             self.subprompt(args, self.tag)
         elif args[2] == '?':
