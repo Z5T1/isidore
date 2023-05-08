@@ -61,6 +61,9 @@ class IsidoreCmdline:
             except EOFError:
                 print()
                 return
+            except KeyboardInterrupt:
+                print('^C')
+                continue
             except:
                 print("Malformed command", file=sys.stderr)
                 continue
@@ -74,6 +77,7 @@ class IsidoreCmdline:
                 exit()
             elif line[0] == '?':
                 print('''\
+^C          clear the current command
 ^D          alias for end
 end         go back to the previous prompt
 quit        exit''')
