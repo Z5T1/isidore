@@ -330,6 +330,11 @@ Returns you to your previous prompt.
 
 Immediately quits the Isidore command prompt.
 
+#### ^C (control + C)
+
+Clears the command you are currently typing and gives you a fresh prompt to
+start over. This is akin to how ^C works in Bash/Csh.
+
 #### ^D (control + D)
 
 Does the same thing as `end`.
