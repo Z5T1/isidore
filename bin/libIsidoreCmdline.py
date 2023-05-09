@@ -107,6 +107,8 @@ prompt.
             self.help(args)
         if args[0] == 'host':
             self.host(args)
+        if args[0] == 'rename':
+            self.rename(args)
         if args[0] == 'show':
             self.show(args)
         if args[0] == 'tag':
@@ -122,6 +124,7 @@ create      create various objects (such as hosts and tags)
 echo        print text back to the console
 help        alias for ?
 host        manipulate a host
+rename      rename various objects (such as hosts and tags)
 show        print various data
 tag         manipulate a tag
 version     display Isidore version information''')
@@ -478,6 +481,104 @@ remove      remove a tag from this host''')
             print("Tag "+args[4]+" does not exist")
             return
         host.removeTag(tag)
+
+    # > rename
+    def rename(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.rename)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+host        rename a new host
+tag         rename a new tag''')
+        elif args[1] == 'host':
+            self.rename_host(args)
+        elif args[1] == 'tag':
+            self.rename_tag(args)
+
+    # > rename host <old_hostname> <new_hostname>
+    def rename_host(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.rename_host)
+            return
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+<hostname>  the old hostname''')
+            return
+
+        host = self._isidore.getHost(args[2])
+
+        if host == None:
+            print("Host "+args[2]+" does not exist.")
+            return
+        elif len(args) == 3:
+            print(\
+'''Rename does not allow for a subprompt for the fourth argument. You must
+enter both the old and new hostnames at the same time 
+
+Example:
+    > rename host foo bar
+
+Enter ? as any argument help.''', file=sys.stderr)
+            return
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+<hostname>  the new hostname''')
+            return
+
+        try:
+            host.setHostname(args[3])
+        except mysql.connector.Error as e:
+            if e.errno == 1062:
+                print('Host '+args[3]+' already exists.', file=sys.stderr)
+            else:
+                print(traceback.format_exc(), file=sys.stderr)
+        except:
+            print(traceback.format_exc(), file=sys.stderr)
+
+    # > rename tag <old_hostname> <new_hostname>
+    def rename_tag(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.rename_tag)
+            return
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+<name>      the old tag name''')
+            return
+
+        tag = self._isidore.getTag(args[2])
+
+        if tag == None:
+            print("Tag "+args[2]+" does not exist.")
+            return
+        elif len(args) == 3:
+            print(\
+'''Rename does not allow for a subprompt for the fourth argument. You must
+enter both the old and new tag names at the same time 
+
+Example:
+    > rename tag foo bar
+
+Enter ? as any argument help.''', file=sys.stderr)
+            return
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+<name>      the new tag name''')
+            return
+
+        try:
+            tag.setName(args[3])
+        except mysql.connector.Error as e:
+            if e.errno == 1062:
+                print('Tag '+args[3]+' already exists.', file=sys.stderr)
+            else:
+                print(traceback.format_exc(), file=sys.stderr)
+        except:
+            print(traceback.format_exc(), file=sys.stderr)
 
     # > tag
     def tag(self, args):

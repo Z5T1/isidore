@@ -409,6 +409,14 @@ class Host:
         cursor.close()
         self._description = description
 
+    def setHostname(self, hostname):
+        cursor = self._isidore._conn.cursor()
+        stmt = "UPDATE Host SET Hostname = %s WHERE HostID = %s"
+        cursor.execute(stmt, [ hostname, self._hostId ])
+        self._isidore._conn.commit()
+        cursor.close()
+        self._hostname = hostname
+
 class Tag:
     
     _tagId = None
@@ -505,4 +513,12 @@ class Tag:
         self._isidore._conn.commit()
         cursor.close()
         self._group = group
+
+    def setName(self, name):
+        cursor = self._isidore._conn.cursor()
+        stmt = "UPDATE Tag SET TagName = %s WHERE TagID = %s"
+        cursor.execute(stmt, [ name, self._tagId ])
+        self._isidore._conn.commit()
+        cursor.close()
+        self._name = name
 
