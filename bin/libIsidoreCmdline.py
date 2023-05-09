@@ -94,27 +94,29 @@ quit        exit''')
         # Parse inut
         if args[0] == '?':
             self.help(args)
-        if args[0] == 'create':
+        elif args[0] == 'create':
             self.create(args)
-        if args[0] == 'echo':
+        elif args[0] == 'echo':
             self.echo(args)
-        if args[0] == 'help':
+        elif args[0] == 'help':
             print('''\
 Pst! You should really use ? to display the help message. ? will
 work at every subprompt level. help only works at the root
 prompt.
 ''')
             self.help(args)
-        if args[0] == 'host':
+        elif args[0] == 'host':
             self.host(args)
-        if args[0] == 'rename':
+        elif args[0] == 'rename':
             self.rename(args)
-        if args[0] == 'show':
+        elif args[0] == 'show':
             self.show(args)
-        if args[0] == 'tag':
+        elif args[0] == 'tag':
             self.tag(args)
-        if args[0] == 'version':
+        elif args[0] == 'version':
             self.version(args)
+        else:
+            print('Invalid command '+args[0]+'. Enter ? for help.', file=sys.stderr)
 
     # > ?
     def help(self, args):
@@ -162,6 +164,9 @@ tags        print all tags in the database''')
 
         elif args[1] == 'tags':
             self.show_tags(args[1])
+
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
 
     # > show config
     def show_config(self, args):
@@ -231,6 +236,8 @@ yaml        print the inventory in YAML format''')
             print(self._isidore.getInventoryJson())
         elif args[2] == 'yaml':
             print(self._isidore.getInventoryYaml())
+        else:
+            print('Invalid format '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
     # > show tag-groups
     def show_taggroups(self, args):
@@ -255,6 +262,8 @@ tag         create a new tag''')
             self.create_host(args)
         elif args[1] == 'tag':
             self.create_tag(args)
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
 
     # > create host
     def create_host(self, args):
@@ -332,6 +341,8 @@ tag         display and modify this host's tags''')
             self.host_show(args)
         elif args[2] == 'tag':
             self.host_tag(args)
+        else:
+            print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
     # > host <hostname> show
     def host_show(self, args):
@@ -353,6 +364,8 @@ decommissioned  print the date the host was decommissioned''')
             print(host.getDescription())
         elif args[3] == 'decommissioned':
             print(host.getDecommissionDate())
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > host <hostname> set
     def host_set(self, args):
@@ -374,6 +387,8 @@ decommissioned  set the date the host was decommissioned''')
                 print("<description>   the description")
             else:
                 host.setDescription(args[4])
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > host <hostname> set commissioned
     def host_set_commissioned(self, args):
@@ -439,6 +454,8 @@ remove      remove a tag from this host''')
 
         elif args[3] == 'remove':
             self.host_tag_remove(args)
+        else:
+            print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > host <hostname> tag add
     def host_tag_add(self, args):
@@ -495,6 +512,8 @@ tag         rename a tag''')
             self.rename_host(args)
         elif args[1] == 'tag':
             self.rename_tag(args)
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
 
     # > rename host <old_hostname> <new_hostname>
     def rename_host(self, args):
@@ -611,6 +630,8 @@ show        display tag attributes''')
             self.tag_set(args)
         elif args[2] == 'show':
             self.tag_show(args)
+        else:
+            print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
     # > tag <tagname> host
     def tag_host(self, args):
@@ -630,6 +651,8 @@ remove      remove hosts from this tag''')
                 print(host.getHostname())
         elif args[3] == 'remove':
             self.tag_host_remove(args)
+        else:
+            print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > tag <tagname> host add
     def tag_host_add(self, args):
@@ -690,6 +713,8 @@ group       print the date the tag was commissioned''')
             print(tag.getDescription())
         elif args[3] == 'group':
             print(tag.getGroup())
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > tag <tagname> set
     def tag_set(self, args):
@@ -708,6 +733,8 @@ group           set the tag's group''')
                 print("<description>   the description")
             else:
                 tag.setDescription(args[4])
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > tag <tagname> set group
     def tag_set_group(self, args):
