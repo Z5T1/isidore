@@ -121,6 +121,10 @@ inventory:
 
     solo@han:ansible$ ansible-playbook site.yml -i /opt/isidore/bin/inventory
 
+Or to just list the contents of the inventory:
+
+    solo@han:ansible$ ansible-inventory -i /opt/isidore/bin/inventory --list
+
 ## 4. Printing the Isidore Configuration
 
 For backup and portability purposes, it is possible to print all of the Isidore
