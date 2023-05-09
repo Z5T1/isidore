@@ -4,6 +4,7 @@
 2. [Setting Tag Attributes](#2-setting-tag-attributes)
 3. [Viewing Tag Attributes](#3-viewing-tag-attributes)
 4. [Tag Groups](#4-tag-groups)
+5. [Renaming Tags](#5-renaming-tags)
 
 ## 1. Creating Tags
 
@@ -87,4 +88,11 @@ To display all the tags organized by group, use the `show tag-groups` command:
     physicality (physical, virtual)
     type (laptop, server, workstation)
     >
+
+## 5. Renaming Tags
+
+Tags can be renamed using the `rename tag` command at the root prompt. To
+rename the tag `workstation` to `desktop`:
+
+    > rename tag workstation desktop
 

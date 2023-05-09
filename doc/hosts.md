@@ -4,6 +4,7 @@
 2. [Setting Host Attributes](#2-setting-host-attributes)
    1. [Decommissioning a Host](#1-decommissioning-a-host)
 3. [Viewing Host Attributes](#3-viewing-host-attributes)
+4. [Renaming Hosts](#4-renaming-hosts)
 
 ## 1. Creating Hosts
 
@@ -78,8 +79,17 @@ To display all the attributes in a friendly YAML format, use `host <hostname> sh
 
     > host han show all
     han:
-      commissioned: '2023-05-04 10:46:50'
-      decommissioned: 'None'
-      description: 'Disorganized development laptop. Sorry about this mess.'
-      tags:
+      vars:
+        isidore:
+          commissioned: '2023-05-04 10:46:50'
+          decommissioned: 'None'
+          description: 'Disorganized development laptop. Sorry about this mess.'
+          tags: {}
+
+## 4. Renaming Hosts
+
+Hosts can be renamed using the `rename host` command at the root prompt. To
+rename the host `obi-wan` to `ben`:
+
+    > rename host obi-wan ben
 
