@@ -55,8 +55,11 @@ To display all the attributes in a friendly YAML format, use `tag <tagname> show
 
     > tag newark show all
     newark:
-      group: 'location'
-      description: 'Newark, NJ'
+      hosts: []
+      vars:
+        isidore:
+          group: 'location'
+          description: 'Newark, NJ'
     >
 
 ## 4. Tag Groups
