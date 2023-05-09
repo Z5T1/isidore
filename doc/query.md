@@ -109,6 +109,15 @@ inventory` command:
     
     >
 
+Additionally, the inventory can be printed in YAML or JSON format by specifying
+a format as the second argument like so:
+
+    > show inventory yaml
+    [output ommitted]
+    > show inventory json
+    [output ommitted]
+    > 
+
 There is also an `inventory` Python script provided with the Isidore
 installation. It resides in your Isidore binary directory (by default
 /opt/isidore/bin). To print the inventory this way, run:
