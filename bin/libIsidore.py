@@ -139,18 +139,12 @@ class Isidore:
                 'hosts': list()
         }
         for host in self.getCommissionedHosts():
-            inv['all']['hosts'].append(host.getHostname())
+            inv['all']['hosts'].append(host.getDetails())
 
         # Add each tag and its hosts as a group
         for tag in self.getTags(True):
             name = tag.getName()
-            inv[name] = {
-                    'hosts': list()
-            }
-
-            # Hosts
-            for host in tag.getHosts():
-                inv[name]['hosts'].append(host.getHostname())
+            inv[name] = tag.getDetails()[name]
 
         return inv
 
@@ -310,8 +304,8 @@ class Host:
         isivar = {}
 
         # Host Attributes
-        isivar['commissioned'] = self._commissionDate
-        isivar['decommissioned'] = self._decommissionDate
+        isivar['commissioned'] = str(self._commissionDate)
+        isivar['decommissioned'] = str(self._decommissionDate)
         isivar['description'] = self._description
 
         # Tags
