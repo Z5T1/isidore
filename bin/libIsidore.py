@@ -465,7 +465,7 @@ class Tag:
         for host in self.getHosts():
             hosts.append(host.getHostname())
 
-        det[self._name]['vars']['isidore'] = isivar
+        det[self._name]['vars']['isidore_tag_'+self._name] = isivar
         det[self._name]['hosts'] = hosts
         return det
 
