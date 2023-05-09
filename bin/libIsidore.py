@@ -128,11 +128,6 @@ class Isidore:
     def getInventory(self):
         inv = dict()
 
-        # Add meta section
-        inv['_meta'] = {
-                'hostvars': {}
-        }
-
         # Add all the hosts without a group header to ensure every
         # system is included, even those without any tags.
         inv['all'] = {
@@ -187,7 +182,29 @@ class Isidore:
     # and tags in the database
     # @return       the Ansible JSON inventory as a string
     def getInventoryJson(self):
-        return json.dumps(self.getInventory())
+        inv = dict()
+
+        # Add meta section
+        inv['_meta'] = {
+                'hostvars': {}
+        }
+
+        # Add all the hosts without a group header to ensure every
+        # system is included, even those without any tags.
+        inv['all'] = {
+                'hosts': list()
+        }
+        for host in self.getCommissionedHosts():
+            name = host.getHostname()
+            inv['all']['hosts'].append(name)
+            inv['_meta']['hostvars'][name] = host.getDetails()[name]['vars']
+
+        # Add each tag and its hosts as a group
+        for tag in self.getTags(True):
+            name = tag.getName()
+            inv[name] = tag.getDetails()[name]
+
+        return json.dumps(inv)
 
     # Builds an Ansible inventory in YAML format from all hosts
     # and tags in the database
