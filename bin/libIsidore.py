@@ -301,27 +301,26 @@ class Host:
     def getDecommissionDate(self):
         return self._decommissionDate
 
-    # Gets a YAML string containing all the details about this
-    # host
-    # @return   A YAML string containing the details
+    # Gets a dictionary containing all the details about this host
+    # @return   A dictionary containing the details
     def getDetails(self):
-        txt = self._hostname + ":\n"
+        det = {}
+        det[self._hostname] = {}
+        det[self._hostname]['vars'] = {}
+        isivar = {}
 
-        # Host attributes
-        txt += "  commissioned: '"+str(self._commissionDate)+"'\n"
-        txt += "  decommissioned: '"+str(self._decommissionDate)+"'\n"
-        txt += "  description: '"+str(self._description).replace("'", "'\"'\"'")+"'\n"
+        # Host Attributes
+        isivar['commissioned'] = self._commissionDate
+        isivar['decommissioned'] = self._decommissionDate
+        isivar['description'] = self._description
 
         # Tags
-        txt += "  tags:\n"
+        isivar['tags'] = list()
         for tag in self.getTags(True):
-            txt += "    - '" + \
-                str(tag.getGroup()).replace("'", "'\"'\"'") + \
-                "': '" + \
-                str(tag.getName()).replace("'", "'\"'\"'") + \
-                "'\n"
+            isivar['tags'].append({str(tag.getGroup()): tag.getName()})
 
-        return txt
+        det[self._hostname]['vars']['isidore'] = isivar
+        return det
 
     def getDescription(self):
         return self._description
@@ -421,6 +420,27 @@ class Tag:
 
     def getDescription(self):
         return self._description
+
+    # Gets a dictionary containing all the details about this tag
+    # @return   A dictionary containing the details
+    def getDetails(self):
+        det = {}
+        det[self._name] = {}
+        det[self._name]['vars'] = {}
+        isivar = {}
+        hosts = list()
+
+        # Tag Attributes
+        isivar['description'] = self._description
+        isivar['group'] = self._group
+
+        # Hosts
+        for host in self.getHosts():
+            hosts.append(host.getHostname())
+
+        det[self._name]['vars']['isidore'] = isivar
+        det[self._name]['hosts'] = hosts
+        return det
 
     def getGroup(self):
         return self._group

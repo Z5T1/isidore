@@ -343,7 +343,7 @@ commissioned    print the date the host was commissioned
 description     print the host's description
 decommissioned  print the date the host was decommissioned''')
         elif args[3] == 'all':
-            print(host.getDetails())
+            print(yaml.dump(host.getDetails(), default_flow_style=False))
         elif args[3] == 'commissioned':
             print(host.getCommissionDate())
         elif args[3] == 'description':
@@ -584,12 +584,7 @@ all         print all the information about the tag
 description print the tag's description
 group       print the date the tag was commissioned''')
         elif args[3] == 'all':
-            print(
-            tag.getName()+":\n"
-            "  group: '"+str(tag.getGroup()).replace("'",
-                "\\'")+"'\n"
-            "  description: '"+str(tag.getDescription()).replace("'",
-                "\\'")+"'")
+            print(yaml.dump(tag.getDetails(), default_flow_style=False))
         elif args[3] == 'description':
             print(tag.getDescription())
         elif args[3] == 'group':
