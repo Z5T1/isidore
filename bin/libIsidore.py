@@ -241,7 +241,8 @@ class Isidore:
         cursor = self._conn.cursor()
         cursor.execute("SELECT * FROM TagByGroup ORDER BY TagGroup ASC")
         for (groupName, tags) in cursor:
-            groups.append( (groupName, tags) )
+            group = groupName if groupName != None else 'ungrouped'
+            groups.append( (group, tags) )
         cursor.close()
 
         return groups
