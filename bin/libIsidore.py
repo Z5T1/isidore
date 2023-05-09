@@ -301,6 +301,25 @@ class Host:
         self._isidore._conn.commit()
         cursor.close()
 
+    # Deletes this host from the database. The host object should
+    # not be referenced after this method is called.
+    def delete(self):
+        # Delete the host
+        cursor = self._isidore._conn.cursor()
+        stmt = "DELETE FROM Host WHERE HostID = %s"
+        cursor.execute(stmt, [ self._hostId ])
+        self._isidore._conn.commit()
+        cursor.close()
+
+        # Blank out all the fields in case the object is
+        # referenced again.
+        self._hostId = None
+        self._hostname = None
+        self._commissionDate = None
+        self._decommissionDate = None
+        self._description = None
+        self._isidore = None
+
     def getHostId(self):
         return self._hostId
 
@@ -438,6 +457,24 @@ class Tag:
         self._group = group
         self._description = description
         self._isidore = isidore
+
+    # Deletes this tag from the database. The tag object should
+    # not be referenced after this method is called.
+    def delete(self):
+        # Delete the tag
+        cursor = self._isidore._conn.cursor()
+        stmt = "DELETE FROM Tag WHERE TagID = %s"
+        cursor.execute(stmt, [ self._tagId ])
+        self._isidore._conn.commit()
+        cursor.close()
+
+        # Blank out all the fields in case the object is
+        # referenced again.
+        self._tagId = None
+        self._name = None
+        self._group = None
+        self._description = None
+        self._isidore = None
 
     def getTagId(self):
         return self._tagId

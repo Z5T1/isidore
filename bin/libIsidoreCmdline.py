@@ -96,6 +96,8 @@ quit        exit''')
             self.help(args)
         elif args[0] == 'create':
             self.create(args)
+        elif args[0] == 'delete':
+            self.delete(args)
         elif args[0] == 'echo':
             self.echo(args)
         elif args[0] == 'help':
@@ -123,6 +125,7 @@ prompt.
         print('''\
 ?           print this help message
 create      create various objects (such as hosts and tags)
+delete      delete various objects (such as hosts and tags)
 echo        print text back to the console
 help        alias for ?
 host        manipulate a host
@@ -298,6 +301,88 @@ tag         create a new tag''')
                         file=sys.stderr)
                 print(traceback.format_exc(),
                         file=sys.stderr)
+
+    # > delete
+    def delete(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.delete)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+host        delete a host
+tag         delete a tag''')
+        elif args[1] == 'host':
+            self.delete_host(args)
+        elif args[1] == 'tag':
+            self.delete_tag(args)
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
+
+    # > delete host
+    def delete_host(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.delete_host)
+            return
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+<hostname>  the hostname of the host to delete''')
+            return
+
+        host = self._isidore.getHost(args[2])
+        if host == None:
+            print('Host '+args[2]+' does not exist!')
+            return
+
+        try:
+            host.delete()
+            print("Host "+args[2]+" has been deleted.")
+        except mysql.connector.Error as e:
+            if e.errno == 1451:
+                print("Cannot delete host "+host.getHostname()+": it still has tags assigned to it.", file=sys.stderr)
+            else:
+                print('Failed to delete host '+args[2],
+                        file=sys.stderr)
+                print(traceback.format_exc(),
+                        file=sys.stderr)
+        except:
+            print('Failed to delete host '+args[2],
+                    file=sys.stderr)
+            print(traceback.format_exc(),
+                    file=sys.stderr)
+
+    # > delete tag
+    def delete_tag(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.delete_tag)
+            return
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+<name>      the name of the tag to delete''')
+            return
+
+        tag = self._isidore.getTag(args[2])
+        if tag == None:
+            print('Tag '+args[2]+' does not exist!')
+            return
+
+        try:
+            tag.delete()
+            print("Tag "+args[2]+" has been deleted.")
+        except mysql.connector.Error as e:
+            if e.errno == 1451:
+                print("Cannot delete tag "+tag.getName()+": it still has hosts assigned to it.", file=sys.stderr)
+            else:
+                print('Failed to delete tag '+args[2],
+                        file=sys.stderr)
+                print(traceback.format_exc(),
+                        file=sys.stderr)
+        except:
+            print('Failed to delete tag '+args[2],
+                    file=sys.stderr)
+            print(traceback.format_exc(),
+                    file=sys.stderr)
 
     # > echo
     def echo(self, args):
