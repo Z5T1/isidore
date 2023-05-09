@@ -328,9 +328,14 @@ class Host:
         isivar['description'] = self._description
 
         # Tags
-        isivar['tags'] = list()
+        isivar['tags'] = {}
         for tag in self.getTags(True):
-            isivar['tags'].append({str(tag.getGroup()): tag.getName()})
+            group = tag.getGroup() if tag.getGroup() is not None else 'ungrouped'
+
+            if group not in isivar['tags']:
+                isivar['tags'][group] = list()
+
+            isivar['tags'][group].append(tag.getName())
 
         det[self._hostname]['vars']['isidore'] = isivar
         return det
