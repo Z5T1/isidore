@@ -321,8 +321,10 @@ class Host:
         isivar = {}
 
         # Host Attributes
-        isivar['commissioned'] = str(self._commissionDate)
-        isivar['decommissioned'] = str(self._decommissionDate)
+        isivar['commissioned'] = str(self._commissionDate) \
+                if self._commissionDate is not None else None
+        isivar['decommissioned'] = str(self._decommissionDate) \
+                if self._decommissionDate is not None else None
         isivar['description'] = self._description
 
         # Tags
