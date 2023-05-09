@@ -149,7 +149,7 @@ tags        print all tags in the database''')
             self.show_hosts(args[1])
 
         elif args[1] == 'inventory':
-            self.show_inventory(args[1])
+            self.show_inventory(args)
 
         elif args[1] == 'graveyard':
             self.show_graveyard(args[1])
@@ -212,7 +212,22 @@ tags        print all tags in the database''')
 
     # > show inventory
     def show_inventory(self, args):
-        print(self._isidore.getInventory())
+        if len(args) == 2:
+            print(self._isidore.getInventoryIni())
+
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+ini         print the inventory in INI format
+json        print the inventory in JSON format
+yaml        print the inventory in YAML format''')
+
+        elif args[2] == 'ini':
+            print(self._isidore.getInventoryIni())
+        elif args[2] == 'json':
+            print(self._isidore.getInventoryJson())
+        elif args[2] == 'yaml':
+            print(self._isidore.getInventoryYaml())
 
     # > show tag-groups
     def show_taggroups(self, args):

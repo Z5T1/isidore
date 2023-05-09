@@ -121,10 +121,44 @@ class Isidore:
 
         return hosts
 
-    # Builds an Ansible inventory from all hosts and tags in the
-    # database
-    # @return       the Ansible inventory as a string
+    # Builds an Ansible inventory in a dictionary representation
+    # from all hosts and tags in the database
+    # @return       the Ansible inventory dictionary
+    #               representation 
     def getInventory(self):
+        inv = dict()
+
+        # Add meta section
+        inv['_meta'] = {
+                'hostvars': {}
+        }
+
+        # Add all the hosts without a group header to ensure every
+        # system is included, even those without any tags.
+        inv['all'] = {
+                'hosts': list()
+        }
+        for host in self.getCommissionedHosts():
+            inv['all']['hosts'].append(host.getHostname())
+
+        # Add each tag and its hosts as a group
+        for tag in self.getTags(True):
+            name = tag.getName()
+            inv[name] = {
+                    'hosts': list()
+            }
+
+            # Hosts
+            for host in tag.getHosts():
+                inv[name]['hosts'].append(host.getHostname())
+
+        return inv
+
+    # Builds an Ansible INI inventory from all hosts and tags in
+    # the database
+    # @return       the Ansible inventory INI representation as a
+    #               string
+    def getInventoryIni(self):
         inv = ""
 
         # Add all the hosts without a group header to ensure every
@@ -159,33 +193,13 @@ class Isidore:
     # and tags in the database
     # @return       the Ansible JSON inventory as a string
     def getInventoryJson(self):
-        inv = dict()
+        return json.dumps(self.getInventory())
 
-        # Add meta section
-        inv['_meta'] = {
-                'hostvars': {}
-        }
-
-        # Add all the hosts without a group header to ensure every
-        # system is included, even those without any tags.
-        inv['all'] = {
-                'hosts': list()
-        }
-        for host in self.getCommissionedHosts():
-            inv['all']['hosts'].append(host.getHostname())
-
-        # Add each tag and its hosts as a group
-        for tag in self.getTags(True):
-            name = tag.getName()
-            inv[name] = {
-                    'hosts': list()
-            }
-
-            # Hosts
-            for host in tag.getHosts():
-                inv[name]['hosts'].append(host.getHostname())
-
-        return json.dumps(inv)
+    # Builds an Ansible inventory in YAML format from all hosts
+    # and tags in the database
+    # @return       the Ansible YAML inventory as a string
+    def getInventoryYaml(self):
+        return yaml.dump(self.getInventory(), default_flow_style=False)
 
     # Gets a tag in the database
     # @param name       The name of the tag to get
