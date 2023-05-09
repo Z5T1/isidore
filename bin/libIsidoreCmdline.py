@@ -489,8 +489,8 @@ remove      remove a tag from this host''')
         elif args[1] == '?':
             print('''\
 ?           print this help message
-host        rename a new host
-tag         rename a new tag''')
+host        rename a host
+tag         rename a tag''')
         elif args[1] == 'host':
             self.rename_host(args)
         elif args[1] == 'tag':
