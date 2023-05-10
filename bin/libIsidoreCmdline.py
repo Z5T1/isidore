@@ -244,8 +244,19 @@ yaml        print the inventory in YAML format''')
 
     # > show tag-groups
     def show_taggroups(self, args):
-        for group in self._isidore.getTagGroups():
-            print(str(group[0])+" ("+group[1]+")")
+        tags = {}
+
+        # Populate the top level
+        for (group, tagsstr) in self._isidore.getTagGroups():
+            if group == None:
+                group = 'ungrouped'
+            tags[group] = list()
+
+        for tag in self._isidore.getTags():
+            group = tag.getGroup()
+            tags[group].append(tag.getName())
+
+        print(yaml.dump(tags, default_flow_style=False))
 
     # > show tags
     def show_tags(self, args):

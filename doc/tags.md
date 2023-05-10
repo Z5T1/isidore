@@ -88,9 +88,18 @@ To set the groups for the other tags from the example:
 To display all the tags organized by group, use the `show tag-groups` command:
 
     > show tag-groups
-    location (cherryhill, newark, princeton)
-    physicality (physical, virtual)
-    type (laptop, server, workstation)
+    location:
+    - cherryhill
+    - newark
+    - princeton
+    physicality:
+    - physical
+    - virtual
+    type:
+    - laptop
+    - server
+    - workstation
+
     >
 
 ## 5. Renaming Tags
