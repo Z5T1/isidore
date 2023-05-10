@@ -24,6 +24,7 @@ import readline
 import shlex
 import configparser
 import os
+import atexit
 
 from libIsidoreCmdline import *
 
@@ -36,6 +37,15 @@ config.read( [
     os.path.dirname(os.path.realpath(__file__))+"/isidore.cfg",
     "isidore.cfg"
     ] )
+
+# Setup Readline History
+history_file = os.path.expanduser("~/.isidore_history")
+try:
+    readline.read_history_file(history_file)
+    readline.set_history_length(1000)
+except FileNotFoundError:
+    pass
+atexit.register(readline.write_history_file, history_file)
 
 # Setup
 readline.parse_and_bind('set editing-mode vi')
