@@ -23,6 +23,15 @@ CREATE TABLE HostHasTag (
 		REFERENCES Tag(TagID)
 );
 
+CREATE TABLE Metadata (
+	KeyName VARCHAR(64) NOT NULL PRIMARY KEY,
+	Value TEXT
+);
+
+INSERT INTO Metadata (KeyName, Value) VALUES
+	('version', '0.1.0')
+;
+
 CREATE VIEW HostHasTagView AS
 	SELECT
 		Host.HostID,

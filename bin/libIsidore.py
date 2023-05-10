@@ -71,6 +71,15 @@ class Isidore:
 
         return hosts
 
+    # Gets the underlying Isidore database version.
+    # @return       The Isidore database version
+    def getDatabaseVersion(self):
+        cursor = self._conn.cursor()
+        cursor.execute("SELECT Value FROM Metadata WHERE KeyName = 'version'")
+        row = cursor.fetchone()
+        cursor.close()
+        return row[0]
+
     # Gets all the decommissioned hosts in the database
     # @return   An array containing all the decommissioned hosts in
     #           the database

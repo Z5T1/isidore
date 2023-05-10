@@ -847,4 +847,5 @@ none        remove tag group''')
     def version(self, args):
             print('Isidore Command Prompt version: '+self.getVersion())
             print('libIsidore version: '+self._isidore.getVersion())
+            print('Isidore database version: '+self._isidore.getDatabaseVersion())
 
