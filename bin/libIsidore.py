@@ -24,11 +24,18 @@ import mysql.connector
 import yaml
 import json
 
+# Represents an Isidore database instance
 class Isidore:
 
     _conn = None
     _version = '0.1.0'
 
+    # Connects to a MySQL database and creates a new Isidore object to interact
+    # with it.
+    # @param user       The MySQL username
+    # @param password   The password for the MySQL user
+    # @param host       The MySQL server to connect to
+    # @param database   The name of the database to use
     def __init__(self, user, password, host, database):
         self._conn = mysql.connector.connect(
                 user = user,
@@ -316,6 +323,7 @@ class Isidore:
     def getVersion(self):
         return self._version
 
+# An individual host
 class Host:
 
     _hostId = None
@@ -325,6 +333,13 @@ class Host:
     _description = None
     _isidore = None
 
+    # Creates a new Host object
+    # @param hostId             The Isidore databases's internal ID for the host
+    # @param hostname           The hostname for the host
+    # @param commissionDate     The host's commission date
+    # @param decommissionDate   The host's decommission date
+    # @param description        The host's description
+    # @param isidore            The Isidore object the host belongs to
     def __init__(self, hostId, hostname, commissionDate, decommissionDate, description, isidore=None):
         self._hostId = hostId
         self._hostname = hostname
@@ -333,6 +348,8 @@ class Host:
         self._description = description
         self._isidore = isidore
 
+    # Assigns a tag to this host
+    # @param tag        The tag object to assign
     def addTag(self, tag):
         cursor = self._isidore._conn.cursor()
         stmt = "INSERT INTO HostHasTag (HostID, TagID) VALUES (%s, %s)"
@@ -359,15 +376,23 @@ class Host:
         self._description = None
         self._isidore = None
 
+    # Gets the host's internal ID in the Isidore database.
+    # @return   The hosts's ID
     def getHostId(self):
         return self._hostId
 
+    # Gets the host's hostname
+    # @return   The hostname
     def getHostname(self):
         return self._hostname
 
+    # Gets the host's commission date as a DateTime
+    # @return   The commission date
     def getCommissionDate(self):
         return self._commissionDate
 
+    # Gets the host's decommission date as a DateTime
+    # @return   The decommission date, or None if the host is commissioned.
     def getDecommissionDate(self):
         return self._decommissionDate
 
@@ -399,6 +424,8 @@ class Host:
         det[self._hostname]['vars']['isidore'] = isivar
         return det
 
+    # Gets the host's description
+    # @return   The host's description
     def getDescription(self):
         return self._description
 
@@ -437,6 +464,8 @@ class Host:
 
         return tags
 
+    # Removes a tag from this host
+    # @param tag        The tag object to remove
     def removeTag(self, tag):
         cursor = self._isidore._conn.cursor()
         stmt = '''\
@@ -449,6 +478,8 @@ class Host:
         self._isidore._conn.commit()
         cursor.close()
 
+    # Sets the host's commission date
+    # @param date       The commission date
     def setCommissionDate(self, date):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET CommissionDate = %s WHERE HostID = %s"
@@ -457,6 +488,9 @@ class Host:
         cursor.close()
         self._commissionDate = date
 
+    # Sets the host's decommission date
+    # @param date       The decommission date, or None to clear the
+    #                   decommission date.
     def setDecommissionDate(self, date):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET DecommissionDate = %s WHERE HostID = %s"
@@ -465,6 +499,8 @@ class Host:
         cursor.close()
         self._decommissionDate = date
 
+    # Sets the host's description
+    # @param description    The host's description
     def setDescription(self, description):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET Description = %s WHERE HostID = %s"
@@ -473,6 +509,8 @@ class Host:
         cursor.close()
         self._description = description
 
+    # Sets the host's hostname
+    # @param hostname       The hostname
     def setHostname(self, hostname):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Host SET Hostname = %s WHERE HostID = %s"
@@ -481,6 +519,7 @@ class Host:
         cursor.close()
         self._hostname = hostname
 
+# An individual tag
 class Tag:
     
     _tagId = None
@@ -489,6 +528,12 @@ class Tag:
     _description = None
     _isidore = None
 
+    # Creates a new Tag Object
+    # @param tagID              The Isidore databases's internal ID for the tag
+    # @param name               The name of the tag
+    # @param group              The group for the tag
+    # @param description        The tag's description
+    # @param isidore            The Isidore object the tag belongs to
     def __init__(self, tagId, name, group, description,
             isidore=None):
         self._tagId = tagId
@@ -515,12 +560,18 @@ class Tag:
         self._description = None
         self._isidore = None
 
+    # Gets the tag's internal ID in the Isidore database.
+    # @return   The tag's ID
     def getTagId(self):
         return self._tagId
 
+    # Gets the tag's name
+    # @return   The name
     def getName(self):
         return self._name
 
+    # Gets the tag's description
+    # @return   The tag's description
     def getDescription(self):
         return self._description
 
@@ -580,6 +631,8 @@ class Tag:
 
         return hosts
 
+    # Sets the tag's description
+    # @param description    The tag's description
     def setDescription(self, description):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Tag SET Description = %s WHERE TagID = %s"
@@ -588,6 +641,9 @@ class Tag:
         cursor.close()
         self._description = description
 
+    # Sets the tag's group
+    # @param group          The group for the tag, or None to remove it from
+    #                       its current group.
     def setGroup(self, group):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Tag SET TagGroup = %s WHERE TagID = %s"
@@ -596,6 +652,8 @@ class Tag:
         cursor.close()
         self._group = group
 
+    # Set the tag's name
+    # @param name           The name
     def setName(self, name):
         cursor = self._isidore._conn.cursor()
         stmt = "UPDATE Tag SET TagName = %s WHERE TagID = %s"
