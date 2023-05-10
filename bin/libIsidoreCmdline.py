@@ -533,9 +533,14 @@ remove      remove a tag from this host''')
                 print(tag.getName())
 
         elif args[3] == 'list-detail':
-            print("Name\t\tGroup\t\tDescription")
+            tags = list()
             for tag in host.getTags(True):
-                print(tag.getName()+"\t"+str(tag.getGroup())+"\t\t"+str(tag.getDescription()))
+                tags.append( {
+                    'name': tag.getName(),
+                    'group': tag.getGroup(),
+                    'description': tag.getDescription()
+                    } )
+            print(yaml.dump(tags, default_flow_style=False))
 
         elif args[3] == 'remove':
             self.host_tag_remove(args)
