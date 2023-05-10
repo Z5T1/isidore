@@ -5,6 +5,7 @@
 3. [Viewing Tag Attributes](#3-viewing-tag-attributes)
 4. [Tag Groups](#4-tag-groups)
 5. [Renaming Tags](#5-renaming-tags)
+6. [Deleting Tags](#6-deleting-tags)
 
 ## 1. Creating Tags
 
@@ -98,4 +99,12 @@ Tags can be renamed using the `rename tag` command at the root prompt. To
 rename the tag `workstation` to `desktop`:
 
     > rename tag workstation desktop
+
+## 6. Deleting Tags
+
+Before a tag can be deleted, it must not have any hosts assigned to it. Once
+all the hosts have been removed, the tag can be deleted using the `delete tag`
+command at the root prompt. To delete the host `camden`:
+
+    > delete tag camden
 

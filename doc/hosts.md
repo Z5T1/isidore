@@ -5,6 +5,7 @@
    1. [Decommissioning a Host](#1-decommissioning-a-host)
 3. [Viewing Host Attributes](#3-viewing-host-attributes)
 4. [Renaming Hosts](#4-renaming-hosts)
+5. [Deleting Hosts](#5-deleting-hosts)
 
 ## 1. Creating Hosts
 
@@ -92,4 +93,18 @@ Hosts can be renamed using the `rename host` command at the root prompt. To
 rename the host `obi-wan` to `ben`:
 
     > rename host obi-wan ben
+
+## 5. Deleting Hosts
+
+Note: if a host is being or has been decommissioned, it should *not* be deleted
+from Isidore; rather, it should be
+[marked as decommissioned](#1-decommissioning-a-host). Deleting hosts is
+intended to be used only for removing hosts that were added to Isidore in
+error.
+
+Before a host can be deleted, it must have all its tags removed. Once they've
+all been removed, the host can be deleted using the `delete host` command at
+the root prompt. To delete the host `sheev`:
+
+    > delete host sheev
 
