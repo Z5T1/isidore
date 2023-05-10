@@ -688,7 +688,7 @@ class Tag:
     def getDetails(self):
         det = {}
         det[self._name] = {}
-        det[self._name]['vars'] = {}
+        det[self._name]['vars'] = self.getVar()
         isivar = {}
         hosts = list()
 
@@ -739,6 +739,33 @@ class Tag:
 
         return hosts
 
+    # Gets a dictionary of variables assigned to this tag,
+    # optionally starting at a certian path. Paths should be
+    # specified as path.to.object. If no path is specified, all
+    # variables will be included.
+    # @param path       The path to start at. If not specifed,
+    #                   defaults to the root of the JSON tree.
+    # @return   A dictionary containing all the variables starting
+    #           at path.
+    def getVar(self, path='$'):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Select the JSON
+        stmt = 'SELECT JSON_EXTRACT(Variables, %s) \
+                FROM Tag WHERE TagID = %s'
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, self._tagId])
+        row = cursor.fetchone()
+        cursor.close()
+
+        # Decode the JSON and return
+        if row[0] == None:
+            return None
+        else:
+            return json.loads(row[0])
+
     # Sets the tag's description
     # @param description    The tag's description
     def setDescription(self, description):
@@ -769,4 +796,32 @@ class Tag:
         self._isidore._conn.commit()
         cursor.close()
         self._name = name
+
+    # Sets a variable to a specified value.
+    # @param path       The path of the variable to set. It will
+    #                   be created if it does not exist. If it is
+    #                   not specifed or is $, the entire variable
+    #                   tree will be overwritten with the
+    #                   specified value.
+    # @param value      The value to set the variable to. This can
+    #                   be of any type that is JSON serializable.
+    def setVar(self, path, value):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Tag
+            SET Variables =
+                JSON_SET(
+                    Variables,
+                    %s,
+                    JSON_EXTRACT(%s, '$')
+                )
+            WHERE TagID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, json.dumps(value), self._tagId])
+        self._isidore._conn.commit()
+        cursor.close()
 
