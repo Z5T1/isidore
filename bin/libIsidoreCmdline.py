@@ -254,6 +254,8 @@ yaml        print the inventory in YAML format''')
 
         for tag in self._isidore.getTags():
             group = tag.getGroup()
+            if group == None:
+                group = 'ungrouped'
             tags[group].append(tag.getName())
 
         print(yaml.dump(tags, default_flow_style=False))
