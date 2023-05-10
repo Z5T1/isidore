@@ -281,6 +281,36 @@ class Isidore:
 
         return tags
 
+    # Gets a dictionary of all the tags in the database broken down into
+    # groups. The tag group will be the top level key in the dictionary and
+    # each key's value will a list containing all the tags in that group.
+    # @return   A dictionary containing all the tags in the database
+    def getTagsByGroup(self):
+        tags = {}
+
+        # Build statement
+        stmt = "SELECT * FROM Tag "
+        if groupSort == True:
+            stmt += 'ORDER BY TagGroup ASC, TagName ASC'
+        else:
+            stmt += 'ORDER BY TagName ASC'
+
+        # Fetch data
+        cursor = self._conn.cursor()
+        cursor.execute(stmt)
+        for (tagId, name, group, description) in cursor:
+            tag = Tag(tagId, name, group, description, self)
+
+            if group == None:
+                group = 'ungrouped'
+            if group not in tags:
+                tags[group] = list()
+
+            tags[group].append(tag)
+        cursor.close()
+
+        return tags
+
     # Gets the libIsidore version
     # @return       The libIsidore version
     def getVersion(self):
