@@ -38,6 +38,12 @@ Table of Contents
       1. [Set Examples](variables.md#1-set-examples)
    3. [Displaying Variables](variables.md#3-displaying-variables)
       1. [Display Examples](variables.md#1-display-examples)
+8. [Maintenance](maintenance.md)
+   1. [Upgrading Isidore](maintenance.md#1-upgrading)
+      1. [Export the Current Configuration](maintenance.md#1-export-the-current-configuration)
+      2. [Upgrade the Database](maintenance.md#2-upgrade-the-database)
+      3. [Upgrade libIsidore and the Isidore Command Prompt](maintenance.md#3-upgrade-libisidore-and-the-isidore-command-prompt)
+      4. [Import the Current Configuration](maintenance.md#4-import-the-current-configuration)
 
 Appendecies
 -----------
