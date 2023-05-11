@@ -189,6 +189,8 @@ tags        print all tags in the database''')
             else:
                 print("host "+name+" set description '"+\
                         str(host.getDescription()).replace("'", "'\"'\"'")+"'")
+            print("host "+name+" var set $ '"+\
+                    json.dumps(host.getVar()).replace("'", "'\"'\"'")+"'")
         print()
 
         # Create Tags
@@ -202,6 +204,8 @@ tags        print all tags in the database''')
             else:
                 print("tag "+name+" set description '"+\
                         str(tag.getDescription()).replace("'", "'\"'\"'")+"'")
+            print("tag "+name+" var set $ '"+\
+                    json.dumps(tag.getVar()).replace("'", "'\"'\"'")+"'")
         print()
 
         # Assign Tags to Hosts
