@@ -30,7 +30,7 @@ from libIsidore import *
 class IsidoreCmdline:
 
     _isidore = None
-    _version = '0.1.0'
+    _version = '0.1.1'
 
     def __init__(self, isidore):
         self._isidore = isidore
@@ -189,6 +189,8 @@ tags        print all tags in the database''')
             else:
                 print("host "+name+" set description '"+\
                         str(host.getDescription()).replace("'", "'\"'\"'")+"'")
+            print("host "+name+" var set $ '"+\
+                    json.dumps(host.getVar()).replace("'", "'\"'\"'")+"'")
         print()
 
         # Create Tags
@@ -202,6 +204,8 @@ tags        print all tags in the database''')
             else:
                 print("tag "+name+" set description '"+\
                         str(tag.getDescription()).replace("'", "'\"'\"'")+"'")
+            print("tag "+name+" var set $ '"+\
+                    json.dumps(tag.getVar()).replace("'", "'\"'\"'")+"'")
         print()
 
         # Assign Tags to Hosts
@@ -432,13 +436,16 @@ tag         delete a tag''')
 ?           print this help message
 set         modify host attributes
 show        display host attributes
-tag         display and modify this host's tags''')
+tag         display and modify this host's tags
+var         display and modify this host's variables''')
         elif args[2] == 'set':
             self.host_set(args)
         elif args[2] == 'show':
             self.host_show(args)
         elif args[2] == 'tag':
             self.host_tag(args)
+        elif args[2] == 'var':
+            self.host_var(args)
         else:
             print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
@@ -559,6 +566,75 @@ remove      remove a tag from this host''')
             self.host_tag_remove(args)
         else:
             print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
+
+    # > host <hostname> var
+    def host_var(self, args):
+        host = self._isidore.getHost(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.host_var)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+print       print a variable
+set         set a variable''')
+
+        elif args[3] == 'print':
+            if len(args) == 4:
+                print(yaml.dump(
+                    host.getVar(),
+                    default_flow_style=False))
+            elif args[4] == '?':
+                print('''\
+?           print this help message
+$           print all variables
+<variable>  name of the variable to print''')
+            else:
+                print(yaml.dump(
+                    host.getVar(args[4]),
+                    default_flow_style=False))
+
+        elif args[3] == 'set':
+            self.host_var_set(args)
+
+        else:
+            print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
+
+    # > host <hostname> var set
+    def host_var_set(self, args):
+        host = self._isidore.getHost(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.host_var_set)
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+$           set/replace the entire variable tree
+<variable>  name of the variable to set''')
+
+        elif len(args) == 5:
+            self.subprompt(args, self.host_var_set)
+
+        elif args[5] == '?':
+            print('''\
+?           print this help message
+<json>      the JSON value to set the variable to''')
+
+        else:
+            try:
+                host.setVar(args[4], json.loads(args[5]))
+            except json.decoder.JSONDecodeError:
+                print(args[5] + '''
+^-- this is not valid JSON
+
+Strings must be double quoted. It will be necessary to either nest double
+quotes inside single quotes or escape the double quotes like so:
+
+   > host myhost var set foo '"bar"'
+
+or
+
+   > host myhost var set foo \\"bar\\"
+
+''')
 
     # > host <hostname> tag add
     def host_tag_add(self, args):
@@ -726,13 +802,16 @@ Enter ? as any argument help.''', file=sys.stderr)
 ?           print this help message
 host        display and modify hosts that have this tag
 set         modify tag attributes
-show        display tag attributes''')
+show        display tag attributes
+var         display and modify this tag's variables''')
         elif args[2] == 'host':
             self.tag_host(args)
         elif args[2] == 'set':
             self.tag_set(args)
         elif args[2] == 'show':
             self.tag_show(args)
+        elif args[2] == 'var':
+            self.tag_var(args)
         else:
             print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
@@ -855,6 +934,75 @@ none        remove tag group''')
                 tag.setGroup(args[4])
             except:
                 print("Failed to set group")
+
+    # > tag <tagname> var
+    def tag_var(self, args):
+        tag = self._isidore.getTag(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.tag_var)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+print       print a variable
+set         set a variable''')
+
+        elif args[3] == 'print':
+            if len(args) == 4:
+                print(yaml.dump(
+                    tag.getVar(),
+                    default_flow_style=False))
+            elif args[4] == '?':
+                print('''\
+?           print this help message
+$           print all variables
+<variable>  name of the variable to print''')
+            else:
+                print(yaml.dump(
+                    tag.getVar(args[4]),
+                    default_flow_style=False))
+
+        elif args[3] == 'set':
+            self.tag_var_set(args)
+
+        else:
+            print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
+
+    # > tag <hostname> var set
+    def tag_var_set(self, args):
+        tag = self._isidore.getTag(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.tag_var_set)
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+$           set/replace the entire variable tree
+<variable>  name of the variable to set''')
+
+        elif len(args) == 5:
+            self.subprompt(args, self.tag_var_set)
+
+        elif args[5] == '?':
+            print('''\
+?           print this help message
+<json>      the JSON value to set the variable to''')
+
+        else:
+            try:
+                tag.setVar(args[4], json.loads(args[5]))
+            except json.decoder.JSONDecodeError:
+                print(args[5] + '''
+^-- this is not valid JSON
+
+Strings must be double quoted. It will be necessary to either nest double
+quotes inside single quotes or escape the double quotes like so:
+
+   > tag mytag var set foo '"bar"'
+
+or
+
+   > tag mytag var set foo \\"bar\\"
+
+''')
 
     # > version
     def version(self, args):

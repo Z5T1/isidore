@@ -28,7 +28,7 @@ import json
 class Isidore:
 
     _conn = None
-    _version = '0.1.0'
+    _version = '0.1.1'
 
     # Connects to a MySQL database and creates a new Isidore object to interact
     # with it.
@@ -69,7 +69,16 @@ class Isidore:
         hosts = list()
 
         cursor = self._conn.cursor()
-        cursor.execute("SELECT * FROM Host WHERE DecommissionDate IS NULL ORDER BY Hostname ASC")
+        cursor.execute('''
+                SELECT
+                    HostID,
+                    Hostname,
+                    CommissionDate,
+                    DecommissionDate,
+                    Description
+                FROM Host
+                WHERE DecommissionDate IS NULL
+                ORDER BY Hostname ASC''')
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
                     decommissionDate, description, self)
@@ -94,7 +103,16 @@ class Isidore:
         hosts = list()
 
         cursor = self._conn.cursor()
-        cursor.execute("SELECT * FROM Host WHERE DecommissionDate IS NOT NULL ORDER BY Hostname ASC")
+        cursor.execute('''
+                SELECT
+                    HostID,
+                    Hostname,
+                    CommissionDate,
+                    DecommissionDate,
+                    Description
+                FROM Host
+                WHERE DecommissionDate IS NOT NULL
+                ORDER BY Hostname ASC''')
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
                     decommissionDate, description, self)
@@ -109,7 +127,15 @@ class Isidore:
     #                   not exist.
     def getHost(self, hostname):
         cursor = self._conn.cursor()
-        cursor.execute("SELECT * FROM Host WHERE Hostname = %s",
+        cursor.execute('''
+                SELECT
+                    HostID,
+                    Hostname,
+                    CommissionDate,
+                    DecommissionDate,
+                    Description
+                FROM Host
+                WHERE Hostname = %s''',
                 [hostname])
 
         row = cursor.fetchone()
@@ -128,7 +154,15 @@ class Isidore:
         hosts = list()
 
         cursor = self._conn.cursor()
-        cursor.execute("SELECT * FROM Host ORDER BY Hostname ASC")
+        cursor.execute('''
+                SELECT
+                    HostID,
+                    Hostname,
+                    CommissionDate,
+                    DecommissionDate,
+                    Description
+                FROM Host
+                ORDER BY Hostname ASC''')
         for (hostId, hostname, commissionDate, decommissionDate, description) in cursor:
             host = Host(hostId, hostname, commissionDate,
                     decommissionDate, description, self)
@@ -234,8 +268,15 @@ class Isidore:
     #                   not exist.
     def getTag(self, name):
         cursor = self._conn.cursor()
-        cursor.execute("SELECT * FROM Tag WHERE TagName = %s",
-                [name])
+        cursor.execute('''
+            SELECT
+                TagId,
+                TagName,
+                TagGroup,
+                Description
+            FROM Tag
+            WHERE TagName = %s''',
+            [name])
 
         row = cursor.fetchone()
         if row == None:
@@ -272,7 +313,13 @@ class Isidore:
         tags = list()
 
         # Build statement
-        stmt = "SELECT * FROM Tag "
+        stmt = '''
+            SELECT
+                TagId,
+                TagName,
+                TagGroup,
+                Description
+            FROM Tag '''
         if groupSort == True:
             stmt += 'ORDER BY TagGroup ASC, TagName ASC'
         else:
@@ -296,7 +343,13 @@ class Isidore:
         tags = {}
 
         # Build statement
-        stmt = "SELECT * FROM Tag "
+        stmt = '''
+            SELECT 
+                TagId,
+                TagName,
+                TagGroup,
+                Description
+            FROM Tag '''
         if groupSort == True:
             stmt += 'ORDER BY TagGroup ASC, TagName ASC'
         else:
@@ -401,7 +454,7 @@ class Host:
     def getDetails(self):
         det = {}
         det[self._hostname] = {}
-        det[self._hostname]['vars'] = {}
+        det[self._hostname]['vars'] = self.getVar()
         isivar = {}
 
         # Host Attributes
@@ -464,6 +517,33 @@ class Host:
 
         return tags
 
+    # Gets a dictionary of variables assigned to this host,
+    # optionally starting at a certian path. Paths should be
+    # specified as path.to.object. If no path is specified, all
+    # variables will be included.
+    # @param path       The path to start at. If not specifed,
+    #                   defaults to the root of the JSON tree.
+    # @return   A dictionary containing all the variables starting
+    #           at path.
+    def getVar(self, path='$'):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Select the JSON
+        stmt = 'SELECT JSON_EXTRACT(Variables, %s) \
+                FROM Host WHERE HostID = %s'
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, self._hostId])
+        row = cursor.fetchone()
+        cursor.close()
+
+        # Decode the JSON and return
+        if row[0] == None:
+            return None
+        else:
+            return json.loads(row[0])
+
     # Removes a tag from this host
     # @param tag        The tag object to remove
     def removeTag(self, tag):
@@ -518,6 +598,34 @@ class Host:
         self._isidore._conn.commit()
         cursor.close()
         self._hostname = hostname
+
+    # Sets a variable to a specified value.
+    # @param path       The path of the variable to set. It will
+    #                   be created if it does not exist. If it is
+    #                   not specifed or is $, the entire variable
+    #                   tree will be overwritten with the
+    #                   specified value.
+    # @param value      The value to set the variable to. This can
+    #                   be of any type that is JSON serializable.
+    def setVar(self, path, value):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Host
+            SET Variables =
+                JSON_SET(
+                    Variables,
+                    %s,
+                    JSON_EXTRACT(%s, '$')
+                )
+            WHERE HostID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, json.dumps(value), self._hostId])
+        self._isidore._conn.commit()
+        cursor.close()
 
 # An individual tag
 class Tag:
@@ -580,7 +688,7 @@ class Tag:
     def getDetails(self):
         det = {}
         det[self._name] = {}
-        det[self._name]['vars'] = {}
+        det[self._name]['vars'] = self.getVar()
         isivar = {}
         hosts = list()
 
@@ -631,6 +739,33 @@ class Tag:
 
         return hosts
 
+    # Gets a dictionary of variables assigned to this tag,
+    # optionally starting at a certian path. Paths should be
+    # specified as path.to.object. If no path is specified, all
+    # variables will be included.
+    # @param path       The path to start at. If not specifed,
+    #                   defaults to the root of the JSON tree.
+    # @return   A dictionary containing all the variables starting
+    #           at path.
+    def getVar(self, path='$'):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Select the JSON
+        stmt = 'SELECT JSON_EXTRACT(Variables, %s) \
+                FROM Tag WHERE TagID = %s'
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, self._tagId])
+        row = cursor.fetchone()
+        cursor.close()
+
+        # Decode the JSON and return
+        if row[0] == None:
+            return None
+        else:
+            return json.loads(row[0])
+
     # Sets the tag's description
     # @param description    The tag's description
     def setDescription(self, description):
@@ -661,4 +796,32 @@ class Tag:
         self._isidore._conn.commit()
         cursor.close()
         self._name = name
+
+    # Sets a variable to a specified value.
+    # @param path       The path of the variable to set. It will
+    #                   be created if it does not exist. If it is
+    #                   not specifed or is $, the entire variable
+    #                   tree will be overwritten with the
+    #                   specified value.
+    # @param value      The value to set the variable to. This can
+    #                   be of any type that is JSON serializable.
+    def setVar(self, path, value):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Tag
+            SET Variables =
+                JSON_SET(
+                    Variables,
+                    %s,
+                    JSON_EXTRACT(%s, '$')
+                )
+            WHERE TagID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, json.dumps(value), self._tagId])
+        self._isidore._conn.commit()
+        cursor.close()
 

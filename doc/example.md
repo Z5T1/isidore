@@ -85,4 +85,25 @@ documentation. The raw file can be accessed [here](example.isi).
     server
     end
     host beru set decommissioned 1977-05-25
- 
+
+    host beru tag add
+    cherryhill
+    virtual
+    server
+    end
+    host beru set decommissioned 1977-05-25
+     
+    host yoda
+    var set age 900
+    var set intrusion_prevention_system '"lightsaber"'
+    end
+    
+    host chewy
+    var set $ '{"age": 200, "intrusion_prevention_system": "crossbow"}'
+    end
+    
+    tag cherryhill
+    var set county '"Camden"'
+    end
+     
+

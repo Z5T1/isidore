@@ -1,16 +1,26 @@
+DROP VIEW IF EXISTS TagByGroup;
+DROP VIEW IF EXISTS HostHasTagView;
+
+DROP TABLE IF EXISTS HostHasTag;
+DROP TABLE IF EXISTS Host;
+DROP TABLE IF EXISTS Tag;
+DROP TABLE IF EXISTS Metadata;
+
 CREATE TABLE Host (
 	HostID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	Hostname VARCHAR(255) NOT NULL UNIQUE,
 	CommissionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DecommissionDate TIMESTAMP NULL,
-	Description TEXT
+	Description TEXT,
+	Variables JSON NOT NULL DEFAULT ("{}")
 );
 
 CREATE TABLE Tag (
 	TagID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	TagName VARCHAR(64) NOT NULL UNIQUE,
 	TagGroup VARCHAR(64),
-	Description TEXT
+	Description TEXT,
+	Variables JSON NOT NULL DEFAULT ("{}")
 );
 
 CREATE TABLE HostHasTag (
@@ -29,7 +39,7 @@ CREATE TABLE Metadata (
 );
 
 INSERT INTO Metadata (KeyName, Value) VALUES
-	('version', '0.1.0')
+	('version', '0.1.1')
 ;
 
 CREATE VIEW HostHasTagView AS
