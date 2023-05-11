@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/isidore/__init__.py
+src/isidore/libIsidore.py
+src/isidore/libIsidoreCmdline.py
+src/isidore.egg-info/PKG-INFO
+src/isidore.egg-info/SOURCES.txt
+src/isidore.egg-info/dependency_links.txt
+src/isidore.egg-info/requires.txt
+src/isidore.egg-info/top_level.txt

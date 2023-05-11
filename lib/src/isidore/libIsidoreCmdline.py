@@ -25,7 +25,7 @@ import sys
 import traceback
 import datetime
 
-from libIsidore import *
+from isidore.libIsidore import *
 
 class IsidoreCmdline:
 
