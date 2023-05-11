@@ -4,7 +4,7 @@ CREATE TABLE Host (
 	CommissionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DecommissionDate TIMESTAMP NULL,
 	Description TEXT,
-	Variables JSON NOT NULL DEFAULT "{}"
+	Variables LONGTEXT NOT NULL DEFAULT "{}"
 );
 
 CREATE TABLE Tag (
@@ -12,7 +12,7 @@ CREATE TABLE Tag (
 	TagName VARCHAR(64) NOT NULL UNIQUE,
 	TagGroup VARCHAR(64),
 	Description TEXT,
-	Variables JSON NOT NULL DEFAULT "{}"
+	Variables LONGTEXT NOT NULL DEFAULT "{}"
 );
 
 CREATE TABLE HostHasTag (
