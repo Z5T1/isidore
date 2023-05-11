@@ -30,7 +30,7 @@ from libIsidore import *
 class IsidoreCmdline:
 
     _isidore = None
-    _version = '0.1.0'
+    _version = '0.1.1'
 
     def __init__(self, isidore):
         self._isidore = isidore
