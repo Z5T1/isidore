@@ -204,7 +204,7 @@ The hosts would have the following tags:
 * obi-wan
   * princeton
   * physical
-  * workstation
+  * server
 * han
   * cherryhill
   * physical
