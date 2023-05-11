@@ -29,7 +29,7 @@ subprompt. The syntax is `var set <variable_name> <value>`.
 The `<variable_name>` parameter can contain periods or brackets to reference
 subelements or array indicies. The path of the variable is always taken
 relative to the root of the variable tree. To set the entire variable tree,
-specify '$' as the `<variable_name>`.
+specify `$` as the `<variable_name>`.
 
 The `<value>` parameter can be anything that is valid JSON, including objects,
 arrays, and complex JSON trees.
