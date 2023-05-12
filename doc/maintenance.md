@@ -76,7 +76,7 @@ running the following command:
 
 The output should indicate the version of Isidore you are upgrading *to* for
 all of the version fields. For example, the following is the expected output
-when upgrading version 0.1.1:
+when upgrading to version 0.1.1:
 
     Isidore Command Prompt version: 0.1.1
     libIsidore version: 0.1.1
