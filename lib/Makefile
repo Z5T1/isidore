@@ -10,6 +10,7 @@ PY_WHL_PKG=dist/isidore-$(VERSION)-py3-none-any.whl
 PY_SRC_PKG=dist/isidore-$(VERSION).tar.gz 
 
 $(PY_SRC_PKG) $(PY_WHL_PKG): $(SOURCES) | dist
+	$(PYTHON) -m pip install build
 	$(PYTHON) -m build
 
 dist:
