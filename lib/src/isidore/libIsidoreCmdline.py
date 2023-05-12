@@ -27,11 +27,15 @@ import datetime
 
 from isidore.libIsidore import *
 
+# The Isidore command prompt
 class IsidoreCmdline:
 
     _isidore = None
     _version = '0.1.2-dev0'
 
+    # Creates a new Isidore command prompt
+    # @param isidore    The underlying Isidore instance for the command prompt
+    #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
 
