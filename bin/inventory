@@ -26,6 +26,6 @@ import os
 from isidore.libIsidore import *
 
 # Print inventory
-isidore = Isidore.fromConfigFie()
+isidore = Isidore.fromConfigFile()
 print(isidore.getInventoryJson())
 
