@@ -22,6 +22,7 @@ install: $(PY_WHL_PKG)
 
 clean:
 	rm -rf dist
+	rm -rf src/isidore.egg-info
 
 .PHONY: clean
 
