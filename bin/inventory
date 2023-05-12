@@ -23,7 +23,7 @@
 import configparser
 import os
 
-from libIsidore import *
+from isidore.libIsidore import *
 
 # Read config file
 config = configparser.ConfigParser()
