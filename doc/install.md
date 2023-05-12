@@ -99,8 +99,7 @@ options. They are listed below from lowest to highest precedence:
 1. /etc/isidore.cfg
 2. /usr/local/etc/isidore.cfg
 3. ~/.isidore.cfg
-4. ISIDORE_BINARY_DIR/isidore.cfg (by default /opt/isidore/bin/isidore.cfg)
-5. ./isidore.cfg
+4. ./isidore.cfg
 
 For the sake of this guide, /etc/isidore.cfg will be used.
 
