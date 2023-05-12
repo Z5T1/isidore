@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
+import configparser
+
 import mysql.connector
 import yaml
 import json
@@ -43,6 +46,45 @@ class Isidore:
                 host = host,
                 database = database
         )
+
+    # Loads the database credentials from a file. It then connects to the MySQL
+    # database specified by the config and creates a new Isidore object to
+    # interact with it.
+    #
+    # If no file is specified, the standard Isidore system config files will be
+    # tried in the following order. Any variables set in a file that is further
+    # down the list will take precedence over anything set in a file higher up
+    # the list.
+    # - /etc/isidore.cfg
+    # - /usr/local/etc/isidore.cfg
+    # - ~/.isidore.cfg
+    # - ./isidore.cfg
+    #
+    # @param file       The path to the file to load, or None to use the system
+    #                   configuration.
+    @classmethod
+    def fromConfigFile(cls, file=None):
+
+        # Read config file
+        config = configparser.ConfigParser()
+        if file == None:
+            config.read( [
+                "/etc/isidore.cfg",
+                "/usr/local/etc/isidore.cfg",
+                os.path.expanduser("~/.isidore.cfg"),
+                "isidore.cfg"
+                ] )
+        else:
+            config.read( [ file ] )
+
+        # Set the required variables
+        user = config['database']['user']
+        password = config['database']['password']
+        host = config['database']['host']
+        database = config['database']['database']
+
+        # Make the MySQL connection
+        return cls(user, password, host, database)
 
     # Creates a new host in the database
     # @param hostname           The hostname for the new host

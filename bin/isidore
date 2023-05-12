@@ -28,16 +28,6 @@ import atexit
 
 from isidore.libIsidoreCmdline import *
 
-# Read config file
-config = configparser.ConfigParser()
-config.read( [
-    "/etc/isidore.cfg",
-    "/usr/local/etc/isidore.cfg",
-    os.path.expanduser("~/.isidore.cfg"),
-    os.path.dirname(os.path.realpath(__file__))+"/isidore.cfg",
-    "isidore.cfg"
-    ] )
-
 # Setup Readline History
 history_file = os.path.expanduser("~/.isidore_history")
 try:
@@ -49,11 +39,7 @@ atexit.register(readline.write_history_file, history_file)
 
 # Setup
 readline.parse_and_bind('set editing-mode vi')
-isidore = Isidore(
-        config['database']['user'],
-        config['database']['password'],
-        config['database']['host'],
-        config['database']['database'])
+isidore = Isidore.fromConfigFile()
 cmd = IsidoreCmdline(isidore)
 
 # Main loop to read commands
