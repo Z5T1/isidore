@@ -31,7 +31,7 @@ from isidore.libIsidore import *
 class IsidoreCmdline:
 
     _isidore = None
-    _version = '0.1.2-dev0'
+    _version = '0.1.2'
 
     # Creates a new Isidore command prompt
     # @param isidore    The underlying Isidore instance for the command prompt

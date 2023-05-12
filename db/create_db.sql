@@ -39,7 +39,7 @@ CREATE TABLE Metadata (
 );
 
 INSERT INTO Metadata (KeyName, Value) VALUES
-	('version', '0.1.2-dev0')
+	('version', '0.1.2')
 ;
 
 CREATE VIEW HostHasTagView AS
