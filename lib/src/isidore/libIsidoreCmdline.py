@@ -582,7 +582,8 @@ set         set a variable''')
             if len(args) == 4:
                 print(yaml.dump(
                     host.getVar(),
-                    default_flow_style=False))
+                    default_flow_style=False,
+                    sort_keys=False))
             elif args[4] == '?':
                 print('''\
 ?           print this help message
@@ -591,7 +592,8 @@ $           print all variables
             else:
                 print(yaml.dump(
                     host.getVar(args[4]),
-                    default_flow_style=False))
+                    default_flow_style=False,
+                    sort_keys=False))
 
         elif args[3] == 'set':
             self.host_var_set(args)
@@ -950,7 +952,8 @@ set         set a variable''')
             if len(args) == 4:
                 print(yaml.dump(
                     tag.getVar(),
-                    default_flow_style=False))
+                    default_flow_style=False,
+                    sort_keys=False))
             elif args[4] == '?':
                 print('''\
 ?           print this help message
@@ -959,7 +962,8 @@ $           print all variables
             else:
                 print(yaml.dump(
                     tag.getVar(args[4]),
-                    default_flow_style=False))
+                    default_flow_style=False,
+                    sort_keys=False))
 
         elif args[3] == 'set':
             self.tag_var_set(args)
