@@ -25,4 +25,7 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/Z5T1/isidore"
 "Bug Tracker" = "https://github.com/Z5T1/isidore/issues"
+"Documentation" = "https://github.com/Z5T1/isidore/blob/master/doc/README.md"
+"Discord" = "https://discord.gg/c357N3JQFJ"
+"Source Code" = "https://github.com/Z5T1/isidore"
 
