@@ -26,7 +26,7 @@ import configparser
 import os
 import atexit
 
-from libIsidoreCmdline import *
+from isidore.libIsidoreCmdline import *
 
 # Read config file
 config = configparser.ConfigParser()

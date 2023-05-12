@@ -1,4 +1,4 @@
 cmd_sample.txt
 db/test_data.sql
 *.swp
-bin/__pycache__
+__pycache__

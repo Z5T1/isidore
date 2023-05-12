@@ -14,7 +14,7 @@ System Requirements
 The following versions or higher of the following packages are required:
 
 * Python 3.7
-* Either MariaDB 10.3 or MySQL 5.7
+* Either MariaDB 10.3 or MySQL 8.0
 
 Assumptions
 -----------
@@ -98,7 +98,7 @@ options. They are listed below from lowest to highest precedence:
 
 1. /etc/isidore.cfg
 2. /usr/local/etc/isidore.cfg
-3. ~/isidore.cfg
+3. ~/.isidore.cfg
 4. ISIDORE_BINARY_DIR/isidore.cfg (by default /opt/isidore/bin/isidore.cfg)
 5. ./isidore.cfg
 
@@ -106,7 +106,7 @@ For the sake of this guide, /etc/isidore.cfg will be used.
 
 Copy over the provided sample config file:
 
-    cp bin/isidore.cfg.sample /etc/isidore.cfg
+    cp isidore.cfg.sample /etc/isidore.cfg
 
 Using your favorite text editor, open up this file and change the `password`
 field under the `[database]` section to match the password you set in step 2.
