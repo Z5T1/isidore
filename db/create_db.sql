@@ -38,6 +38,10 @@ CREATE TABLE Metadata (
 	Value TEXT
 );
 
+INSERT INTO Tag (TagName, Description) VALUES
+	('all',		'Special tag that applies to all hosts. The host list is ignored for this tag; it will always apply to every host in Isidore.'),
+	('ungrouped',	'Special tag that applies to hosts that do not have a tag. In addition to any hosts assigned to this tag, it will always apply to every host that does not have a tag.');
+
 INSERT INTO Metadata (KeyName, Value) VALUES
 	('version', '0.1.3-dev0')
 ;
