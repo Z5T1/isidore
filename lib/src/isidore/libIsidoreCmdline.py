@@ -925,7 +925,7 @@ group           set the tag's group''')
             if len(args) == 4:
                 print("<description>   the description")
             elif args[4] == 'none':
-                host.setDescription(None)
+                tag.setDescription(None)
             else:
                 tag.setDescription(args[4])
         else:
