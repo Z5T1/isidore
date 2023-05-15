@@ -494,6 +494,8 @@ decommissioned  set the date the host was decommissioned''')
         elif args[3] == 'description':
             if len(args) == 4:
                 print("<description>   the description")
+            elif args[4] == 'none':
+                host.setDescription(None)
             else:
                 host.setDescription(args[4])
         else:
@@ -919,6 +921,8 @@ group           set the tag's group''')
         elif args[3] == 'description':
             if len(args) == 4:
                 print("<description>   the description")
+            elif args[4] == 'none':
+                host.setDescription(None)
             else:
                 tag.setDescription(args[4])
         else:
