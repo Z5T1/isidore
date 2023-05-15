@@ -201,13 +201,16 @@ tags        print all tags in the database''')
         for tag in tags:
             name = "'"+tag.getName().replace("'", "'\"'\"'")+"'"
             group = tag.getGroup()
-            print("create tag "+name)
-            print("tag %s set group '%s'" % (name, 'none' if group == None else group.replace("'", "'\"'\"'")))
-            if tag.getDescription() == None:
-                print("tag "+name+" set description none")
-            else:
-                print("tag "+name+" set description '"+\
-                        str(tag.getDescription()).replace("'", "'\"'\"'")+"'")
+            description = tag.getDescription()
+            print("create tag %s" % (name))
+            print("tag %s set group '%s'" %
+                    (name,
+                    'none' if group == None
+                        else group.replace("'", "'\"'\"'")))
+            print("tag %s set description '%s'" % 
+                    (name,
+                    'none' if description == None
+                        else description.replace("'", "'\"'\"'")))
             print("tag "+name+" var set $ '"+\
                     json.dumps(tag.getVar()).replace("'", "'\"'\"'")+"'")
         print()
