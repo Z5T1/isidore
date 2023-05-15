@@ -303,6 +303,9 @@ tag         create a new tag''')
         else:
             try:
                 self._isidore.createHost(args[2])
+            except mysql.connector.errors.IntegrityError as e:
+                print('Host %s already exists' % args[2],
+                        file=sys.stderr)
             except:
                 print('Failed to create host '+args[2],
                         file=sys.stderr)
@@ -320,6 +323,9 @@ tag         create a new tag''')
         else:
             try:
                 self._isidore.createTag(args[2])
+            except mysql.connector.errors.IntegrityError as e:
+                print('Tag %s already exists' % args[2],
+                        file=sys.stderr)
             except:
                 print('Failed to create tag '+args[2],
                         file=sys.stderr)
