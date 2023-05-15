@@ -200,9 +200,9 @@ tags        print all tags in the database''')
         # Create Tags
         for tag in tags:
             name = "'"+tag.getName().replace("'", "'\"'\"'")+"'"
+            group = tag.getGroup()
             print("create tag "+name)
-            print("tag "+name+" set group '"+\
-                    str(tag.getGroup())+"'")
+            print("tag %s set group '%s'" % (name, 'none' if group == None else group.replace("'", "'\"'\"'")))
             if tag.getDescription() == None:
                 print("tag "+name+" set description none")
             else:
