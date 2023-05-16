@@ -697,6 +697,27 @@ class Host:
         self._isidore._conn.commit()
         cursor.close()
 
+    # Unsets a variable.
+    # @param path       The path of the variable to unset.
+    def unsetVar(self, path):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Host
+            SET Variables =
+                JSON_REMOVE(
+                    Variables,
+                    %s
+                )
+            WHERE HostID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, self._hostId])
+        self._isidore._conn.commit()
+        cursor.close()
+
 # An individual tag
 class Tag:
     
@@ -920,6 +941,27 @@ class Tag:
             WHERE TagID = %s'''
         cursor = self._isidore._conn.cursor()
         cursor.execute(stmt, [path, json.dumps(value), self._tagId])
+        self._isidore._conn.commit()
+        cursor.close()
+
+    # Unsets a variable.
+    # @param path       The path of the variable to unset.
+    def unsetVar(self, path):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Tag
+            SET Variables =
+                JSON_REMOVE(
+                    Variables,
+                    %s
+                )
+            WHERE TagID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [path, self._tagId])
         self._isidore._conn.commit()
         cursor.close()
 

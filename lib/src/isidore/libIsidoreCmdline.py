@@ -592,7 +592,8 @@ remove      remove a tag from this host''')
 ?           print this help message
 append      append a value to a list variable
 print       print a variable
-set         set a variable''')
+set         set a variable
+unset       unset (delete) a variable''')
 
         elif args[3] == 'append':
             self.host_var_append(args)
@@ -616,6 +617,9 @@ $           print all variables
 
         elif args[3] == 'set':
             self.host_var_set(args)
+
+        elif args[3] == 'unset':
+            self.host_var_unset(args)
 
         else:
             print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
@@ -695,6 +699,21 @@ or
    > host myhost var set foo \\"bar\\"
 
 ''')
+
+    # > host <hostname> var unset
+    def host_var_unset(self, args):
+        host = self._isidore.getHost(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.host_var_set)
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+<variable>  name of the variable to unset''')
+        else:
+            try:
+                host.unsetVar(args[4])
+            except:
+                print("Failed to unset variable %s" % args[4])
 
     # > host <hostname> tag add
     def host_tag_add(self, args):
@@ -1007,7 +1026,8 @@ none        remove tag group''')
 ?           print this help message
 append      append a value to a list variable
 print       print a variable
-set         set a variable''')
+set         set a variable
+unset       unset (delete) a variable''')
 
         elif args[3] == 'append':
             self.tag_var_append(args)
@@ -1031,6 +1051,9 @@ $           print all variables
 
         elif args[3] == 'set':
             self.tag_var_set(args)
+
+        elif args[3] == 'unset':
+            self.tag_var_unset(args)
 
         else:
             print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
@@ -1110,6 +1133,21 @@ or
    > tag mytag var set foo \\"bar\\"
 
 ''')
+
+    # > tag <tagname> var unset
+    def tag_var_unset(self, args):
+        tag = self._isidore.getTag(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.tag_var_set)
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+<variable>  name of the variable to unset''')
+        else:
+            try:
+                tag.unsetVar(args[4])
+            except:
+                print("Failed to unset variable %s" % args[4])
 
     # > version
     def version(self, args):
