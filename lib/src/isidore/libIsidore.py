@@ -720,6 +720,34 @@ class Tag:
         self._description = description
         self._isidore = isidore
 
+    # Appends an item to a list variable
+    # @param path       The path of the list to append to.
+    # @param value      The value to append to the list. This can
+    #                   be of any type that is JSON serializable.
+    def appendVar(self, path, value):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Tag
+            SET Variables =
+                JSON_ARRAY_APPEND(
+                    (SELECT Variables FROM Tag WHERE TagID = %s),
+                    %s,
+                    JSON_EXTRACT(%s, '$')
+                )
+            WHERE TagID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [
+            self._tagId,
+            path,
+            json.dumps(value),
+            self._tagId])
+        self._isidore._conn.commit()
+        cursor.close()
+
     # Deletes this tag from the database. The tag object should
     # not be referenced after this method is called.
     def delete(self):
