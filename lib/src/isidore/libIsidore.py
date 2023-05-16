@@ -452,6 +452,34 @@ class Host:
         self._isidore._conn.commit()
         cursor.close()
 
+    # Appends an item to a list variable
+    # @param path       The path of the list to append to.
+    # @param value      The value to append to the list. This can
+    #                   be of any type that is JSON serializable.
+    def appendVar(self, path, value):
+        # Ensure the path starts with $
+        if path[0] != '$':
+            path = '$.' + path
+
+        # Set the variable
+        stmt = '''
+            UPDATE Host
+            SET Variables =
+                JSON_ARRAY_APPEND(
+                    (SELECT Variables FROM Host WHERE HostId = %s),
+                    %s,
+                    JSON_EXTRACT(%s, '$')
+                )
+            WHERE HostID = %s'''
+        cursor = self._isidore._conn.cursor()
+        cursor.execute(stmt, [
+            self._hostId,
+            path,
+            json.dumps(value),
+            self._hostId])
+        self._isidore._conn.commit()
+        cursor.close()
+
     # Deletes this host from the database. The host object should
     # not be referenced after this method is called.
     def delete(self):

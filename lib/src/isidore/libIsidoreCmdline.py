@@ -590,8 +590,12 @@ remove      remove a tag from this host''')
         elif args[3] == '?':
             print('''\
 ?           print this help message
+append      append a value to a list variable
 print       print a variable
 set         set a variable''')
+
+        elif args[3] == 'append':
+            self.host_var_append(args)
 
         elif args[3] == 'print':
             if len(args) == 4:
@@ -615,6 +619,42 @@ $           print all variables
 
         else:
             print('Invalid command '+args[3]+'. Enter ? for help.', file=sys.stderr)
+
+    # > host <hostname> var append
+    def host_var_append(self, args):
+        host = self._isidore.getHost(args[1])
+        if len(args) == 4:
+            self.subprompt(args, self.host_var_append)
+        elif args[4] == '?':
+            print('''\
+?           print this help message
+<variable>  name of the list variable to append to''')
+
+        elif len(args) == 5:
+            self.subprompt(args, self.host_var_append)
+
+        elif args[5] == '?':
+            print('''\
+?           print this help message
+<json>      the JSON value to append to the list''')
+
+        else:
+            try:
+                host.appendVar(args[4], json.loads(args[5]))
+            except json.decoder.JSONDecodeError:
+                print(args[5] + '''
+^-- this is not valid JSON
+
+Strings must be double quoted. It will be necessary to either nest double
+quotes inside single quotes or escape the double quotes like so:
+
+   > host myhost var set foo '"bar"'
+
+or
+
+   > host myhost var set foo \\"bar\\"
+
+''')
 
     # > host <hostname> var set
     def host_var_set(self, args):
