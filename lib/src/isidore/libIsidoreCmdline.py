@@ -655,6 +655,9 @@ or
    > host myhost var set foo \\"bar\\"
 
 ''')
+            except:
+                print(\
+'Failed to append to list variable. Is %s a valid list path?' % args[4])
 
     # > host <hostname> var set
     def host_var_set(self, args):
@@ -1067,6 +1070,9 @@ or
    > tag mytag var set foo \\"bar\\"
 
 ''')
+            except:
+                print(\
+'Failed to append to list variable. Is %s a valid list path?' % args[4])
 
     # > tag <tagname> var set
     def tag_var_set(self, args):
