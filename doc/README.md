@@ -38,6 +38,7 @@ Table of Contents
       1. [Set Examples](variables.md#1-set-examples)
    3. [Displaying Variables](variables.md#3-displaying-variables)
       1. [Display Examples](variables.md#1-display-examples)
+   4. [Appending to List Variables](#4-appending-to-list-variables)
 8. [Maintenance](maintenance.md)
    1. [Upgrading Isidore](maintenance.md#1-upgrading)
       1. [Export the Current Configuration](maintenance.md#1-export-the-current-configuration)

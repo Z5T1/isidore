@@ -5,6 +5,7 @@
    1. [Set Examples](#1-set-examples)
 3. [Displaying Variables](#3-displaying-variables)
    1. [Display Examples](#1-display-examples)
+4. [Appending to List Variables](#4-appending-to-list-variables)
 
 ## 1. Overview of Variables in Isidore
 
@@ -88,4 +89,18 @@ To display all of the variables assigned to the `cherryhill` tag:
     county: Camden
     
     tag cherryhill>
+
+## 4. Appending to List Variables
+
+For variables of the list type, it is possible to append values to them using
+the `var append` command from either the host or tag subprompt. The syntax is
+`var append <variable_name> <value>`.
+
+The variable name should be specified the same as it would for the `var set`
+command. As with `var set`, `<value>` can be anything that is valide JSON.
+
+For example, to append the string item `new item` to the variable named
+`test_list`, use the following:
+
+    host yoda> var append test_list '"new item"'
 
