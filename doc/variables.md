@@ -6,6 +6,7 @@
 3. [Displaying Variables](#3-displaying-variables)
    1. [Display Examples](#1-display-examples)
 4. [Appending to List Variables](#4-appending-to-list-variables)
+5. [Unsetting Variables](#5-unsetting-variables)
 
 ## 1. Overview of Variables in Isidore
 
@@ -103,4 +104,15 @@ For example, to append the string item `new item` to the variable named
 `test_list`, use the following:
 
     host yoda> var append test_list '"new item"'
+
+## 5. Unsetting Variables
+
+Variables can be unset using the `var unset` command from either the host or
+tag subprompt. This effectively deletes the variable and any children it may
+have. The syntax is `var unset <variable_name>`. The variable name should be
+specified the same as it would for the `var set` command.
+
+For example, to unset the `age` variable:
+
+    host yoda> var unset age
 
