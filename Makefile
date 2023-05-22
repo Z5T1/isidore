@@ -1,6 +1,7 @@
-DESTDIR=/opt/isidore
-BINDIR=$(DESTDIR)/bin
-DOCDIR=$(DESTDIR)/share/doc/isidore
+DESTDIR=
+PREFIX=/usr/local
+BINDIR=$(PREFIX)/bin
+DOCDIR=$(PREFIX)/share/doc/isidore
 
 .PHONY: install install-bin install-doc all clean
 
@@ -13,13 +14,13 @@ clean:
 install: install-bin install-doc install-lib
 
 install-bin:
-	mkdir -p "$(BINDIR)"
-	cp -r bin/* "$(BINDIR)/"
+	mkdir -p "$(DESTDIR)$(BINDIR)"
+	cp -r bin/* "$(DESTDIR)$(BINDIR)/"
 
 install-lib:
 	$(MAKE) -C lib install
 
 install-doc:
-	mkdir -p "$(DOCDIR)"
-	cp -r doc/* "$(DOCDIR)/"
+	mkdir -p "$(DESTDIR)$(DOCDIR)"
+	cp -r doc/* "$(DESTDIR)$(DOCDIR)/"
 
