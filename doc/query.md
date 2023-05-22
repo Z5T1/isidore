@@ -120,19 +120,19 @@ a format as the second argument like so:
 
 There is also an `inventory` Python script provided with the Isidore
 installation. It resides in your Isidore binary directory (by default
-/opt/isidore/bin). To print the inventory this way, run:
+/usr/local/bin). To print the inventory this way, run:
 
-    solo@han:~$ /opt/isidore/bin/inventory
+    solo@han:~$ /usr/local/bin/inventory
 
 This script is also suitable for use as an Ansible inventory source. For
 example, the following can be used to run the site.yml playbook on the Isidore
 inventory:
 
-    solo@han:ansible$ ansible-playbook site.yml -i /opt/isidore/bin/inventory
+    solo@han:ansible$ ansible-playbook site.yml -i /usr/local/bin/inventory
 
 Or to just list the contents of the inventory:
 
-    solo@han:ansible$ ansible-inventory -i /opt/isidore/bin/inventory --list
+    solo@han:ansible$ ansible-inventory -i /usr/local/bin/inventory --list
 
 ## 4. Printing the Isidore Configuration
 

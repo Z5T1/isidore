@@ -25,7 +25,7 @@ care to change the specified values as necessary.
 1. Your MariaDB/MySQL server is `localhost`.
 2. The database you wish to use will be named `isidore`.
 3. The user you wish to use to access the database will be named `isidore`.
-4. You are installing to `/opt/isidore`.
+4. You are installing to `/usr/local`.
 
 Installation
 ------------
@@ -46,9 +46,9 @@ Install the binaries and associated documentation.
 
 #### Installation Directory
 
-Isidore uses a non-standard directory structure, so by default it installs to
-`/opt/isidore`. This directory can be changed by setting the `DESTDIR` variable
-via either the environment or an additional argument to the `make` command.
+By default Isidore installs to `/usr/local`. This directory can be changed by
+setting the `PREFIX` variable via either the environment or an additional
+argument to the `make` command.
 
 #### Perform the Installation
 
@@ -115,5 +115,5 @@ field under the `[database]` section to match the password you set in step 2.
 You're now ready to start using Isidore. Start the Isidore command prompt using
 the following command:
 
-    /opt/isidore/bin/isidore
+    /usr/local/bin/isidore
 
