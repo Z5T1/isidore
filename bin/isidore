@@ -32,6 +32,7 @@ from isidore.libIsidoreCmdline import *
 # Parse command line arguments
 parser = argparse.ArgumentParser(prog='isidore')
 parser.add_argument('command', help='An Isidore command. This command will be run and then Isidore will exit.', nargs='*')
+parser.add_argument('-F', '--config', help='The Isidore config file to use instead of /etc/isidore.cfg or ~/.isidore.cfg.')
 args = parser.parse_args()
 
 # Setup Readline History
@@ -45,7 +46,7 @@ atexit.register(readline.write_history_file, history_file)
 
 # Setup
 readline.parse_and_bind('set editing-mode vi')
-isidore = Isidore.fromConfigFile()
+isidore = Isidore.fromConfigFile(args.config)
 cmd = IsidoreCmdline(isidore)
 
 # Process command
