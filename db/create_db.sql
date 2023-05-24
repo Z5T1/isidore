@@ -43,7 +43,7 @@ INSERT INTO Tag (TagName, Description) VALUES
 	('ungrouped',	'Special tag that applies to hosts that do not have a tag. In addition to any hosts assigned to this tag, it will always apply to every host that does not have a tag.');
 
 INSERT INTO Metadata (KeyName, Value) VALUES
-	('version', '0.1.4')
+	('version', '0.1.5-dev0')
 ;
 
 CREATE VIEW HostHasTagView AS

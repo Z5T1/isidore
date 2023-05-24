@@ -31,7 +31,7 @@ import json
 class Isidore:
 
     _conn = None
-    _version = '0.1.4'
+    _version = '0.1.5-dev0'
 
     # Connects to a MySQL database and creates a new Isidore object to interact
     # with it.
