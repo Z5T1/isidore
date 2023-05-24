@@ -240,10 +240,13 @@ tags        print all tags in the database''')
         elif args[2] == '?':
             print('''\
 ?           print this help message
+human       print the inventory in a human friendly format
 ini         print the inventory in INI format
 json        print the inventory in JSON format
 yaml        print the inventory in YAML format''')
 
+        elif args[2] == 'human':
+            print(yaml.dump(self._isidore.getInventory(), default_flow_style=False))
         elif args[2] == 'ini':
             print(self._isidore.getInventoryIni())
         elif args[2] == 'json':

@@ -109,9 +109,11 @@ inventory` command:
     
     >
 
-Additionally, the inventory can be printed in YAML or JSON format by specifying
-a format as the second argument like so:
+Additionally, the inventory can be printed in human friendly, YAML or JSON
+format by specifying a format as the second argument like so:
 
+    > show inventory human
+    [output ommitted]
     > show inventory yaml
     [output ommitted]
     > show inventory json
