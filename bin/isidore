@@ -25,8 +25,14 @@ import shlex
 import configparser
 import os
 import atexit
+import argparse
 
 from isidore.libIsidoreCmdline import *
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(prog='isidore')
+parser.add_argument('command', help='An Isidore command. This command will be run and then Isidore will exit.', nargs='*')
+args = parser.parse_args()
 
 # Setup Readline History
 history_file = os.path.expanduser("~/.isidore_history")
@@ -42,6 +48,12 @@ readline.parse_and_bind('set editing-mode vi')
 isidore = Isidore.fromConfigFile()
 cmd = IsidoreCmdline(isidore)
 
-# Main loop to read commands
-cmd.prompt()
+# Process command
+if args.command == []:
+    # No command was given on the command line arguments. Start the main loop
+    # to read commands from stdin.
+    cmd.prompt()
+else:
+    # Process the one command given on the command line arguments and exit.
+    cmd.rootprompt(args.command)
 
