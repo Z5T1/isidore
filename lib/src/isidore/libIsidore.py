@@ -302,7 +302,41 @@ class Isidore:
     # and tags in the database
     # @return       the Ansible YAML inventory as a string
     def getInventoryYaml(self):
-        return yaml.dump(self.getInventory(), default_flow_style=False)
+        # Any variables assigned to the 'all' tag require special treatment
+        # since it goes at the top of the YAML tree unlike all the other tags.
+        tag_all = self.getTag('all')
+        inv = {
+                'all': {
+                    'hosts': dict(),
+                    'children': dict(),
+                    'vars': dict() if tag_all == None
+                        else tag_all.getDetails()['all']['vars']
+                }
+        }
+
+        # Add all the hosts without a group to ensure every system is included,
+        # even those without any tags.
+        for host in self.getCommissionedHosts():
+            name = host.getHostname()
+            inv['all']['hosts'][name] = host.getDetails()[name]['vars']
+
+        # Add each tag and its hosts as a group
+        for tag in self.getTags(True):
+            name = tag.getName()
+            details = tag.getDetails()
+            # Skip the all tag since it requires special care and is handled
+            # above
+            if name == 'all':
+                continue
+            inv['all']['children'][name] = {
+                    'hosts': dict.fromkeys(details[name]['hosts'], dict()),
+                    'vars': details[name]['vars']
+            }
+
+        # Generate YAML output without any anchors/aliases
+        noalias_dumper = yaml.dumper.SafeDumper
+        noalias_dumper.ignore_aliases = lambda self, data: True
+        return yaml.dump(inv, default_flow_style=False, Dumper=noalias_dumper)
 
     # Gets a tag in the database
     # @param name       The name of the tag to get
