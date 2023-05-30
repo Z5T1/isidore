@@ -1041,13 +1041,17 @@ remove      remove hosts from this tag''')
 ?           print this help message
 all         print all the information about the tag
 description print the tag's description
-group       print the date the tag was commissioned''')
+group       print the date the tag was commissioned
+hosts       print all hosts that have this tag''')
         elif args[3] == 'all':
             print(yaml.dump(tag.getDetails(), default_flow_style=False))
         elif args[3] == 'description':
             print(tag.getDescription())
         elif args[3] == 'group':
             print(tag.getGroup())
+        elif args[3] == 'hosts':
+            for host in tag.getHosts():
+                print(host.getHostname())
         else:
             print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
