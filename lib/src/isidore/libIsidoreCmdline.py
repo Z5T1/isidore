@@ -547,7 +547,8 @@ var         display and modify this host's variables''')
 all         print all the information about the host
 commissioned    print the date the host was commissioned
 description     print the host's description
-decommissioned  print the date the host was decommissioned''')
+decommissioned  print the date the host was decommissioned
+tags        print the tags currently assigned to this host''')
         elif args[3] == 'all':
             print(yaml.dump(host.getDetails(), default_flow_style=False))
         elif args[3] == 'commissioned':
@@ -556,6 +557,9 @@ decommissioned  print the date the host was decommissioned''')
             print(host.getDescription())
         elif args[3] == 'decommissioned':
             print(host.getDecommissionDate())
+        elif args[3] == 'tags':
+            for tag in host.getTags():
+                print(tag.getName())
         else:
             print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
