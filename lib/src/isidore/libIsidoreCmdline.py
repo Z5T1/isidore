@@ -102,6 +102,8 @@ quit        exit''')
             self.create(args)
         elif args[0] == 'delete':
             self.delete(args)
+        elif args[0] == 'describe':
+            self.describe(args)
         elif args[0] == 'echo':
             self.echo(args)
         elif args[0] == 'help':
@@ -130,6 +132,7 @@ prompt.
 ?           print this help message
 create      create various objects (such as hosts and tags)
 delete      delete various objects (such as hosts and tags)
+describe    print details about various data
 echo        print text back to the console
 help        alias for ?
 host        manipulate a host
@@ -278,6 +281,74 @@ yaml        print the inventory in YAML format''')
     def show_tags(self, args):
         for tag in self._isidore.getTags():
             print(tag.getName())
+
+    # > describe
+    def describe(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.describe)
+
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+hosts       describe all commissioned hosts in the database
+graveyard   describe all decommissioned hosts in the database
+tag-groups  describe all the tag groups in the database
+tags        describe all tags in the database''')
+
+        elif args[1] == 'hosts':
+            self.describe_hosts(args[1])
+
+        elif args[1] == 'graveyard':
+            self.describe_graveyard(args[1])
+
+        elif args[1] == 'tag-groups':
+            self.describe_taggroups(args[1])
+
+        elif args[1] == 'tags':
+            self.describe_tags(args[1])
+
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
+
+    # > describe hosts
+    def describe_hosts(self, args):
+        hosts = {}
+        for host in self._isidore.getCommissionedHosts():
+            hosts[host.getHostname()] = host.getDescription()
+        print(yaml.dump(hosts, default_flow_style=False))
+
+    # > describe graveyard
+    def describe_graveyard(self, args):
+        hosts = {}
+        for host in self._isidore.getDecommissionedHosts():
+            hosts[host.getHostname()] = host.getDescription()
+        print(yaml.dump(hosts, default_flow_style=False))
+
+
+    # > describe tag-groups
+    def describe_taggroups(self, args):
+        tags = {}
+
+        # Populate the top level
+        for (group, tagsstr) in self._isidore.getTagGroups():
+            if group == None:
+                group = 'ungrouped'
+            tags[group] = list()
+
+        for tag in self._isidore.getTags():
+            group = tag.getGroup()
+            if group == None:
+                group = 'ungrouped'
+            tags[group].append( { tag.getName(): tag.getDescription() } )
+
+        print(yaml.dump(tags, default_flow_style=False))
+
+    # > describe tags
+    def describe_tags(self, args):
+        tags = {}
+        for tag in self._isidore.getTags():
+            tags[tag.getName()] = tag.getDescription()
+        print(yaml.dump(tags, default_flow_style=False))
 
     # > create
     def create(self, args):
