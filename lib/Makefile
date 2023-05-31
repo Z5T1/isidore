@@ -1,5 +1,5 @@
 # Misc variables
-VERSION=0.1.5
+VERSION=0.1.6-dev0
 DOTTED_VERSION:=$(shell echo $(VERSION) | sed -e s/-/./g)
 PYTHON=python3
 
