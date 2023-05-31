@@ -500,7 +500,9 @@ class Host:
             UPDATE Host
             SET Variables =
                 JSON_ARRAY_APPEND(
-                    (SELECT Variables FROM Host WHERE HostId = %s),
+                    (SELECT Variables
+                        FROM (SELECT * FROM Host) AS temp
+                        WHERE HostId = %s),
                     %s,
                     JSON_EXTRACT(%s, '$')
                 )
@@ -789,7 +791,9 @@ class Tag:
             UPDATE Tag
             SET Variables =
                 JSON_ARRAY_APPEND(
-                    (SELECT Variables FROM Tag WHERE TagID = %s),
+                    (SELECT Variables
+                        FROM (SELECT * FROM Tag) AS temp
+                        WHERE TagId = %s),
                     %s,
                     JSON_EXTRACT(%s, '$')
                 )
