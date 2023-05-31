@@ -653,7 +653,7 @@ remove      remove a tag from this host''')
                     'group': tag.getGroup(),
                     'description': tag.getDescription()
                     } )
-            print(yaml.dump(tags, default_flow_style=False))
+            print(yaml.dump(tags, default_flow_style=False, sort_keys=False))
 
         elif args[3] == 'remove':
             self.host_tag_remove(args)
