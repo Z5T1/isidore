@@ -26,6 +26,27 @@ To list all the decommissioned hosts in the Isidore database, use the
     beru
     >
 
+To list all the commissioned hosts along with their descriptions, use the
+`describe hosts` command.
+
+    > describe hosts
+    chewy: null
+    han: Disorganized development laptop. Sorry about this mess.
+    leia: null
+    luke: 'He''s just not a farm boy:'
+    obi-wan: null
+    yoda: null
+    
+    >
+
+Similarly to list all the decommissioned hosts with their descriptions, use the
+`describe graveyard` command.
+
+    > describe graveyard
+    beru: null
+    
+    >
+
 ## 2. Listing Tags
 
 To list all the tags in the Isidore database, use the `show tags` command.
@@ -45,9 +66,65 @@ To list all the tags in the Isidore database organized by group, use the
 `show tag-groups` command.
 
     > show tag-groups
-    location (cherryhill, newark, princeton)
-    physicality (physical, virtual)
-    type (laptop, server, workstation)
+    location:
+    - cherryhill
+    - newark
+    - princeton
+    physicality:
+    - physical
+    - virtual
+    type:
+    - laptop
+    - server
+    - workstation
+    ungrouped:
+    - all
+    - ungrouped
+
+    >
+
+To list all the tags along with their descriptions, use the `describe tags`
+command.
+
+    > describe tags
+    all: Special tag that applies to all hosts. The host list is ignored for this tag;
+      it will always apply to every host in Isidore.
+    cherryhill: Cherry Hill, NJ
+    laptop: Laptops
+    newark: Newark, NJ
+    physical: Physical Machines
+    princeton: Princeton, NJ
+    server: Servers
+    ungrouped: Special tag that applies to hosts that do not have a tag. In addition to
+      any hosts assigned to this tag, it will always apply to every host that does not
+      have a tag.
+    virtual: Virtual Machines
+    workstation: Workstations
+
+    >
+
+Similarly, the `describe tag-groups` command can be used to list all the tags
+and their details by group.
+
+    > describe tag-groups
+    location:
+    - cherryhill: Cherry Hill, NJ
+    - newark: Newark, NJ
+    - princeton: Princeton, NJ
+    physicality:
+    - physical: Physical Machines
+    - virtual: Virtual Machines
+    type:
+    - laptop: Laptops
+    - server: Servers
+    - workstation: Workstations
+    ungrouped:
+    - all: Special tag that applies to all hosts. The host list is ignored for this tag;
+        it will always apply to every host in Isidore.
+    - ungrouped: Special tag that applies to hosts that do not have a tag. In addition
+        to any hosts assigned to this tag, it will always apply to every host that does
+        not have a tag.
+    
     >
 
 ## 3. Printing the Inventory
