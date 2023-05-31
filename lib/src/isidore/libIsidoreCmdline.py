@@ -977,10 +977,13 @@ Enter ? as any argument help.''', file=sys.stderr)
         elif args[2] == '?':
             print('''\
 ?           print this help message
+describe    print details about tag attributes
 host        display and modify hosts that have this tag
 set         modify tag attributes
 show        display tag attributes
 var         display and modify this tag's variables''')
+        elif args[2] == 'describe':
+            self.tag_describe(args)
         elif args[2] == 'host':
             self.tag_host(args)
         elif args[2] == 'set':
@@ -991,6 +994,23 @@ var         display and modify this tag's variables''')
             self.tag_var(args)
         else:
             print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
+
+    # > tag <tagname> describe
+    def tag_describe(self, args):
+        tag = self._isidore.getTag(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.tag_describe)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+hosts       describe the hosts currently assigned to this tag''')
+        elif args[3] == 'hosts':
+            hosts = {}
+            for host in tag.getHosts():
+                hosts[host.getHostname()] = host.getDescription()
+            print(yaml.dump(hosts, default_flow_style=False))
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > tag <tagname> host
     def tag_host(self, args):
