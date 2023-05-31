@@ -102,6 +102,8 @@ quit        exit''')
             self.create(args)
         elif args[0] == 'delete':
             self.delete(args)
+        elif args[0] == 'describe':
+            self.describe(args)
         elif args[0] == 'echo':
             self.echo(args)
         elif args[0] == 'help':
@@ -130,6 +132,7 @@ prompt.
 ?           print this help message
 create      create various objects (such as hosts and tags)
 delete      delete various objects (such as hosts and tags)
+describe    print details about various data
 echo        print text back to the console
 help        alias for ?
 host        manipulate a host
@@ -278,6 +281,74 @@ yaml        print the inventory in YAML format''')
     def show_tags(self, args):
         for tag in self._isidore.getTags():
             print(tag.getName())
+
+    # > describe
+    def describe(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.describe)
+
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+hosts       describe all commissioned hosts in the database
+graveyard   describe all decommissioned hosts in the database
+tag-groups  describe all the tag groups in the database
+tags        describe all tags in the database''')
+
+        elif args[1] == 'hosts':
+            self.describe_hosts(args[1])
+
+        elif args[1] == 'graveyard':
+            self.describe_graveyard(args[1])
+
+        elif args[1] == 'tag-groups':
+            self.describe_taggroups(args[1])
+
+        elif args[1] == 'tags':
+            self.describe_tags(args[1])
+
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
+
+    # > describe hosts
+    def describe_hosts(self, args):
+        hosts = {}
+        for host in self._isidore.getCommissionedHosts():
+            hosts[host.getHostname()] = host.getDescription()
+        print(yaml.dump(hosts, default_flow_style=False))
+
+    # > describe graveyard
+    def describe_graveyard(self, args):
+        hosts = {}
+        for host in self._isidore.getDecommissionedHosts():
+            hosts[host.getHostname()] = host.getDescription()
+        print(yaml.dump(hosts, default_flow_style=False))
+
+
+    # > describe tag-groups
+    def describe_taggroups(self, args):
+        tags = {}
+
+        # Populate the top level
+        for (group, tagsstr) in self._isidore.getTagGroups():
+            if group == None:
+                group = 'ungrouped'
+            tags[group] = list()
+
+        for tag in self._isidore.getTags():
+            group = tag.getGroup()
+            if group == None:
+                group = 'ungrouped'
+            tags[group].append( { tag.getName(): tag.getDescription() } )
+
+        print(yaml.dump(tags, default_flow_style=False))
+
+    # > describe tags
+    def describe_tags(self, args):
+        tags = {}
+        for tag in self._isidore.getTags():
+            tags[tag.getName()] = tag.getDescription()
+        print(yaml.dump(tags, default_flow_style=False))
 
     # > create
     def create(self, args):
@@ -450,10 +521,13 @@ tag         delete a tag''')
         elif args[2] == '?':
             print('''\
 ?           print this help message
+describe    print details about host attributes
 set         modify host attributes
 show        display host attributes
 tag         display and modify this host's tags
 var         display and modify this host's variables''')
+        elif args[2] == 'describe':
+            self.host_describe(args)
         elif args[2] == 'set':
             self.host_set(args)
         elif args[2] == 'show':
@@ -464,6 +538,23 @@ var         display and modify this host's variables''')
             self.host_var(args)
         else:
             print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
+
+    # > host <hostname> describe
+    def host_describe(self, args):
+        host = self._isidore.getHost(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.host_describe)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+tags        describe the tags currently assigned to this host''')
+        elif args[3] == 'tags':
+            tags = {}
+            for tag in host.getTags():
+                tags[tag.getName()] = tag.getDescription()
+            print(yaml.dump(tags, default_flow_style=False))
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > host <hostname> show
     def host_show(self, args):
@@ -476,7 +567,8 @@ var         display and modify this host's variables''')
 all         print all the information about the host
 commissioned    print the date the host was commissioned
 description     print the host's description
-decommissioned  print the date the host was decommissioned''')
+decommissioned  print the date the host was decommissioned
+tags        print the tags currently assigned to this host''')
         elif args[3] == 'all':
             print(yaml.dump(host.getDetails(), default_flow_style=False))
         elif args[3] == 'commissioned':
@@ -485,6 +577,9 @@ decommissioned  print the date the host was decommissioned''')
             print(host.getDescription())
         elif args[3] == 'decommissioned':
             print(host.getDecommissionDate())
+        elif args[3] == 'tags':
+            for tag in host.getTags():
+                print(tag.getName())
         else:
             print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
@@ -578,7 +673,7 @@ remove      remove a tag from this host''')
                     'group': tag.getGroup(),
                     'description': tag.getDescription()
                     } )
-            print(yaml.dump(tags, default_flow_style=False))
+            print(yaml.dump(tags, default_flow_style=False, sort_keys=False))
 
         elif args[3] == 'remove':
             self.host_tag_remove(args)
@@ -882,10 +977,13 @@ Enter ? as any argument help.''', file=sys.stderr)
         elif args[2] == '?':
             print('''\
 ?           print this help message
+describe    print details about tag attributes
 host        display and modify hosts that have this tag
 set         modify tag attributes
 show        display tag attributes
 var         display and modify this tag's variables''')
+        elif args[2] == 'describe':
+            self.tag_describe(args)
         elif args[2] == 'host':
             self.tag_host(args)
         elif args[2] == 'set':
@@ -896,6 +994,23 @@ var         display and modify this tag's variables''')
             self.tag_var(args)
         else:
             print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
+
+    # > tag <tagname> describe
+    def tag_describe(self, args):
+        tag = self._isidore.getTag(args[1])
+        if len(args) == 3:
+            self.subprompt(args, self.tag_describe)
+        elif args[3] == '?':
+            print('''\
+?           print this help message
+hosts       describe the hosts currently assigned to this tag''')
+        elif args[3] == 'hosts':
+            hosts = {}
+            for host in tag.getHosts():
+                hosts[host.getHostname()] = host.getDescription()
+            print(yaml.dump(hosts, default_flow_style=False))
+        else:
+            print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
     # > tag <tagname> host
     def tag_host(self, args):
@@ -970,13 +1085,17 @@ remove      remove hosts from this tag''')
 ?           print this help message
 all         print all the information about the tag
 description print the tag's description
-group       print the date the tag was commissioned''')
+group       print the date the tag was commissioned
+hosts       print all hosts that have this tag''')
         elif args[3] == 'all':
             print(yaml.dump(tag.getDetails(), default_flow_style=False))
         elif args[3] == 'description':
             print(tag.getDescription())
         elif args[3] == 'group':
             print(tag.getGroup())
+        elif args[3] == 'hosts':
+            for host in tag.getHosts():
+                print(host.getHostname())
         else:
             print('Invalid argument '+args[3]+'. Enter ? for help.', file=sys.stderr)
 
