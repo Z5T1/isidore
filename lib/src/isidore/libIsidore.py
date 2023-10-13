@@ -32,6 +32,9 @@ class Isidore:
 
     _conn = None
     _version = '0.1.6-dev0'
+    _db_user = None
+    _db_host = None
+    _db_name = None
 
     # Connects to a MySQL database and creates a new Isidore object to interact
     # with it.
@@ -40,6 +43,9 @@ class Isidore:
     # @param host       The MySQL server to connect to
     # @param database   The name of the database to use
     def __init__(self, user, password, host, database):
+        self._db_user = user
+        self._db_host = host
+        self._db_name = database
         self._conn = mysql.connector.connect(
                 user = user,
                 password = password,
@@ -137,6 +143,21 @@ class Isidore:
         row = cursor.fetchone()
         cursor.close()
         return row[0]
+
+    # Gets the Isidore MySQL database user account name
+    # @return       The Isidore database user account name
+    def getDatabaseUser(self):
+        return self._db_user
+
+    # Gets the Isidore MySQL database host
+    # @return       The Isidore database host
+    def getDatabaseHost(self):
+        return self._db_host
+
+    # Gets the Isidore MySQL database name
+    # @return       The Isidore database user account name
+    def getDatabaseName(self):
+        return self._db_name
 
     # Gets all the decommissioned hosts in the database
     # @return   An array containing all the decommissioned hosts in
