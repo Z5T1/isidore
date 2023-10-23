@@ -378,13 +378,16 @@ set         modify the Isidore installation''')
         elif args[2] == '?':
             print('''\
 ?           print this help message
-connection  print all the information about the host''')
+connection  display information about SQL database connection
+version     display Isidore version information''')
         elif args[2] == 'connection':
             print(yaml.dump({
                 'user': self._isidore.getDatabaseUser(),
                 'host': self._isidore.getDatabaseHost(),
                 'database': self._isidore.getDatabaseName()
             }, default_flow_style=False))
+        elif args[2] == 'version':
+            self.version(None)
         else:
             print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
