@@ -371,6 +371,16 @@ set         modify the Isidore installation''')
         else:
             print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
 
+    # > config set
+    def config_set(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.config_set)
+        elif args[2] == '?':
+            print('''\
+?           print this help message''')
+        else:
+            print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
+
     # > config show
     def config_show(self, args):
         if len(args) == 2:
