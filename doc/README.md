@@ -46,6 +46,11 @@ Table of Contents
       2. [Upgrade the Database](maintenance.md#2-upgrade-the-database)
       3. [Upgrade libIsidore and the Isidore Command Prompt](maintenance.md#3-upgrade-libisidore-and-the-isidore-command-prompt)
       4. [Import the Current Configuration](maintenance.md#4-import-the-current-configuration)
+9. [Configuring the Isidore Installation](config.md)
+   1. [Overview](config.md#1-overview)
+   2. [Querying Information About the Installation](config.md#2-querying-information-about-the-installation)
+      1. [Database Connection Information](config.md#1-database-connection-information)
+      2. [Version Information](config.md#2-version-information)
 
 Appendecies
 -----------
