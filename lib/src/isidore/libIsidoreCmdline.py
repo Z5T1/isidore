@@ -381,7 +381,15 @@ set         modify the Isidore installation''')
             self.subprompt(args, self.config_set)
         elif args[2] == '?':
             print('''\
-?           print this help message''')
+?           print this help message
+motd        set the message of the day''')
+        elif args[2] == 'motd':
+            if len(args) == 3:
+                print("<description>   the description")
+            elif args[3] == 'none':
+                self._isidore.setMotd(None)
+            else:
+                self._isidore.setMotd(args[3])
         else:
             print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
 

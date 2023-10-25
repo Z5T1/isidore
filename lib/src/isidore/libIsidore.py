@@ -490,6 +490,15 @@ class Isidore:
     def getVersion(self):
         return self._version
 
+    # Sets the message of the day
+    # @param motd           The message of the day
+    def setMotd(self, motd):
+        cursor = self._conn.cursor()
+        stmt = "UPDATE Metadata SET Value = %s WHERE KeyName = 'motd'"
+        cursor.execute(stmt, [ motd ])
+        self._conn.commit()
+        cursor.close()
+
 # An individual host
 class Host:
 
