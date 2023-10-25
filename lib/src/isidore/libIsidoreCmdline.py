@@ -98,6 +98,8 @@ quit        exit''')
         # Parse inut
         if args[0] == '?':
             self.help(args)
+        elif args[0] == 'config':
+            self.config(args)
         elif args[0] == 'create':
             self.create(args)
         elif args[0] == 'delete':
@@ -130,6 +132,7 @@ prompt.
     def help(self, args):
         print('''\
 ?           print this help message
+config      configure the Isidore installation
 create      create various objects (such as hosts and tags)
 delete      delete various objects (such as hosts and tags)
 describe    print details about various data
@@ -349,6 +352,54 @@ tags        describe all tags in the database''')
         for tag in self._isidore.getTags():
             tags[tag.getName()] = tag.getDescription()
         print(yaml.dump(tags, default_flow_style=False))
+
+    # > config
+    def config(self, args):
+        if len(args) == 1:
+            self.subprompt(args, self.config)
+        elif args[1] == '?':
+            print('''\
+?           print this help message
+show        print various data about the Isidore installation
+set         modify the Isidore installation''')
+        elif args[1] == 'show':
+            self.config_show(args)
+        elif args[1] == 'set':
+            self.config_set(args)
+        elif args[1] == 'terminal':
+            print("I have no idea what you're talking about.")
+        else:
+            print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
+
+    # > config set
+    def config_set(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.config_set)
+        elif args[2] == '?':
+            print('''\
+?           print this help message''')
+        else:
+            print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
+
+    # > config show
+    def config_show(self, args):
+        if len(args) == 2:
+            self.subprompt(args, self.config_show)
+        elif args[2] == '?':
+            print('''\
+?           print this help message
+connection  display information about SQL database connection
+version     display Isidore version information''')
+        elif args[2] == 'connection':
+            print(yaml.dump({
+                'user': self._isidore.getDatabaseUser(),
+                'host': self._isidore.getDatabaseHost(),
+                'database': self._isidore.getDatabaseName()
+            }, default_flow_style=False))
+        elif args[2] == 'version':
+            self.version(None)
+        else:
+            print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
     # > create
     def create(self, args):
