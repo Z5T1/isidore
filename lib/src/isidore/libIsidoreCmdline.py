@@ -393,6 +393,7 @@ set         modify the Isidore installation''')
             print('''\
 ?           print this help message
 connection  display information about SQL database connection
+motd        display the message of the day
 version     display Isidore version information''')
         elif args[2] == 'connection':
             print(yaml.dump({
@@ -400,6 +401,8 @@ version     display Isidore version information''')
                 'host': self._isidore.getDatabaseHost(),
                 'database': self._isidore.getDatabaseName()
             }, default_flow_style=False))
+        elif args[2] == 'motd':
+            print(self._isidore.getMotd())
         elif args[2] == 'version':
             self.version(None)
         else:
