@@ -359,6 +359,23 @@ class Isidore:
         noalias_dumper.ignore_aliases = lambda self, data: True
         return yaml.dump(inv, default_flow_style=False, Dumper=noalias_dumper)
 
+    # Gets the message of the day from the database
+    # @return           The message of the day, or None if there isn't one
+    def getMotd(self):
+        cursor = self._conn.cursor()
+        cursor.execute('''
+            SELECT
+                Value
+            FROM Metadata
+            WHERE KeyName = "motd"'''
+            )
+
+        row = cursor.fetchone()
+        if row == None:
+            return None
+
+        return row[0]
+
     # Gets a tag in the database
     # @param name       The name of the tag to get
     # @return           The Tag object, or None if the tag does

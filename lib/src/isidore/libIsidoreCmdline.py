@@ -90,6 +90,10 @@ quit        exit''')
 
     # Start an interactive prompt
     def prompt(self):
+        if sys.stdin.isatty():
+            motd = self._isidore.getMotd()
+            if motd != None:
+                print(motd)
         self.subprompt([], self.rootprompt)
 
     # >
