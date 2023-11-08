@@ -51,6 +51,7 @@ Table of Contents
    2. [Querying Information About the Installation](config.md#2-querying-information-about-the-installation)
       1. [Database Connection Information](config.md#1-database-connection-information)
       2. [Version Information](config.md#2-version-information)
+   3. [Message of the Day](config.md#3-message-of-the-day)
 
 Appendecies
 -----------

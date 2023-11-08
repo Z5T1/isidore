@@ -4,6 +4,7 @@
 2. [Querying Information About the Installation](#2-querying-information-about-the-installation)
    1. [Database Connection Information](#1-database-connection-information)
    2. [Version Information](#2-version-information)
+3. [Message of the Day](#3-message-of-the-day)
 
 ## 1. Overview
 
@@ -49,4 +50,13 @@ Note that the library and database versions SHOULD be the same as the internal
 database structure is not considered part of the public API. A library version
 with a minor version or patch release number greater than the database version
 may or may not work depending on the specific combination.
+
+## 3. Message of the Day
+
+The message of the day is displayed whenever the Isidore command line is
+started at the root prompt (`> `). It is not displayed when a subprompt is
+specified as a command line argument (i.e. `isidore show`).
+
+The message of the day can be set using the `config set motd <message>`
+command. It can be displayed using the `config show motd` command.
 
