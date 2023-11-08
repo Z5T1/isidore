@@ -10,10 +10,10 @@
 
 There are various parameters of the global Isidore that can be configured from
 the command line. These paramenters are modified via the `config` subprompt.
-From the config subprompt, the parameters can be configured, queried, and
-unconfigured using the `set`, `show`, and `unset` commands respectively. One
-can think of working with these parameters as akin to interacting with
-[variables](variables.md) that affect the whole Isidore installation.
+From the config subprompt, the parameters can be configured and queried using
+the `set` and `show` commands respectively. One can think of working with these
+parameters as akin to interacting with [variables](variables.md) that affect
+the whole Isidore installation.
 
 ## 2. Querying Information About the Installation
 
@@ -42,7 +42,8 @@ information:
 | Isidore database version       | The version of the Isidore SQL database              |
 
 In order for the Isidore installation to be functional, the command prompt,
-library, and database versions MUST be of the same major version. For the minor version and patch release, the following constraint MUST be satisfied:
+library, and database versions MUST be of the same major version. For the minor
+version and patch release, the following constraint MUST be satisfied:
 
 command prompt >= library >= database
 
