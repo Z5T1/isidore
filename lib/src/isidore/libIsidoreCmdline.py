@@ -56,10 +56,8 @@ class IsidoreCmdline:
             # Determine prompt
             name = self._isidore.getName()
             if sys.stdin.isatty():
-                display_prompt = \
-                    ( '[' + name + ']' if name else '' ) + \
-                    (' ' if  name and len(prompt) != 0 else '' ) + \
-                    ' '.join(prompt) + '> '
+                display_prompt = ' '.join( \
+                    ['[' + name + ']'] + prompt if name else prompt ) + '> '
             else:
                 display_prompt = ''
 
