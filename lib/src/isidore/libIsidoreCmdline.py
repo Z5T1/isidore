@@ -90,6 +90,10 @@ quit        exit''')
 
     # Start an interactive prompt
     def prompt(self):
+        if sys.stdin.isatty():
+            motd = self._isidore.getMotd()
+            if motd != None:
+                print(motd)
         self.subprompt([], self.rootprompt)
 
     # >
@@ -377,7 +381,15 @@ set         modify the Isidore installation''')
             self.subprompt(args, self.config_set)
         elif args[2] == '?':
             print('''\
-?           print this help message''')
+?           print this help message
+motd        set the message of the day''')
+        elif args[2] == 'motd':
+            if len(args) == 3:
+                print("<description>   the description")
+            elif args[3] == 'none':
+                self._isidore.setMotd(None)
+            else:
+                self._isidore.setMotd(args[3])
         else:
             print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
@@ -389,6 +401,7 @@ set         modify the Isidore installation''')
             print('''\
 ?           print this help message
 connection  display information about SQL database connection
+motd        display the message of the day
 version     display Isidore version information''')
         elif args[2] == 'connection':
             print(yaml.dump({
@@ -396,6 +409,8 @@ version     display Isidore version information''')
                 'host': self._isidore.getDatabaseHost(),
                 'database': self._isidore.getDatabaseName()
             }, default_flow_style=False))
+        elif args[2] == 'motd':
+            print(self._isidore.getMotd())
         elif args[2] == 'version':
             self.version(None)
         else:
