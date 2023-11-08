@@ -376,6 +376,23 @@ class Isidore:
 
         return row[0]
 
+    # Gets the name of the Isidore instance
+    # @return           The name, or None if there isn't one
+    def getName(self):
+        cursor = self._conn.cursor()
+        cursor.execute('''
+            SELECT
+                Value
+            FROM Metadata
+            WHERE KeyName = "name"'''
+            )
+
+        row = cursor.fetchone()
+        if row == None:
+            return None
+
+        return row[0]
+
     # Gets a tag in the database
     # @param name       The name of the tag to get
     # @return           The Tag object, or None if the tag does
