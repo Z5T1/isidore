@@ -411,6 +411,7 @@ motd        set the message of the day''')
 ?           print this help message
 connection  display information about SQL database connection
 motd        display the message of the day
+name        display the name of the Isidore instance
 version     display Isidore version information''')
         elif args[2] == 'connection':
             print(yaml.dump({
@@ -420,6 +421,8 @@ version     display Isidore version information''')
             }, default_flow_style=False))
         elif args[2] == 'motd':
             print(self._isidore.getMotd())
+        elif args[2] == 'name':
+            print(self._isidore.getName())
         elif args[2] == 'version':
             self.version(None)
         else:
