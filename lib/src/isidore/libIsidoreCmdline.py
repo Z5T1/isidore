@@ -392,7 +392,9 @@ set         modify the Isidore installation''')
 motd        set the message of the day''')
         elif args[2] == 'motd':
             if len(args) == 3:
-                print("<description>   the description")
+                print('''\
+<motd>          the message of the day
+none            clear the message of the day''')
             elif args[3] == 'none':
                 self._isidore.setMotd(None)
             else:
