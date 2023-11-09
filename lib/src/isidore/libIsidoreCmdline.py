@@ -199,6 +199,11 @@ tags        print all tags in the database''')
         if motd:
             print("config set motd '"+motd.replace("'", "'\"'\"'")+"'")
 
+        ## Name
+        name = self._isidore.getName()
+        if name:
+            print("config set name '"+name.replace("'", "'\"'\"'")+"'")
+
         # Create Hosts
         for host in hosts:
             name = "'"+host.getHostname().replace("'", "'\"'\"'")+"'"
