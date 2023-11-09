@@ -190,6 +190,13 @@ tags        print all tags in the database''')
         hosts = self._isidore.getHosts()
         tags = self._isidore.getTags()
 
+        # Isidore Configuration
+
+        ## Message of the Day
+        motd = self._isidore.getMotd()
+        if motd:
+            print("config set motd '"+motd.replace("'", "'\"'\"'")+"'")
+
         # Create Hosts
         for host in hosts:
             name = "'"+host.getHostname().replace("'", "'\"'\"'")+"'"
