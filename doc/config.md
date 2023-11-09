@@ -64,7 +64,7 @@ command. It can be displayed using the `config show motd` command.
 
 ## 4. Instance Name
 
-The instance name functions similarly to the hostname on Unix or the Cisco ISO:
+The instance name functions similarly to the hostname on Unix or the Cisco IOS:
 it serves to distinguish one Isidore instalation from another and it appears at
 the beginning of the prompt.
 
