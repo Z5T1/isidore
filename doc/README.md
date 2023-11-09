@@ -52,6 +52,7 @@ Table of Contents
       1. [Database Connection Information](config.md#1-database-connection-information)
       2. [Version Information](config.md#2-version-information)
    3. [Message of the Day](config.md#3-message-of-the-day)
+   4. [Instance Name](config.md#4-instance-name)
 
 Appendecies
 -----------
