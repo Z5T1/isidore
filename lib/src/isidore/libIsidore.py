@@ -516,6 +516,15 @@ class Isidore:
         self._conn.commit()
         cursor.close()
 
+    # Sets the name of the Isidore instance
+    # @param name           The name
+    def setName(self, name):
+        cursor = self._conn.cursor()
+        stmt = "UPDATE Metadata SET Value = %s WHERE KeyName = 'name'"
+        cursor.execute(stmt, [ name ])
+        self._conn.commit()
+        cursor.close()
+
 # An individual host
 class Host:
 

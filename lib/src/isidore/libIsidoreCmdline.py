@@ -391,7 +391,8 @@ set         modify the Isidore installation''')
         elif args[2] == '?':
             print('''\
 ?           print this help message
-motd        set the message of the day''')
+motd        set the message of the day
+name        set the name of the isidore instance''')
         elif args[2] == 'motd':
             if len(args) == 3:
                 print("<description>   the description")
@@ -399,6 +400,15 @@ motd        set the message of the day''')
                 self._isidore.setMotd(None)
             else:
                 self._isidore.setMotd(args[3])
+        elif args[2] == 'name':
+            if len(args) == 3:
+                print('''\
+<name>          the instance name
+none            clear the instance name''')
+            elif args[3] == 'none':
+                self._isidore.setName(None)
+            else:
+                self._isidore.setName(args[3])
         else:
             print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
