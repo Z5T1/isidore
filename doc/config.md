@@ -5,6 +5,7 @@
    1. [Database Connection Information](#1-database-connection-information)
    2. [Version Information](#2-version-information)
 3. [Message of the Day](#3-message-of-the-day)
+4. [Instance Name](#4-instance-name)
 
 ## 1. Overview
 
@@ -60,4 +61,14 @@ specified as a command line argument (i.e. `isidore show`).
 
 The message of the day can be set using the `config set motd <message>`
 command. It can be displayed using the `config show motd` command.
+
+## 4. Instance Name
+
+The instance name functions similarly to the hostname on Unix or the Cisco IOS:
+it serves to distinguish one Isidore instalation from another and it appears at
+the beginning of the prompt.
+
+The instance name can be set using the `config set name <name>` command. It can
+also be displayed using the `config show name` command and unset using the
+`config set name none` command.
 

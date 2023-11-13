@@ -54,8 +54,10 @@ class IsidoreCmdline:
         line = []
         while line != ['end']:
             # Determine prompt
+            name = self._isidore.getName()
             if sys.stdin.isatty():
-                display_prompt = ' '.join(prompt) + '> '
+                display_prompt = ' '.join( \
+                    ['[' + name + ']'] + prompt if name else prompt ) + '> '
             else:
                 display_prompt = ''
 
@@ -196,6 +198,11 @@ tags        print all tags in the database''')
         motd = self._isidore.getMotd()
         if motd:
             print("config set motd '"+motd.replace("'", "'\"'\"'")+"'")
+
+        ## Name
+        name = self._isidore.getName()
+        if name:
+            print("config set name '"+name.replace("'", "'\"'\"'")+"'")
 
         # Create Hosts
         for host in hosts:
@@ -389,7 +396,8 @@ set         modify the Isidore installation''')
         elif args[2] == '?':
             print('''\
 ?           print this help message
-motd        set the message of the day''')
+motd        set the message of the day
+name        set the name of the isidore instance''')
         elif args[2] == 'motd':
             if len(args) == 3:
                 print('''\
@@ -399,6 +407,15 @@ none            clear the message of the day''')
                 self._isidore.setMotd(None)
             else:
                 self._isidore.setMotd(args[3])
+        elif args[2] == 'name':
+            if len(args) == 3:
+                print('''\
+<name>          the instance name
+none            clear the instance name''')
+            elif args[3] == 'none':
+                self._isidore.setName(None)
+            else:
+                self._isidore.setName(args[3])
         else:
             print('Invalid argument '+args[2]+'. Enter ? for help.', file=sys.stderr)
 
@@ -411,6 +428,7 @@ none            clear the message of the day''')
 ?           print this help message
 connection  display information about SQL database connection
 motd        display the message of the day
+name        display the name of the Isidore instance
 version     display Isidore version information''')
         elif args[2] == 'connection':
             print(yaml.dump({
@@ -420,6 +438,8 @@ version     display Isidore version information''')
             }, default_flow_style=False))
         elif args[2] == 'motd':
             print(self._isidore.getMotd())
+        elif args[2] == 'name':
+            print(self._isidore.getName())
         elif args[2] == 'version':
             self.version(None)
         else:
