@@ -511,7 +511,7 @@ class Isidore:
     # @param motd           The message of the day
     def setMotd(self, motd):
         cursor = self._conn.cursor()
-        stmt = "UPDATE Metadata SET Value = %s WHERE KeyName = 'motd'"
+        stmt = "REPLACE INTO Metadata (KeyName, Value) VALUES ('motd', %s)"
         cursor.execute(stmt, [ motd ])
         self._conn.commit()
         cursor.close()
@@ -520,7 +520,7 @@ class Isidore:
     # @param name           The name
     def setName(self, name):
         cursor = self._conn.cursor()
-        stmt = "UPDATE Metadata SET Value = %s WHERE KeyName = 'name'"
+        stmt = "REPLACE INTO Metadata (KeyName, Value) VALUES ('name', %s)"
         cursor.execute(stmt, [ name ])
         self._conn.commit()
         cursor.close()
