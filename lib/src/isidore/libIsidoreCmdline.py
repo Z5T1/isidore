@@ -194,6 +194,9 @@ tags        print all tags in the database''')
 
         # Isidore Configuration
 
+        ## Header
+        print("echo 'Setting global configuration'")
+
         ## Message of the Day
         motd = self._isidore.getMotd()
         if motd:
@@ -204,7 +207,11 @@ tags        print all tags in the database''')
         if name:
             print("config set name '"+name.replace("'", "'\"'\"'")+"'")
 
+        ## Blank line for sepeartion
+        print()
+
         # Create Hosts
+        print("echo 'Creating hosts'")
         for host in hosts:
             name = "'"+host.getHostname().replace("'", "'\"'\"'")+"'"
             print("create host "+name)
@@ -222,6 +229,7 @@ tags        print all tags in the database''')
         print()
 
         # Create Tags
+        print("echo 'Creating tags'")
         for tag in tags:
             name = "'"+tag.getName().replace("'", "'\"'\"'")+"'"
             group = tag.getGroup()
@@ -240,11 +248,13 @@ tags        print all tags in the database''')
         print()
 
         # Assign Tags to Hosts
+        print("echo 'Assigning tags to hosts'")
         for host in hosts:
             hostname = "'"+host.getHostname().replace("'", "'\"'\"'")+"'"
             for tag in host.getTags():
                 print("host "+hostname+" tag add '"+\
                         str(tag.getName()).replace("'", "'\"'\"'")+"'")
+        print()
 
     # > show graveyard
     def show_graveyard(self, args):
