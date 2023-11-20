@@ -74,6 +74,11 @@ class IsidoreCmdline:
                 print("Malformed command", file=sys.stderr)
                 continue
 
+            # Ensure each command runs as its own SQL transaction so each
+            # separate command operates on the latest data but still has
+            # repeatable reads/consistency within each command.
+            self._isidore.newTransaction()
+
             # Process input
             if line == []:
                 continue

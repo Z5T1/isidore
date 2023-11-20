@@ -507,6 +507,16 @@ class Isidore:
     def getVersion(self):
         return self._version
 
+    # Starts a new SQL transaction. All subsequent queries will operate on a
+    # snapshot of the database as it appeared either the last time this method
+    # was called or the last time it was written to, whichever is more recent.
+    # In the event that neither of these has happened since the object was
+    # instantiated, the queries run on a snapshot of the database at the time
+    # of instantiation.
+    def newTransaction(self):
+        self._conn.commit()
+        self._conn.start_transaction()
+
     # Sets the message of the day
     # @param motd           The message of the day
     def setMotd(self, motd):
