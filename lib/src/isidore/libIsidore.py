@@ -31,7 +31,7 @@ import json
 class Isidore:
 
     _conn = None
-    _version = '0.1.6-dev0'
+    _version = '0.1.6'
     _db_user = None
     _db_host = None
     _db_name = None
