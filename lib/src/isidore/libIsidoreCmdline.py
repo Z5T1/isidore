@@ -76,7 +76,7 @@ class IsidoreCmdline:
             # Read input
             try:
                 #line = shlex.split(input(display_prompt))
-                line = shlex.split(gnureadline.get_line_buffer())
+                line = shlex.split(gnureadline.get_line_buffer(display_prompt))
             except EOFError:
                 print()
                 return
