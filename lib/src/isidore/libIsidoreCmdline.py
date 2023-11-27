@@ -58,7 +58,7 @@ class IsidoreCmdline:
         }
 
     def completer(self, text, state):
-        buffer = readline.get_line_buffer()
+        buffer = gnureadline.get_line_buffer()
         words = buffer.split()
 
         if not words:
