@@ -104,6 +104,7 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
+                self.at_root_prompt = True
                 return
             elif line == ['quit']:
                 exit()
@@ -115,8 +116,6 @@ end         go back to the previous prompt
 quit        exit''')
 
             func(prompt + line)
-
-            self.at_root_prompt = True
 
     # Start an interactive prompt
     def prompt(self):
