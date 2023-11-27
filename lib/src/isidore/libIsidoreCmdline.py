@@ -118,7 +118,7 @@ class IsidoreCmdline:
 ^D          alias for end
 end         go back to the previous prompt
 quit        exit''')
-
+            func(prompt + line)
 
     # Start an interactive prompt
     def prompt(self):
@@ -134,7 +134,7 @@ quit        exit''')
     # >
     def rootprompt(self, args):
         self.at_root_prompt = True
-        # Parse input
+        # Parse inut
         if args[0] == '?':
             self.help(args)
         elif args[0] == 'config':
