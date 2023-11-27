@@ -39,23 +39,16 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
-        # self._command = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
-        #                'version']
-        # gnureadline.set_completer(self.completer)
-        # gnureadline.parse_and_bind("tab: complete")
+        self._commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
+        gnureadline.set_completer(self.completer)
+        gnureadline.parse_and_bind("tab: complete")
 
-        self._command_tree = self.generate_command_tree()
-        self.current_context_commands = []
-
-    def generate_command_tree(self):
-        # Generates a command tree based on the current prompt
-        return {
-            # ' ': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
-            #       'version'],
-            'config': ['end', 'quit', 'show', 'set'],
-            'delete': ['host', 'tag']
-
-        }
+    def completer(self, text, state):
+        options = [command for command in self._commands if command.startswith(text)]
+        if state < len(options):
+            return options[state]
+        else:
+            return None
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -68,9 +61,8 @@ class IsidoreCmdline:
     #                   arguments before passing to func.
     # @param func       The function to use to process input from
     #                   the subprompt.
-    def subprompt(self, prompt, func, context_commands):
+    def subprompt(self, prompt, func):
         # Sets up the completer
-        self.current_context_commands = context_commands
         gnureadline.set_completer(self.completer)
         gnureadline.parse_and_bind("tab: complete")
 
@@ -86,7 +78,8 @@ class IsidoreCmdline:
 
             # Read input
             try:
-                line = shlex.split(input(display_prompt))
+                line_str = gnureadline.readline(display_prompt)
+                line = shlex.split(line_str)
                 # Dont touch this causes an infinite loop
                 # line = shlex.split(gnureadline.get_line_buffer(display_prompt))
             except EOFError:
