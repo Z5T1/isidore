@@ -70,6 +70,8 @@ class IsidoreCmdline:
         self.at_root_prompt = False
         subprompt_name = prompt[0] if prompt else ''
         self.current_commands = self.subprompt_commands.get(subprompt_name, [])
+        readline.set_completer(self.completer)
+
         line = []
         while line != ['end']:
             # Determine prompt
@@ -105,6 +107,8 @@ class IsidoreCmdline:
                 continue
             elif line == ['end']:
                 self.at_root_prompt = True
+                self.current_commands = self.root_commands  # Resets to root commands
+                readline.set_completer(self.completer)
                 return
             elif line == ['quit']:
                 exit()
