@@ -40,6 +40,7 @@ class IsidoreCmdline:
     def __init__(self, isidore):
         self._isidore = isidore
         self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
+        self.subprompt_commmands = []
         self.at_root_prompt = True
         self.current_commands = self.root_commands
         readline.set_completer(self.completer)
@@ -110,11 +111,11 @@ end         go back to the previous prompt
 quit        exit''')
 
             func(prompt + line)
-            self.at_root_prompt = True
 
     # Start an interactive prompt
     def prompt(self):
         self.at_root_prompt = True
+        readline.set_completer(self.completer)
 
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
@@ -124,7 +125,7 @@ quit        exit''')
 
     # >
     def rootprompt(self, args):
-
+        self.at_root_prompt = True
         # Parse inut
         if args[0] == '?':
             self.help(args)
