@@ -40,8 +40,9 @@ class IsidoreCmdline:
     def __init__(self, isidore):
         self._isidore = isidore
         self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
-        self.subprompt_commands = [
-        ]
+        self.subprompt_commands = {
+            'delete': ['host', 'tag']
+        }
         self.at_root_prompt = True
         self.current_commands = self.root_commands
         readline.set_completer(self.completer)
