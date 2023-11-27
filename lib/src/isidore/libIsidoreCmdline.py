@@ -40,15 +40,17 @@ class IsidoreCmdline:
     def __init__(self, isidore):
         self._isidore = isidore
         self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
+        self.at_root_prompt = True
+        self.current_commands = self.root_commands
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
-        options = [command for command in self.root_commands if command.startswith(text)]
-        if state < len(options):
-            return options[state]
+        if self.at_root_prompt:
+            options = [command for command in self.root_commands if command.startswith(text)]
         else:
-            return None
+            options = []
+        return options[state] if state < len(options) else None
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -62,8 +64,7 @@ class IsidoreCmdline:
     # @param func       The function to use to process input from
     #                   the subprompt.
     def subprompt(self, prompt, func):
-        # Sets up the completer
-
+        self.at_root_prompt = False
         line = []
         while line != ['end']:
             # Determine prompt
@@ -109,9 +110,12 @@ end         go back to the previous prompt
 quit        exit''')
 
             func(prompt + line)
+            self.at_root_prompt = True
 
     # Start an interactive prompt
     def prompt(self):
+        self.at_root_prompt = True
+
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
             if motd != None:
