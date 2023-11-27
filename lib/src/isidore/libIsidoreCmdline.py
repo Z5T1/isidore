@@ -30,6 +30,18 @@ from isidore.libIsidore import *
 
 
 # The Isidore command prompt
+def generate_command_tree():
+
+    # Generates a command tree based on the current prompt
+    return {
+        # ' ': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
+        #       'version'],
+        'config': ['end', 'quit', 'show', 'set'],
+        'delete': ['host', 'tag']
+
+    }
+
+
 class IsidoreCmdline:
     _isidore = None
     _version = '0.1.7'
@@ -44,47 +56,12 @@ class IsidoreCmdline:
         # gnureadline.set_completer(self.completer)
         # gnureadline.parse_and_bind("tab: complete")
 
-        self._command_tree = self.generate_command_tree()
-        gnureadline.set_completer(self.completer)
-        gnureadline.parse_and_bind("tab:complete")
-
-    def generate_command_tree(self):
-        # Generates a command tree based on the current prompt
-
-        return {
-            # ' ': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
-            #       'version'],
-            'config': ['end', 'quit', 'show', 'set'],
-            'delete': ['host', 'tag']
-
-        }
+        self._command_tree = generate_command_tree()
+        self.current_context_commands = []
 
     def completer(self, text, state):
-        buffer = gnureadline.get_line_buffer()
-        words = buffer.split()
-
-        if not words:
-            # If no command entered yet, return top-level commands
-            options = list(self._command_tree.keys())
-        else:
-            # Find the context and provide relevant subcommands
-            context = self._command_tree
-            for word in words:
-                if word in context:
-                    context = context[word]
-                else:
-                    context = {}
-                    break
-
-            if isinstance(context, dict):
-                options = list(context.keys())
-            elif isinstance(context, list):
-                options = context
-            else:
-                options = []
-
         # Filter options based on the current text
-        options = [option for option in options if option.startswith(text)]
+        options = [command for command in self.current_context_commands if command.startswith(text)]
         if state < len(options):
             return options[state]
         else:
@@ -101,7 +78,12 @@ class IsidoreCmdline:
     #                   arguments before passing to func.
     # @param func       The function to use to process input from
     #                   the subprompt.
-    def subprompt(self, prompt, func):
+    def subprompt(self, prompt, func, context_commands):
+        # Sets up the completer
+        self.current_context_commands = context_commands
+        gnureadline.set_completer(self.completer)
+        gnureadline.parse_and_bind("tab: complete")
+
         line = []
         while line != ['end']:
             # Determine prompt
@@ -114,8 +96,9 @@ class IsidoreCmdline:
 
             # Read input
             try:
-                #line = shlex.split(input(display_prompt))
-                line = shlex.split(gnureadline.get_line_buffer(display_prompt))
+                line = shlex.split(input(display_prompt))
+                # Dont touch this causes an infinite loop
+                # line = shlex.split(gnureadline.get_line_buffer(display_prompt))
             except EOFError:
                 print()
                 return
