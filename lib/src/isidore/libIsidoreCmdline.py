@@ -44,7 +44,7 @@ class IsidoreCmdline:
             'delete': ['host', 'tag']
         }
         self.at_root_prompt = True
-        self.current_commands = self.root_commands
+        self.current_commands =
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
 
@@ -106,9 +106,6 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
-                self.at_root_prompt = True
-                self.current_commands = self.root_commands  # Resets to root commands
-                readline.set_completer(self.completer)
                 return
             elif line == ['quit']:
                 exit()
@@ -118,7 +115,9 @@ class IsidoreCmdline:
 ^D          alias for end
 end         go back to the previous prompt
 quit        exit''')
-
+            self.at_root_prompt = True
+            self.current_commands = self.root_commands
+            readline.set_completer(self.completer)
             func(prompt + line)
 
     # Start an interactive prompt
