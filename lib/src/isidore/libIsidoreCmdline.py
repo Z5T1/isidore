@@ -63,8 +63,6 @@ class IsidoreCmdline:
     #                   the subprompt.
     def subprompt(self, prompt, func):
         # Sets up the completer
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
 
         line = []
         while line != ['end']:
@@ -78,9 +76,9 @@ class IsidoreCmdline:
 
             # Read input
             try:
-                #line = shlex.split(input(display_prompt))
+                line = shlex.split(input(display_prompt))
                 # Dont touch this causes an infinite loop
-                line = shlex.split(readline.get_line_buffer())
+                # line = shlex.split(readline.get_line_buffer())
             except EOFError:
                 print()
                 return
