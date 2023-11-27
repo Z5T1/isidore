@@ -52,9 +52,11 @@ class IsidoreCmdline:
         # Generates a command tree based on the current prompt
 
         return {
-            '': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
-                 'version'],
+            ' ': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
+                  'version'],
+            'config': ['end', 'quit', 'show', 'set'],
             'delete': ['host', 'tag']
+
         }
 
     def completer(self, text, state):
