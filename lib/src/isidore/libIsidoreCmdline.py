@@ -44,7 +44,7 @@ class IsidoreCmdline:
             'delete': ['host', 'tag']
         }
         self.at_root_prompt = True
-        self.current_commands =
+        self.current_commands = self.root_commands
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
 
