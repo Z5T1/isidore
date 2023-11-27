@@ -39,12 +39,12 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
-        self._commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
+        self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
-        options = [command for command in self._commands if command.startswith(text)]
+        options = [command for command in self.root_commands if command.startswith(text)]
         if state < len(options):
             return options[state]
         else:
