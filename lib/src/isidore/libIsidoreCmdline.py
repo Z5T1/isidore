@@ -21,10 +21,10 @@
 # SOFTWARE.
 
 import shlex
-import gnureadline
 import sys
 import traceback
 import datetime
+import readline
 
 from isidore.libIsidore import *
 
@@ -40,8 +40,8 @@ class IsidoreCmdline:
     def __init__(self, isidore):
         self._isidore = isidore
         self._commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
-        gnureadline.set_completer(self.completer)
-        gnureadline.parse_and_bind("tab: complete")
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
         options = [command for command in self._commands if command.startswith(text)]
@@ -63,8 +63,8 @@ class IsidoreCmdline:
     #                   the subprompt.
     def subprompt(self, prompt, func):
         # Sets up the completer
-        gnureadline.set_completer(self.completer)
-        gnureadline.parse_and_bind("tab: complete")
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
 
         line = []
         while line != ['end']:
@@ -78,8 +78,7 @@ class IsidoreCmdline:
 
             # Read input
             try:
-                line_str = gnureadline.readline(display_prompt)
-                line = shlex.split(line_str)
+                line = shlex.split(input(display_prompt))
                 # Dont touch this causes an infinite loop
                 # line = shlex.split(gnureadline.get_line_buffer(display_prompt))
             except EOFError:
