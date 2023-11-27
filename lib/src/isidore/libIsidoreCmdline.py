@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import shlex
-import readline
+import gnureadline
 import sys
 import traceback
 import datetime
@@ -41,8 +41,8 @@ class IsidoreCmdline:
         self._isidore = isidore
         self._command = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
                          'version']
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
+        gnureadline.set_completer(self.completer)
+        gnureadline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
         options = [command for command in self._command if command.startswith(text)]
