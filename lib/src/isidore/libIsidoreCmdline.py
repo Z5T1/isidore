@@ -106,6 +106,9 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
+                self.at_root_prompt = True
+                self.current_commands = self.root_commands
+                readline.set_completer(self.completer)
                 return
             elif line == ['quit']:
                 exit()
@@ -115,10 +118,7 @@ class IsidoreCmdline:
 ^D          alias for end
 end         go back to the previous prompt
 quit        exit''')
-            self.at_root_prompt = True
-            self.current_commands = self.root_commands
-            readline.set_completer(self.completer)
-            func(prompt + line)
+
 
     # Start an interactive prompt
     def prompt(self):
@@ -134,7 +134,7 @@ quit        exit''')
     # >
     def rootprompt(self, args):
         self.at_root_prompt = True
-        # Parse inut
+        # Parse input
         if args[0] == '?':
             self.help(args)
         elif args[0] == 'config':
