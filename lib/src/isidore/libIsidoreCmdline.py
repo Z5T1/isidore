@@ -116,7 +116,7 @@ quit        exit''')
 
             func(prompt + line)
 
-        self.at_root_prompt = True
+            self.at_root_prompt = True
 
     # Start an interactive prompt
     def prompt(self):
