@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import shlex
+import readline
 import sys
 import traceback
 import datetime
@@ -38,6 +39,17 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
+        self._command = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
+                         'version']
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
+
+    def completer(self, text, state):
+        options = [command for command in self._command if command.startswith(text)]
+        if state < len(options):
+            return options[state]
+        else:
+            return None
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -63,7 +75,8 @@ class IsidoreCmdline:
 
             # Read input
             try:
-                line = shlex.split(input(display_prompt))
+                #line = shlex.split(input(display_prompt))
+                line = shlex.split(readline.get_line_buffer())
             except EOFError:
                 print()
                 return
