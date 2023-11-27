@@ -30,18 +30,6 @@ from isidore.libIsidore import *
 
 
 # The Isidore command prompt
-def generate_command_tree():
-
-    # Generates a command tree based on the current prompt
-    return {
-        # ' ': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
-        #       'version'],
-        'config': ['end', 'quit', 'show', 'set'],
-        'delete': ['host', 'tag']
-
-    }
-
-
 class IsidoreCmdline:
     _isidore = None
     _version = '0.1.7'
@@ -56,16 +44,18 @@ class IsidoreCmdline:
         # gnureadline.set_completer(self.completer)
         # gnureadline.parse_and_bind("tab: complete")
 
-        self._command_tree = generate_command_tree()
+        self._command_tree = self.generate_command_tree()
         self.current_context_commands = []
 
-    def completer(self, text, state):
-        # Filter options based on the current text
-        options = [command for command in self.current_context_commands if command.startswith(text)]
-        if state < len(options):
-            return options[state]
-        else:
-            return None
+    def generate_command_tree(self):
+        # Generates a command tree based on the current prompt
+        return {
+            # ' ': ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
+            #       'version'],
+            'config': ['end', 'quit', 'show', 'set'],
+            'delete': ['host', 'tag']
+
+        }
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -129,6 +119,15 @@ end         go back to the previous prompt
 quit        exit''')
 
             func(prompt + line)
+
+    def completer(self, text, state):
+        # Filter options based on the current text
+        options = [command for command in self.current_context_commands if command.startswith(text)]
+        if state < len(options):
+            return options[state]
+        else:
+            return None
+
 
     # Start an interactive prompt
     def prompt(self):
