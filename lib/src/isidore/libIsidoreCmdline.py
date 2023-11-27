@@ -110,15 +110,6 @@ quit        exit''')
 
             func(prompt + line)
 
-    def completer(self, text, state):
-        # Filter options based on the current text
-        options = [command for command in self.current_context_commands if command.startswith(text)]
-        if state < len(options):
-            return options[state]
-        else:
-            return None
-
-
     # Start an interactive prompt
     def prompt(self):
         if sys.stdin.isatty():
