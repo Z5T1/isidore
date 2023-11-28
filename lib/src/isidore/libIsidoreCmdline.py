@@ -142,6 +142,9 @@ quit        exit''')
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
 
+        print(readline.get_completer())
+        print(readline.get_completion_type())
+
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
             if motd != None:
