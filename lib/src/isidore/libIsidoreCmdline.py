@@ -92,6 +92,7 @@ class IsidoreCmdline:
 
             # Read input
             try:
+
                 line = shlex.split(input(display_prompt))
                 # Dont touch this causes an infinite loop
                 # line = shlex.split(readline.get_line_buffer())
@@ -112,10 +113,12 @@ class IsidoreCmdline:
 
             # Process input
             if line == []:
+                self.at_root_prompt = True
+                self.current_commands = self.root_commands
                 continue
             elif line == ['end']:
-                # self.at_root_prompt = True
-                # self.current_commands = self.root_commands
+                self.at_root_prompt = True
+                self.current_commands = self.root_commands
                 return
             elif line == ['quit']:
                 exit()
