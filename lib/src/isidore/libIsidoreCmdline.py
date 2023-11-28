@@ -138,7 +138,9 @@ quit        exit''')
         self.at_root_prompt = True
         self.current_commands = self.root_commands
         readline.set_completer(self.completer)
-        self.subprompt([], self.rootprompt)
+
+        # Debugging: Print the current commands at startup
+        print(f"Current commands at startup: {self.current_commands}")
 
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
@@ -148,9 +150,6 @@ quit        exit''')
 
     # >
     def rootprompt(self, args):
-        self.at_root_prompt = True
-        self.current_commands = self.root_commands
-        readline.set_completer(self.completer)
         # Parse inut
         if args[0] == '?':
             self.help(args)
