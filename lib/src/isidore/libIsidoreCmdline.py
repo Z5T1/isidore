@@ -114,8 +114,6 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
-                self.at_root_prompt = True
-                self.current_commands = self.root_commands
                 return
             elif line == ['quit']:
                 exit()
