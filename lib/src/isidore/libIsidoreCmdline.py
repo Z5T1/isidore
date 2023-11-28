@@ -153,6 +153,11 @@ quit        exit''')
 
     # >
     def rootprompt(self, args):
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
+
+        self.at_root_prompt = True
+        self.current_commands = self.root_commands
         # Parse inut
         if args[0] == '?':
             self.help(args)
