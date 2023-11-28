@@ -148,6 +148,8 @@ quit        exit''')
     # >
     def rootprompt(self, args):
         self.at_root_prompt = True
+        self.current_commands = self.root_commands
+        readline.set_completer(self.completer)
         # Parse inut
         if args[0] == '?':
             self.help(args)
