@@ -135,7 +135,7 @@ quit        exit''')
 
     # Start an interactive prompt
     def prompt(self):
-
+        readline.set_completer(self.completer)
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
 
@@ -147,7 +147,6 @@ quit        exit''')
             if motd != None:
                 print(motd)
 
-        self.subprompt([], self.rootprompt)
 
     # >
     def rootprompt(self, args):
