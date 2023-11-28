@@ -49,6 +49,10 @@ history_file = os.path.expanduser("~/.isidore_history")
 isidore = Isidore.fromConfigFile(args.config)
 cmd = IsidoreCmdline(isidore)
 
+
+# Debugging: Check if readline completer is set
+print("Readline completer before prompt:", readline.get_completer())
+
 # Process command
 if args.command == []:
     # No command was given on the command line arguments. Start the main loop
@@ -58,3 +62,5 @@ else:
     # Process the one command given on the command line arguments and exit.
     cmd.rootprompt(args.command)
 
+# Debugging: Check if readline completer is set after prompt
+print("Readline completer after prompt:", readline.get_completer())
