@@ -39,7 +39,8 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
-        self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
+        self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
+                              'version']
         self.subprompt_commands = {
             'delete': ['host', 'tag']
         }
@@ -126,7 +127,11 @@ class IsidoreCmdline:
 ^D          alias for end
 end         go back to the previous prompt
 quit        exit''')
-            func(prompt + line)
+            else:
+                func(prompt + line)
+            self.at_root_prompt = True
+            self.current_commands = self.root_commands
+            readline.set_completer(self.completer)
 
     # Start an interactive prompt
     def prompt(self):
