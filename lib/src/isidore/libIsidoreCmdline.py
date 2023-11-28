@@ -127,8 +127,8 @@ end         go back to the previous prompt
 quit        exit''')
             else:
                 func(prompt + line)
-            self.at_root_prompt = True
-            self.current_commands = self.root_commands
+        self.at_root_prompt = True
+        self.current_commands = self.root_commands
 
     # Start an interactive prompt
     def prompt(self):
