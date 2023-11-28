@@ -49,11 +49,19 @@ class IsidoreCmdline:
         readline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
-        if self.at_root_prompt:
-            options = [command for command in self.root_commands if command.startswith(text)]
+        print(f"Completer called with text: '{text}', state: {state}")
+        options = [command for command in self.current_commands if command.startswith(text)]
+        print(f"Options for completion: {options}")
+
+        if state < len(options):
+            # Debugging: Print the option being returned
+            print(f"Returning option: {options[state]}")
+            return options[state]
         else:
-            options = []
-        return options[state] if state < len(options) else None
+            # Debugging: Indicate no more options
+            print("No more options available.")
+            return None
+
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
