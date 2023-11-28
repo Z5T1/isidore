@@ -79,7 +79,6 @@ class IsidoreCmdline:
         self.at_root_prompt = False
         subprompt_name = prompt[0] if prompt else ''
         self.current_commands = self.subprompt_commands.get(subprompt_name, [])
-        readline.set_completer(self.completer)
 
         line = []
         while line != ['end']:
@@ -117,7 +116,6 @@ class IsidoreCmdline:
             elif line == ['end']:
                 self.at_root_prompt = True
                 self.current_commands = self.root_commands
-                readline.set_completer(self.completer)
                 return
             elif line == ['quit']:
                 exit()
@@ -131,13 +129,11 @@ quit        exit''')
                 func(prompt + line)
             self.at_root_prompt = True
             self.current_commands = self.root_commands
-            readline.set_completer(self.completer)
 
     # Start an interactive prompt
     def prompt(self):
         self.at_root_prompt = True
         self.current_commands = self.root_commands
-        readline.set_completer(self.completer)
 
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
@@ -147,13 +143,7 @@ quit        exit''')
 
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
-            self.at_root_prompt = True
-            self.current_commands = self.root_commands
-            readline.set_completer(self.completer)
             if motd != None:
-                self.at_root_prompt = True
-                self.current_commands = self.root_commands
-                readline.set_completer(self.completer)
                 print(motd)
 
         self.subprompt([], self.rootprompt)
