@@ -45,6 +45,7 @@ class IsidoreCmdline:
         self.subprompt_commands = {
             'delete': ['host', 'tag']
         }
+        self.prompt_stack = []
         self.current_commands = self.root_commands
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
@@ -74,6 +75,8 @@ class IsidoreCmdline:
     # @param func       The function to use to process input from
     #                   the subprompt.
     def subprompt(self, prompt, func):
+        # Push the current state onto the stack
+        self.prompt_stack.append((self.at_root_prompt, self.current_commands))
         self.at_root_prompt = False
         subprompt_name = prompt[0] if prompt else ''
         self.current_commands = self.subprompt_commands.get(subprompt_name, [])
@@ -112,8 +115,7 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
-                # self.at_root_prompt = False
-                # self.current_commands = self.subprompt_commands.get(subprompt_name, [])
+                self.at_root_prompt, self.current_commands = self.prompt_stack.pop()
                 return
             elif line == ['quit']:
                 exit()
