@@ -134,6 +134,7 @@ quit        exit''')
     def prompt(self):
         self.at_root_prompt = True
         self.current_commands = self.root_commands
+        readline.set_completer(self.completer)
 
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
