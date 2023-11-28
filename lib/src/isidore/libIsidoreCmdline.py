@@ -147,6 +147,10 @@ quit        exit''')
 
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
+            self.at_root_prompt = True
+            self.current_commands = self.root_commands
+            readline.set_completer(self.completer)
+
             if motd != None:
                 print(motd)
         self.subprompt([], self.rootprompt)
