@@ -39,6 +39,8 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
         self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
                               'version']
         self.subprompt_commands = {
@@ -46,8 +48,6 @@ class IsidoreCmdline:
         }
         self.at_root_prompt = True
         self.current_commands = self.root_commands
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
         print(f"Completer called with text: '{text}', state: {state}")
@@ -132,12 +132,11 @@ quit        exit''')
 
     # Start an interactive prompt
     def prompt(self):
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
+
         self.at_root_prompt = True
         self.current_commands = self.root_commands
-        readline.set_completer(self.completer)
-        readline.set_completer_delims('')  # Set completer delimiters to empty
-        readline.redisplay()  # Force redisplay
-        readline.insert_text('')  # Insert empty text to trigger completer
 
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
