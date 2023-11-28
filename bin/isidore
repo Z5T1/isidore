@@ -45,7 +45,7 @@ except FileNotFoundError:
 atexit.register(readline.write_history_file, history_file)
 
 # Setup
-readline.parse_and_bind('set editing-mode vi')
+#readline.parse_and_bind('set editing-mode vi')
 isidore = Isidore.fromConfigFile(args.config)
 cmd = IsidoreCmdline(isidore)
 
