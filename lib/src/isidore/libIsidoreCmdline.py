@@ -92,7 +92,6 @@ class IsidoreCmdline:
 
             # Read input
             try:
-
                 line = shlex.split(input(display_prompt))
                 # Dont touch this causes an infinite loop
                 # line = shlex.split(readline.get_line_buffer())
@@ -113,8 +112,6 @@ class IsidoreCmdline:
 
             # Process input
             if line == []:
-                self.at_root_prompt = True
-                self.current_commands = self.root_commands
                 continue
             elif line == ['end']:
                 self.at_root_prompt = True
@@ -136,6 +133,10 @@ quit        exit''')
     # Start an interactive prompt
     def prompt(self):
         readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
+
+        self.at_root_prompt = True
+        self.current_commands = self.root_commands
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
 
@@ -147,6 +148,7 @@ quit        exit''')
             if motd != None:
                 print(motd)
 
+        # self.subprompt([], self.rootprompt)
 
     # >
     def rootprompt(self, args):
