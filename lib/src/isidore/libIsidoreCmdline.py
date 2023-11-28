@@ -135,6 +135,9 @@ quit        exit''')
         self.at_root_prompt = True
         self.current_commands = self.root_commands
         readline.set_completer(self.completer)
+        readline.set_completer_delims('')  # Set completer delimiters to empty
+        readline.redisplay()  # Force redisplay
+        readline.insert_text('')  # Insert empty text to trigger completer
 
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
