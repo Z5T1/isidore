@@ -114,8 +114,8 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
-                self.at_root_prompt = True
-                self.current_commands = self.root_commands
+                # self.at_root_prompt = True
+                # self.current_commands = self.root_commands
                 return
             elif line == ['quit']:
                 exit()
@@ -148,11 +148,11 @@ quit        exit''')
 
     # >
     def rootprompt(self, args):
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
-
-        self.at_root_prompt = True
-        self.current_commands = self.root_commands
+        # readline.set_completer(self.completer)
+        # readline.parse_and_bind("tab: complete")
+        #
+        # self.at_root_prompt = True
+        # self.current_commands = self.root_commands
         # Parse inut
         if args[0] == '?':
             self.help(args)
