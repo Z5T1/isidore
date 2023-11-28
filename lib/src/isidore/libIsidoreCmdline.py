@@ -39,29 +39,6 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
-        self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag',
-                              'version']
-        self.subprompt_commands = {
-            'delete': ['host', 'tag']
-        }
-        self.at_root_prompt = True
-        self.current_commands = self.root_commands
-
-    def completer(self, text, state):
-        print(f"Completer called with text: '{text}', state: {state}")
-        options = [command for command in self.current_commands if command.startswith(text)]
-        print(f"Options for completion: {options}")
-
-        if state < len(options):
-            # Debugging: Print the option being returned
-            print(f"Returning option: {options[state]}")
-            return options[state]
-        else:
-            # Debugging: Indicate no more options
-            print("No more options available.")
-            return None
 
 
     # Gets the Isidore Command Prompt version
@@ -76,9 +53,6 @@ class IsidoreCmdline:
     # @param func       The function to use to process input from
     #                   the subprompt.
     def subprompt(self, prompt, func):
-        self.at_root_prompt = False
-        subprompt_name = prompt[0] if prompt else ''
-        self.current_commands = self.subprompt_commands.get(subprompt_name, [])
 
         line = []
         while line != ['end']:
@@ -114,8 +88,8 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
-                self.at_root_prompt = False
-                self.current_commands = self.subprompt_commands.get(subprompt_name, [])
+                # self.at_root_prompt = False
+                # self.current_commands = self.subprompt_commands.get(subprompt_name, [])
                 return
             elif line == ['quit']:
                 exit()
@@ -127,20 +101,9 @@ end         go back to the previous prompt
 quit        exit''')
             else:
                 func(prompt + line)
-            readline.set_completer(self.completer)
-            readline.parse_and_bind("tab: complete")
-            self.at_root_prompt = True
-            self.current_commands = self.root_commands
 
     # Start an interactive prompt
     def prompt(self):
-
-        # Debugging: Print the current commands at startup
-        print(f"Current commands at startup: {self.current_commands}")
-
-        print(readline.get_completer())
-        print(readline.get_completion_type())
-
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
             if motd != None:
@@ -150,11 +113,6 @@ quit        exit''')
 
     # >
     def rootprompt(self, args):
-        # readline.set_completer(self.completer)
-        # readline.parse_and_bind("tab: complete")
-        #
-        # self.at_root_prompt = True
-        # self.current_commands = self.root_commands
         # Parse inut
         if args[0] == '?':
             self.help(args)
