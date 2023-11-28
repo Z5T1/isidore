@@ -132,11 +132,6 @@ quit        exit''')
 
     # Start an interactive prompt
     def prompt(self):
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
-
-        self.at_root_prompt = True
-        self.current_commands = self.root_commands
 
         # Debugging: Print the current commands at startup
         print(f"Current commands at startup: {self.current_commands}")
