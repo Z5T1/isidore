@@ -129,6 +129,8 @@ quit        exit''')
                 self.process_command(line[0])
                 func(prompt + line)
 
+        self.at_root_prompt, self.current_commands = self.prompt_stack.pop()
+
     # Start an interactive prompt
     def prompt(self):
         if sys.stdin.isatty():
