@@ -39,7 +39,28 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
+        self.at_root_prompt = True
+        self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show',
+                                  'tag', 'version']
+        self.subprompt_commands = {
+            'delete': ['host', 'tag']
+        }
+        self.current_commands = self.root_commands
+        readline.set_completer(self.completer)
+        readline.parse_and_bind("tab: complete")
 
+    def completer(self, text, state):
+        options = [command for command in self.current_commands if command.startswith(text)]
+        if state < len(options):
+            return options[state]
+        else:
+            return None
+
+    def process_command(self, command):
+        if command in self.subprompt_commands:
+            self.current_commands = self.subprompt_commands[command]
+        else:
+            self.current_commands = self.root_commands
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -53,6 +74,9 @@ class IsidoreCmdline:
     # @param func       The function to use to process input from
     #                   the subprompt.
     def subprompt(self, prompt, func):
+        self.at_root_prompt = False
+        subprompt_name = prompt[0] if prompt else ''
+        self.current_commands = self.subprompt_commands.get(subprompt_name, [])
 
         line = []
         while line != ['end']:
@@ -101,6 +125,8 @@ end         go back to the previous prompt
 quit        exit''')
             else:
                 func(prompt + line)
+            self.at_root_prompt = True
+            self.current_commands = self.root_commands
 
     # Start an interactive prompt
     def prompt(self):
