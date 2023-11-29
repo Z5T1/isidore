@@ -47,6 +47,7 @@ class IsidoreCmdline:
         }
         self.prompt_stack = []
         self.current_commands = self.root_commands
+        self.current_subprompt = None  # Track the current subprompt level
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
 
@@ -78,8 +79,8 @@ class IsidoreCmdline:
         # Push the current state onto the stack
         self.prompt_stack.append((self.at_root_prompt, self.current_commands))
         self.at_root_prompt = False
-        subprompt_name = prompt[0] if prompt else ''
-        self.current_commands = self.subprompt_commands.get(subprompt_name, [])
+        self.current_subprompt = prompt[0] if prompt else None
+        self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
 
         line = []
         while line != ['end']:
@@ -115,7 +116,11 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
-                self.at_root_prompt, self.current_commands = self.prompt_stack.pop()
+                # Restore the state from before entering the subprompt
+                self.at_root_prompt, self.current_commands, self.current_subprompt = self.prompt_stack.pop()
+                if self.current_subprompt:
+                    # Update commands to match the current subprompt level
+                    self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
                 return
             elif line == ['quit']:
                 exit()
