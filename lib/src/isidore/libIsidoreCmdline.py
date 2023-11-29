@@ -77,7 +77,7 @@ class IsidoreCmdline:
     #                   the subprompt.
     def subprompt(self, prompt, func):
         # Push the current state onto the stack
-        self.prompt_stack.append((self.at_root_prompt, self.current_commands))
+        self.prompt_stack.append((self.at_root_prompt, self.current_commands, self.current_subprompt))
         self.at_root_prompt = False
         self.current_subprompt = prompt[0] if prompt else None
         self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
