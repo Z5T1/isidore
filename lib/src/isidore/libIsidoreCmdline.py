@@ -124,7 +124,7 @@ class IsidoreCmdline:
                 if self.at_root_prompt:
                     # If back at the root prompt, set commands to root commands
                     self.current_commands = self.root_commands
-                elif self.current_subprompt:
+                else:
                     # If in a higher-level subprompt, set commands accordingly
                     self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
                 return
@@ -140,7 +140,6 @@ quit        exit''')
                 if line[0] in self.subprompt_commands:
                     self.subprompt(prompt + line, func)
                 else:
-                    self.process_command(line[0])
                     func(prompt + line)
 
         self.at_root_prompt, self.current_commands = self.prompt_stack.pop()
