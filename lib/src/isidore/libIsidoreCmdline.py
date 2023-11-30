@@ -52,6 +52,8 @@ class IsidoreCmdline:
         readline.parse_and_bind("tab: complete")
 
     def completer(self, text, state):
+        if not self.current_commands:
+            return None # Disabled tab complete if sub prompt is empty (MAYBE)
         options = [command for command in self.current_commands if command.startswith(text)]
         if state < len(options):
             return options[state]
