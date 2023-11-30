@@ -59,8 +59,9 @@ class IsidoreCmdline:
             return None
 
     def process_command(self, command):
-        if command in self.subprompt_commands:
-            self.current_commands = self.subprompt_commands[command]
+        if self.at_root_prompt:
+            if command in self.subprompt_commands:
+                self.current_commands = self.subprompt_commands[command]
         else:
             self.current_commands = self.root_commands
 
