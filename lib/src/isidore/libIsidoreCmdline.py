@@ -43,7 +43,13 @@ class IsidoreCmdline:
         self.root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show',
                                   'tag', 'version']
         self.subprompt_commands = {
-            'delete': ['host', 'tag']
+            'delete': {
+                'commands': ['host', 'tag'],
+                'subcommands': {
+                    'host': ['end', 'quit'],
+                    'tag': ['end', 'quit']
+                }
+            }
         }
         self.prompt_stack = []
         self.current_commands = self.root_commands
@@ -83,7 +89,7 @@ class IsidoreCmdline:
     #                   arguments before passing to func.
     # @param func       The function to use to process input from
     #                   the subprompt.
-    def subprompt(self, prompt, func):
+    def subprompt(self, prompt, func, sub_sub_prompt=None):
         # Push the current state onto the stack
         self.prompt_stack.append((self.at_root_prompt, self.current_commands, self.current_subprompt))
         self.at_root_prompt = False
@@ -93,10 +99,17 @@ class IsidoreCmdline:
         #Debugging
         print("Entering subprompt with prompt:", prompt)
 
-        if not self.subprompt_commands.get(self.current_subprompt):
-            self.current_commands = self.root_commands
+        if sub_sub_prompt:
+            self.current_commands = sub_sub_prompt
+        elif self.current_subprompt in self.subprompt_commands:
+            self.current_commands = self.subprompt_commands[self.current_subprompt].get('commands', [])
         else:
-            self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
+            self.current_commands = self.root_commands
+
+        # if not self.subprompt_commands.get(self.current_subprompt):
+        #     self.current_commands = self.root_commands
+        # else:
+        #     self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
 
         line = []
         while line != ['end']:
@@ -139,7 +152,8 @@ class IsidoreCmdline:
                     self.current_commands = self.root_commands
                 else:
                     # If in a higher-level subprompt, set commands accordingly
-                    self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
+                    self.current_commands = self.subprompt_commands.get(self.current_subprompt, {}).get('commands', [])
+                    return
                 return
             elif line == ['quit']:
                 exit()
