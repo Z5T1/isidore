@@ -59,10 +59,12 @@ class IsidoreCmdline:
             return None
 
     def process_command(self, command):
-        if self.at_root_prompt:
-            if command in self.subprompt_commands:
-                self.current_commands = self.subprompt_commands[command]
-        else:
+        # Check if the command is a subprompt command
+        if command in self.subprompt_commands:
+            # Update current commands for the subprompt
+            self.current_commands = self.subprompt_commands[command]
+        elif self.at_root_prompt:
+            # Restore root commands if at root prompt
             self.current_commands = self.root_commands
 
     # Gets the Isidore Command Prompt version
