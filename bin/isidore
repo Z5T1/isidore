@@ -57,9 +57,13 @@ print("Readline completer before prompt:", readline.get_completer())
 if args.command == []:
     # No command was given on the command line arguments. Start the main loop
     # to read commands from stdin.
+    #Debugging
+    print("No command line arguments. Entering interactive mode.")
     cmd.prompt()
 else:
     # Process the one command given on the command line arguments and exit.
+    # Debugging
+    print("Processing command line argument:", args.command)
     cmd.rootprompt(args.command)
 
 # Debugging: Check if readline completer is set after prompt
