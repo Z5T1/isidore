@@ -121,8 +121,11 @@ class IsidoreCmdline:
             elif line == ['end']:
                 # Restore the state from before entering the subprompt
                 self.at_root_prompt, self.current_commands, self.current_subprompt = self.prompt_stack.pop()
-                if self.current_subprompt:
-                    # Update commands to match the current subprompt level
+                if self.at_root_prompt:
+                    # If back at the root prompt, set commands to root commands
+                    self.current_commands = self.root_commands
+                elif self.current_subprompt:
+                    # If in a higher-level subprompt, set commands accordingly
                     self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
                 return
             elif line == ['quit']:
