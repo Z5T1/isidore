@@ -132,8 +132,11 @@ class IsidoreCmdline:
 end         go back to the previous prompt
 quit        exit''')
             else:
-                self.process_command(line[0])
-                func(prompt + line)
+                if line[0] in self.subprompt_commands:
+                    self.subprompt(prompt + line, func)
+                else:
+                    self.process_command(line[0])
+                    func(prompt + line)
 
         self.at_root_prompt, self.current_commands = self.prompt_stack.pop()
 
