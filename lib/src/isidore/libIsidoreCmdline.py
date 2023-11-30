@@ -50,7 +50,8 @@ class IsidoreCmdline:
         self.current_subprompt = None  # Track the current subprompt level
         readline.set_completer(self.completer)
         readline.parse_and_bind("tab: complete")
-        #Debugging
+
+        # Debugging
         print("Initialization complete. Root commands:", self.root_commands)
 
     def completer(self, text, state):
@@ -91,6 +92,11 @@ class IsidoreCmdline:
 
         #Debugging
         print("Entering subprompt with prompt:", prompt)
+
+        if not self.subprompt_commands.get(self.current_subprompt):
+            self.current_commands = self.root_commands
+        else:
+            self.current_commands = self.subprompt_commands.get(self.current_subprompt, [])
 
         line = []
         while line != ['end']:
