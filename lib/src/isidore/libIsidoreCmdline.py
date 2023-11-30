@@ -142,6 +142,12 @@ quit        exit''')
                 else:
                     func(prompt + line)
 
+        # Restores the state from before entering the subprompt
+        self.at_root_prompt, self.current_commands, self.current_subprompt = self.prompt_stack.pop()
+        if self.at_root_prompt:
+            # If back at the root prompt, set commands to root commands
+            self.current_commands = self.root_commands
+
     # Start an interactive prompt
     def prompt(self):
         if sys.stdin.isatty():
