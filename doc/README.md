@@ -1,0 +1,63 @@
+Isidore Documentation
+=====================
+
+Table of Contents
+-----------------
+
+1. [Installation](install.md)
+2. [Getting Started](getting_started.md)
+   1. [Overview of Isidore's Design](getting_started.md#1-overview-of-isidores-design)
+   2. [Isidore Command Prompt Basics](getting_started.md#2-isidore-command-prompt-basics)
+3. [Managing Hosts](hosts.md)
+   1. [Creating Hosts](hosts.md#1-creating-hosts)
+   2. [Setting Host Attributes](hosts.md#2-setting-host-attributes)
+      1. [Decommissioning a Host](hosts.md#1-decommissioning-a-host)
+   3. [Viewing Host Attributes](hosts.md#3-viewing-host-attributes)
+   4. [Renaming Hosts](hosts.md#4-renaming-hosts)
+   5. [Deleting Hosts](hosts.md#5-deleting-hosts)
+4. [Managing Tags](tags.md)
+   1. [Creating Tags](tags.md#1-creating-tags)
+   2. [Setting Tag Attributes](tags.md#2-setting-tag-attributes)
+   3. [Viewing Tag Attributes](tags.md#3-viewing-tag-attributes)
+   4. [Tag Groups](tags.md#4-tag-groups)
+   5. [Renaming Tags](tags.md#5-renaming-tags)
+   6. [Deleting Tags](tags.md#6-deleting-tags)
+5. [Assigning Tags to Hosts](assigning.md)
+   1. [Assigning Tags to a Host](assigning.md#1-assigning-tags-to-a-host)
+   2. [Listing Tags Assigned to a Host](assigning.md#2-listing-tags-assigned-to-a-host)
+   3. [Assigning Hosts to a Tag](assigning.md#3-assigning-hosts-to-a-tag)
+   4. [Listing Hosts Assigned to a Tag](assigning.md#4-listing-hosts-assigned-to-a-tag)
+6. [Querying Data](query.md)
+   1. [Listing Hosts](query.md#1-listing-hosts)
+   2. [Listing Tags](query.md#2-listing-tags)
+   3. [Printing the Inventory](query.md#3-printing-the-inventory)
+   4. [Printing the Isidore Configuration](query.md#4-printing-the-isidore-configuration)
+7. [Variables](variables.md)
+   1. [Overview of Variables in Isidore](variables.md#1-overview-of-variables-in-isidore)
+   2. [Setting Variables](variables.md#2-setting-variables)
+      1. [Set Examples](variables.md#1-set-examples)
+   3. [Displaying Variables](variables.md#3-displaying-variables)
+      1. [Display Examples](variables.md#1-display-examples)
+   4. [Appending to List Variables](variables.md#4-appending-to-list-variables)
+   5. [Unsetting Variables](variables.md#5-unsetting-variables)
+8. [Maintenance](maintenance.md)
+   1. [Upgrading Isidore](maintenance.md#1-upgrading)
+      1. [Export the Current Configuration](maintenance.md#1-export-the-current-configuration)
+      2. [Upgrade the Database](maintenance.md#2-upgrade-the-database)
+      3. [Upgrade libIsidore and the Isidore Command Prompt](maintenance.md#3-upgrade-libisidore-and-the-isidore-command-prompt)
+      4. [Import the Current Configuration](maintenance.md#4-import-the-current-configuration)
+9. [Configuring the Isidore Installation](config.md)
+   1. [Overview](config.md#1-overview)
+   2. [Querying Information About the Installation](config.md#2-querying-information-about-the-installation)
+      1. [Database Connection Information](config.md#1-database-connection-information)
+      2. [Version Information](config.md#2-version-information)
+   3. [Message of the Day](config.md#3-message-of-the-day)
+   4. [Instance Name](config.md#4-instance-name)
+
+Appendecies
+-----------
+
+1. [About](about.md)
+2. [Authors](authors.md)
+3. [Example Configuration](example.md)
+

@@ -1,0 +1,6 @@
+[database]
+user = isidore
+password = password
+host = localhost
+database = isidore
+
