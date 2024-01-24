@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isidore"
+version = "0.1.6"
+keywords = [ "ansible", "inventory", "database", "isidore" ]
+authors = [
+  { name="Scott Court", email="Z5T1@Z5T1.com" },
+]
+description = "database, API, and CLI suite for managing Ansible inventories"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+	"mysql-connector-python",
+	"pyyaml"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Z5T1/isidore"
+"Bug Tracker" = "https://github.com/Z5T1/isidore/issues"
+"Documentation" = "https://github.com/Z5T1/isidore/blob/master/doc/README.md"
+"Discord" = "https://discord.gg/c357N3JQFJ"
+"Source Code" = "https://github.com/Z5T1/isidore"
+
