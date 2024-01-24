@@ -2,3 +2,7 @@ cmd_sample.txt
 db/test_data.sql
 *.swp
 __pycache__
+.idea/
+.vagrant/
+Vagrantfile
+.gitignore
