@@ -24,6 +24,7 @@ import shlex
 import sys
 import traceback
 import datetime
+import readline
 
 from isidore.libIsidore import *
 
@@ -38,6 +39,22 @@ class IsidoreCmdline:
     #                   to connect to.
     def __init__(self, isidore):
         self._isidore = isidore
+        self._root_commands = ['config', 'create', 'delete', 'describe', 'echo', 'help', 'host', 'rename', 'show', 'tag', 'version']
+        self._subcommands = {
+            'config': ['show', 'set', 'end', 'quit'],
+            'create': ['host', 'tag', 'end', 'quit'],
+            'delete': ['host', 'tag', 'end', 'quit'],
+            'describe': ['hosts', 'graveyard', 'tag-groups', 'tags', 'end', 'quit'],
+            'echo': ['end', 'quit'],
+            'help': [],
+            'host': ['end', 'quit'],
+            'rename': ['host', 'tag', 'end', 'quit'],
+            'tag': ['end', 'quit'],
+            'show': ['hosts', 'graveyard', 'tag-groups', 'tags', 'end', 'quit'],
+            'version': ['host', 'tag', 'end', 'quit'],
+            # Add other commands and subcommands here...
+        }
+        self.current_context = []
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
@@ -51,6 +68,13 @@ class IsidoreCmdline:
     # @param func       The function to use to process input from
     #                   the subprompt.
     def subprompt(self, prompt, func):
+        context = prompt.copy()
+
+        def custom_complete(text, state):
+            return self._complete(text, state, context)
+
+        readline.set_completer(custom_complete)
+
         line = []
         while line != ['end']:
             # Determine prompt
@@ -83,6 +107,8 @@ class IsidoreCmdline:
             if line == []:
                 continue
             elif line == ['end']:
+                if self.current_context:
+                    self.current_context.pop()
                 return
             elif line == ['quit']:
                 exit()
@@ -94,30 +120,107 @@ end         go back to the previous prompt
 quit        exit''')
 
             func(prompt + line)
+        readline.set_completer(lambda text, state: self._complete(text, state, []))
+
+    def get_host_names(self):
+        # Fetch host names from the database using libIsidore
+        try:
+            # Assuming there is a method in libIsidore to get all hosts
+            hosts = self._isidore.getHosts()
+            return [host.getHostname() for host in hosts]
+        except Exception as e:
+            print(f"Error fetching host names: {e}", file=sys.stderr)
+            return []
+
+    def _get_subcommand_options(self, context):
+        options = []
+        if not context:
+            return options
+
+        last_cmd = context[-1]
+        if last_cmd in self._root_commands:
+            options = self._subcommands.get(last_cmd, [])
+        elif last_cmd in self._subcommands:
+            options = self._subcommands[last_cmd]
+
+        return options
+
+    def _complete(self, text, state, context):
+        buffer = readline.get_line_buffer()
+        line = shlex.split(buffer)
+
+        options = []
+        if not self.current_context:
+            options = [cmd + ' ' for cmd in self._root_commands if cmd.startswith(text)]
+        else:
+            current_cmd = self.current_context[-1]
+            if current_cmd == 'host':
+                # Fetch and suggest host names
+                host_names = self.get_host_names()
+                options = [host for host in host_names if host.startswith(text)]
+            elif len(self.current_context) == 1:
+                # Direct subcommand of a root command
+                subcmds = self._subcommands.get(current_cmd, [])
+                options = [cmd for cmd in subcmds if cmd.startswith(text)]
+            else:
+                # Deeper subcommand, adjust logic accordingly
+                # For example, handling 'config show>' sub-menu
+                if self.current_context[0] == 'config' and self.current_context[1] == 'show':
+                    deeper_subcmds = ['connection', 'motd', 'name', 'version', 'end', 'quit']
+                    options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+                elif self.current_context[0] == 'config' and self.current_context[1] == 'set':
+                    deeper_subcmds = ['name', 'motd', 'end', 'quit']
+                    options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+                elif self.current_context[0] == 'create' and self.current_context[1] == 'host':
+                    deeper_subcmds = ['end', 'quit']
+                    options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+                elif self.current_context[0] == 'create' and self.current_context[1] == 'tag':
+                    deeper_subcmds = ['end', 'quit']
+                    options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+                elif self.current_context[0] == 'host':
+                    host_names = self.get_host_names()
+                    options = [host for host in host_names if host.startswith(text)]
+                    if not self.current_context[1] in options:
+                        deeper_subcmds = ['describe', 'set', 'show', 'tag', 'var','end', 'quit']
+                        options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+                # Add similar conditions for other deeper subcommands
+        if state < len(options):
+            return options[state]
+        else:
+            return None
 
     # Start an interactive prompt
     def prompt(self):
+        readline.set_completer(self._complete)
+        readline.parse_and_bind("tab: complete")
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
             if motd != None:
                 print(motd)
+
         self.subprompt([], self.rootprompt)
 
     # >
     def rootprompt(self, args):
-
+        print(args)
         # Parse inut
         if args[0] == '?':
             self.help(args)
         elif args[0] == 'config':
+            self.current_context.append('config')
+            print(self.current_context)
             self.config(args)
         elif args[0] == 'create':
+            self.current_context.append('create')
             self.create(args)
         elif args[0] == 'delete':
+            self.current_context.append('delete')
             self.delete(args)
         elif args[0] == 'describe':
+            self.current_context.append('describe')
             self.describe(args)
         elif args[0] == 'echo':
+            self.current_context.append('echo')
             self.echo(args)
         elif args[0] == 'help':
             print('''\
@@ -127,12 +230,17 @@ prompt.
 ''')
             self.help(args)
         elif args[0] == 'host':
+            self.current_context.append('host')
             self.host(args)
         elif args[0] == 'rename':
+            self.current_context.append('rename')
             self.rename(args)
         elif args[0] == 'show':
+            self.current_context.append('show')
+            print(self.current_context)
             self.show(args)
         elif args[0] == 'tag':
+            self.current_context.append('tag')
             self.tag(args)
         elif args[0] == 'version':
             self.version(args)
@@ -194,9 +302,9 @@ tags        print all tags in the database''')
 
     # > show config
     def show_config(self, args):
+
         hosts = self._isidore.getHosts()
         tags = self._isidore.getTags()
-
         # Isidore Configuration
 
         ## Header
@@ -244,7 +352,7 @@ tags        print all tags in the database''')
                     (name,
                     'none' if group == None
                         else group.replace("'", "'\"'\"'")))
-            print("tag %s set description '%s'" % 
+            print("tag %s set description '%s'" %
                     (name,
                     'none' if description == None
                         else description.replace("'", "'\"'\"'")))
@@ -390,14 +498,17 @@ tags        describe all tags in the database''')
     def config(self, args):
         if len(args) == 1:
             self.subprompt(args, self.config)
+            print(self.current_context)
         elif args[1] == '?':
             print('''\
 ?           print this help message
 show        print various data about the Isidore installation
 set         modify the Isidore installation''')
         elif args[1] == 'show':
+            self.current_context.append('show')
             self.config_show(args)
         elif args[1] == 'set':
+            self.current_context.append('set')
             self.config_set(args)
         elif args[1] == 'terminal':
             print("I have no idea what you're talking about.")
@@ -470,8 +581,10 @@ version     display Isidore version information''')
 host        create a new host
 tag         create a new tag''')
         elif args[1] == 'host':
+            self.current_context.append('host')
             self.create_host(args)
         elif args[1] == 'tag':
+            self.current_context.append('tag')
             self.create_tag(args)
         else:
             print('Invalid argument '+args[1]+'. Enter ? for help.', file=sys.stderr)
@@ -621,6 +734,7 @@ tag         delete a tag''')
 <hostname>  the name of the host to edit''')
             return
         host = self._isidore.getHost(args[1])
+        self.current_context.append(host)
         if host == None:
             print('Host '+args[1]+' does not exist!')
             return
@@ -1386,4 +1500,3 @@ or
             print('Isidore Command Prompt version: '+self.getVersion())
             print('libIsidore version: '+self._isidore.getVersion())
             print('Isidore database version: '+self._isidore.getDatabaseVersion())
-
