@@ -54,6 +54,23 @@ class IsidoreCmdline:
             'version': ['host', 'tag', 'end', 'quit'],
             # Add other commands and subcommands here...
         }
+        self._sub_host_commands = {
+            'show': ['all', 'commissioned', 'description', 'decommissioned', 'tags', 'end','quit'],
+            'describe': ['tags', 'end', 'quit'],
+            'set': ['commissioned', 'description', 'decommissioned', 'end', 'quit'],
+            'tag': ['add', 'list', 'list-detail', 'remove', 'end', 'quit'],
+            'var': ['append', 'print','set','unset', 'end', 'quit'],
+            'quit': [],
+            'end': [],
+            # Add other commands and subcommands here...
+        }
+        self._sub_delete_commands = {
+            'host': ['end','quit'],
+            'tag': ['end', 'quit'],
+            'quit': [],
+            'end': [],
+            # Add other commands and subcommands here...
+        }
         self.current_context = []
 
     # Gets the Isidore Command Prompt version
@@ -125,11 +142,19 @@ quit        exit''')
     def get_host_names(self):
         # Fetch host names from the database using libIsidore
         try:
-            # Assuming there is a method in libIsidore to get all hosts
             hosts = self._isidore.getHosts()
             return [host.getHostname() for host in hosts]
         except Exception as e:
             print(f"Error fetching host names: {e}", file=sys.stderr)
+            return []
+
+    def get_tags_names(self):
+        # Fetch tag names from the database using libIsidore
+        try:
+            tags = self._isidore.getTags(groupSort=True)
+            return [tag.getName() for tag in tags]
+        except Exception as e:
+            print(f"Error fetching tag names: {e}", file=sys.stderr)
             return []
 
     def _get_subcommand_options(self, context):
@@ -154,10 +179,13 @@ quit        exit''')
             options = [cmd + ' ' for cmd in self._root_commands if cmd.startswith(text)]
         else:
             current_cmd = self.current_context[-1]
-            if current_cmd == 'host':
+            if self.current_context[0] == 'host':
                 # Fetch and suggest host names
                 host_names = self.get_host_names()
                 options = [host for host in host_names if host.startswith(text)]
+            elif self.current_context[0] == 'tag':
+                tag_names = self.get_tags_names()
+                options = [tag for tag in tag_names if tag.startswith(text)]
             elif len(self.current_context) == 1:
                 # Direct subcommand of a root command
                 subcmds = self._subcommands.get(current_cmd, [])
@@ -168,21 +196,36 @@ quit        exit''')
                 if self.current_context[0] == 'config' and self.current_context[1] == 'show':
                     deeper_subcmds = ['connection', 'motd', 'name', 'version', 'end', 'quit']
                     options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+
                 elif self.current_context[0] == 'config' and self.current_context[1] == 'set':
                     deeper_subcmds = ['name', 'motd', 'end', 'quit']
                     options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+
                 elif self.current_context[0] == 'create' and self.current_context[1] == 'host':
                     deeper_subcmds = ['end', 'quit']
                     options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+
                 elif self.current_context[0] == 'create' and self.current_context[1] == 'tag':
                     deeper_subcmds = ['end', 'quit']
                     options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
-                elif self.current_context[0] == 'host':
-                    host_names = self.get_host_names()
-                    options = [host for host in host_names if host.startswith(text)]
-                    if not self.current_context[1] in options:
-                        deeper_subcmds = ['describe', 'set', 'show', 'tag', 'var','end', 'quit']
+
+                elif self.current_context[0] == 'delete':
+                    subcmds = self._subcommands.get(current_cmd, [])
+                    options = [cmd for cmd in subcmds if cmd.startswith(text)]
+
+                elif self.current_context[0] == 'host' and not self.current_context[1] in options:
+                    deeper_subcmds = ['describe', 'set', 'show', 'tag', 'var','end', 'quit']
+                    # Check if the last element of self.current_context is in the subcommands dictionary
+                    if self.current_context[-1] in self._sub_host_commands and self.current_context[0] == 'host':
+                        # Fetch deeper subcommands based on the last element in the current context
+                        host_subcmds = self._sub_host_commands[self.current_context[-1]]
+                        options = [cmd for cmd in host_subcmds if cmd.startswith(text)]
+                    else:
                         options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
+
+                elif self.current_context[0] == 'tag' and not self.current_context[1] in options:
+                    deeper_subcmds = ['describe', 'set', 'show', 'tag', 'var','end', 'quit']
+                    options = [cmd for cmd in deeper_subcmds if cmd.startswith(text)]
                 # Add similar conditions for other deeper subcommands
         if state < len(options):
             return options[state]
@@ -751,14 +794,20 @@ show        display host attributes
 tag         display and modify this host's tags
 var         display and modify this host's variables''')
         elif args[2] == 'describe':
+            self.current_context.append('describe')
             self.host_describe(args)
         elif args[2] == 'set':
+            self.current_context.append('set')
             self.host_set(args)
         elif args[2] == 'show':
+            print(self.current_context)
+            self.current_context.append('show')
             self.host_show(args)
         elif args[2] == 'tag':
+            self.current_context.append('tag')
             self.host_tag(args)
         elif args[2] == 'var':
+            self.current_context.append('var')
             self.host_var(args)
         else:
             print('Invalid command '+args[2]+'. Enter ? for help.', file=sys.stderr)
@@ -767,6 +816,8 @@ var         display and modify this host's variables''')
     def host_describe(self, args):
         host = self._isidore.getHost(args[1])
         if len(args) == 3:
+            self.current_context.append('describe')
+            print(self.current_context)
             self.subprompt(args, self.host_describe)
         elif args[3] == '?':
             print('''\
@@ -1191,6 +1242,7 @@ Enter ? as any argument help.''', file=sys.stderr)
 <tagname>  the name of the tag to edit''')
             return
         tag = self._isidore.getTag(args[1])
+        self.current_context.append(tag)
         if tag == None:
             print('Tag '+args[1]+' does not exist!')
             return
