@@ -286,6 +286,7 @@ quit        exit''')
 
             func(prompt + line)
 
+
     # Start an interactive prompt
     def prompt(self):
         if sys.stdin.isatty():
