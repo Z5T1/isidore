@@ -24,6 +24,7 @@ import shlex
 import sys
 import traceback
 import datetime
+import readline
 
 from isidore.libIsidore import *
 
@@ -121,6 +122,16 @@ class IsidoreCmdline:
                         'function': self.describe_tags,
                     }
                 }
+            },
+            'echo': {
+                'description': 'Echo command',
+                'args': 'echo',
+                'method': self.echo
+            },
+            'help': {
+                'description': 'Help menu',
+                'args': 'help',
+                'method': self.help
             },
             'create': {
                 'description': 'Create new entities',
@@ -286,14 +297,45 @@ quit        exit''')
 
             func(prompt + line)
 
-
     # Start an interactive prompt
     def prompt(self):
+        self.setup_tab_completion()
         if sys.stdin.isatty():
             motd = self._isidore.getMotd()
             if motd != None:
                 print(motd)
         self.subprompt([], self.rootprompt)
+
+    def _complete_command(self, text, state):
+        buffer = readline.get_line_buffer()
+        line_parts = shlex.split(buffer)[:state + 1] if buffer else []
+
+        options = []
+        current_level = self.navigation
+
+        for part in line_parts[:-1]:  # Traverse through entered parts except the last one
+            if part in current_level and 'subcommands' in current_level[part]:
+                current_level = current_level[part]['subcommands']
+            elif 'subcommands' in current_level and part in current_level['subcommands']:
+                current_level = current_level['subcommands'][part]
+            else:
+                options = []  # Reset options if no subcommands match
+                break
+
+        # Suggest commands or subcommands based on the current level and text
+        if 'subcommands' in current_level:
+            options = [cmd + ' ' for cmd in current_level.keys() if cmd.startswith(text)]
+        elif len(line_parts) == 1:
+            options = [cmd + ' ' for cmd in self.navigation.keys() if cmd.startswith(text)]
+
+        try:
+            return options[state]
+        except IndexError:
+            return None
+
+    def setup_tab_completion(self):
+        readline.set_completer(self._complete_command)
+        readline.parse_and_bind("tab: complete")
 
     # >
     def rootprompt(self, args):
