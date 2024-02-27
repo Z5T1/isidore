@@ -352,19 +352,24 @@ quit        exit''')
 
     # > ?
     def help(self, args):
-        print('''\
-?           print this help message
-config      configure the Isidore installation
-create      create various objects (such as hosts and tags)
-delete      delete various objects (such as hosts and tags)
-describe    print details about various data
-echo        print text back to the console
-help        alias for ?
-host        manipulate a host
-rename      rename various objects (such as hosts and tags)
-show        print various data
-tag         manipulate a tag
-version     display Isidore version information''')
+        help_text = [
+            ('?', 'print this help message'),
+            ('config', 'configure the Isidore installation'),
+            ('create', 'create various objects (such as hosts and tags)'),
+            ('delete', 'delete various objects (such as hosts and tags)'),
+            ('describe', 'print details about various data'),
+            ('echo', 'print text back to the console'),
+            ('help', 'alias for ?'),
+            ('host', 'manipulate a host'),
+            ('rename', 'rename various objects (such as hosts and tags)'),
+            ('show', 'print various data'),
+            ('tag', 'manipulate a tag'),
+            ('version', 'display Isidore version information'),
+        ]
+
+        max_cmd_length = max(len(cmd) for cmd, _ in help_text)
+        for cmd, description in help_text:
+            print(f"{cmd.ljust(max_cmd_length + 4)}{description}")
 
     # > show
     def show(self, args):
