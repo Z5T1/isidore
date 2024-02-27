@@ -303,6 +303,7 @@ quit        exit''')
                 print(motd)
         self.subprompt([], self.rootprompt)
 
+
     # >
     def rootprompt(self, args):
         if args and args[0] in self.navigation:
