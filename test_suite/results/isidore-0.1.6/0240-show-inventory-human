@@ -1,0 +1,65 @@
+> create host foo
+> create host qux
+> create host den
+> create tag bar
+> create tag baz
+> host foo set commissioned "1986-10-21"
+> host qux set commissioned "1986-10-21"
+> host den set commissioned "1986-10-21"
+> host foo set description "Great Scott!"
+> host qux set description "Plutonium"
+> host den set description "Fake Plutonium"
+> host qux set decommissioned "2015-10-21"
+> tag bar set description "Hill Valley, CA"
+> tag bar set group "location"
+> tag baz set description "88 MPH"
+> tag baz set group "max_speed"
+> host foo tag add bar
+> host foo tag add baz
+> host foo var set alpha 1
+> tag bar var set beta 2
+> show inventory human
+all:
+  hosts: []
+  vars:
+    isidore_tag_all:
+      description: Special tag that applies to all hosts. The host list is ignored
+        for this tag; it will always apply to every host in Isidore.
+      group: null
+bar:
+  hosts:
+  - foo
+  vars:
+    beta: 2
+    isidore_tag_bar:
+      description: Hill Valley, CA
+      group: location
+baz:
+  hosts:
+  - foo
+  vars:
+    isidore_tag_baz:
+      description: 88 MPH
+      group: max_speed
+ungrouped:
+  hosts: []
+  vars:
+    isidore_tag_ungrouped:
+      description: Special tag that applies to hosts that do not have a tag. In addition
+        to any hosts assigned to this tag, it will always apply to every host that
+        does not have a tag.
+      group: null
+
+> host foo tag remove bar
+> host foo tag remove baz
+> delete host foo
+Host foo has been deleted.
+> delete host qux
+Host qux has been deleted.
+> delete host den
+Host den has been deleted.
+> delete tag bar
+Tag bar has been deleted.
+> delete tag baz
+Tag baz has been deleted.
+

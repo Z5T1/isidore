@@ -1,0 +1,4 @@
+> config set name "under-test"
+> config show name
+under-test
+

@@ -1,0 +1,23 @@
+echo '> create host foo'
+create host foo
+echo '> host foo var print'
+host foo var print
+echo '> host foo var set alpha 1'
+host foo var set alpha 1
+echo '> host foo var set beta []'
+host foo var set beta []
+echo '> host foo var append beta 2'
+host foo var append beta 2
+echo '> host foo var print'
+host foo var print
+echo '> host foo var unset alpha'
+host foo var unset alpha
+echo '> host foo var print'
+host foo var print
+echo '> host foo var set $ {"gamma": 3}'
+host foo var set $ '{"gamma": 3}'
+echo '> host foo var print'
+host foo var print
+echo '> delete host foo'
+delete host foo
+

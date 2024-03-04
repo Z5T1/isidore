@@ -1,0 +1,7 @@
+> create host foo
+> host foo set decommissioned now
+> show graveyard
+foo
+> delete host foo
+Host foo has been deleted.
+

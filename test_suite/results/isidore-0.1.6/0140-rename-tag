@@ -1,0 +1,17 @@
+> create tag bar
+> rename tag bar
+Rename does not allow for a subprompt for the fourth argument. You must
+enter both the old and new tag names at the same time 
+
+Example:
+    > rename tag foo bar
+
+Enter ? as any argument help.
+> rename tag bar bar2
+> show tags
+all
+bar2
+ungrouped
+> delete tag bar2
+Tag bar2 has been deleted.
+

@@ -1,0 +1,24 @@
+> create host foo
+> host foo var print
+{}
+
+> host foo var set alpha 1
+> host foo var set beta []
+> host foo var append beta 2
+> host foo var print
+beta:
+- 2
+alpha: 1
+
+> host foo var unset alpha
+> host foo var print
+beta:
+- 2
+
+> host foo var set $ {"gamma": 3}
+> host foo var print
+gamma: 3
+
+> delete host foo
+Host foo has been deleted.
+

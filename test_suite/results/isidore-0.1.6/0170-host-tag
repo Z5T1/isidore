@@ -1,0 +1,35 @@
+> create host foo
+> host foo set commissioned 1986-10-21
+> create tag bar
+> tag bar set description Hill Valley, CA
+> tag bar set group location
+> host foo tag add bar
+> host foo tag list
+bar
+> host foo tag list-detail
+- name: bar
+  group: location
+  description: Hill Valley, CA
+
+> host foo show tags
+bar
+> host foo describe tags
+bar: Hill Valley, CA
+
+> host foo show all
+foo:
+  vars:
+    isidore:
+      commissioned: '1986-10-21 00:00:00'
+      decommissioned: null
+      description: null
+      tags:
+        location:
+        - bar
+
+> host foo tag remove bar
+> delete host foo
+Host foo has been deleted.
+> delete tag bar
+Tag bar has been deleted.
+

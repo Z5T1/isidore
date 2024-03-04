@@ -1,0 +1,15 @@
+> create host foo
+> rename host foo
+Rename does not allow for a subprompt for the fourth argument. You must
+enter both the old and new hostnames at the same time 
+
+Example:
+    > rename host foo bar
+
+Enter ? as any argument help.
+> rename host foo foo2
+> show hosts
+foo2
+> delete host foo2
+Host foo2 has been deleted.
+

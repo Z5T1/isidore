@@ -1,0 +1,12 @@
+> create tag bar
+> create tag baz
+> show tags
+all
+bar
+baz
+ungrouped
+> delete tag bar
+Tag bar has been deleted.
+> delete tag baz
+Tag baz has been deleted.
+
