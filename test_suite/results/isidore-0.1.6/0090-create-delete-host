@@ -1,0 +1,6 @@
+> create host foo
+> create host foo
+Host foo already exists
+> delete host foo
+Host foo has been deleted.
+

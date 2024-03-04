@@ -1,0 +1,23 @@
+echo '> create host foo'
+create host foo
+echo '> create tag bar'
+create tag bar
+echo '> host foo set description 'Great Scott!''
+host foo set description 'Great Scott!'
+echo '> tag bar host add foo'
+tag bar host add foo
+echo '> tag bar host list'
+tag bar host list
+echo '> tag bar show hosts'
+tag bar show hosts
+echo '> tag bar describe hosts'
+tag bar describe hosts
+echo '> tag bar show all'
+tag bar show all
+echo '> tag bar host remove foo'
+tag bar host remove foo
+echo '> delete tag bar'
+delete tag bar
+echo '> delete host foo'
+delete host foo
+

@@ -1,0 +1,29 @@
+echo '> create host foo'
+create host foo
+echo '> host foo set commissioned 1986-10-21'
+host foo set commissioned 1986-10-21
+echo '> create tag bar'
+create tag bar
+echo '> tag bar set description 'Hill Valley, CA''
+tag bar set description 'Hill Valley, CA'
+echo '> tag bar set group location'
+tag bar set group location
+echo '> host foo tag add bar'
+host foo tag add bar
+echo '> host foo tag list'
+host foo tag list
+echo '> host foo tag list-detail'
+host foo tag list-detail
+echo '> host foo show tags'
+host foo show tags
+echo '> host foo describe tags'
+host foo describe tags
+echo '> host foo show all'
+host foo show all
+echo '> host foo tag remove bar'
+host foo tag remove bar
+echo '> delete host foo'
+delete host foo
+echo '> delete tag bar'
+delete tag bar
+

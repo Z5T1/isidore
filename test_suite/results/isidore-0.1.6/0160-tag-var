@@ -1,0 +1,24 @@
+> create tag bar
+> tag bar var print
+{}
+
+> tag bar var set alpha 1
+> tag bar var set beta []
+> tag bar var append beta 2
+> tag bar var print
+beta:
+- 2
+alpha: 1
+
+> tag bar var unset alpha
+> tag bar var print
+beta:
+- 2
+
+> tag bar var set $ {"gamma": 3}
+> tag bar var print
+gamma: 3
+
+> delete tag bar
+Tag bar has been deleted.
+

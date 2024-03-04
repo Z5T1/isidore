@@ -1,0 +1,6 @@
+echo "> config set motd 'This database is currently being used for potentially destructive testing!'"
+config set motd 'This database is currently being used for potentially destructive testing!'
+echo '> config show motd'
+config show motd
+echo '> config set motd none'
+config set motd none

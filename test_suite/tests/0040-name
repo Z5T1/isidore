@@ -1,0 +1,5 @@
+echo '> config set name "under-test"'
+config set name "under-test"
+echo '> config show name'
+config show name
+

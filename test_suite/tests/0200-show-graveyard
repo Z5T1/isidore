@@ -1,0 +1,9 @@
+echo '> create host foo'
+create host foo
+echo '> host foo set decommissioned now'
+host foo set decommissioned now
+echo '> show graveyard'
+show graveyard
+echo '> delete host foo'
+delete host foo
+

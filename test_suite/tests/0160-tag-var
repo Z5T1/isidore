@@ -1,0 +1,23 @@
+echo '> create tag bar'
+create tag bar
+echo '> tag bar var print'
+tag bar var print
+echo '> tag bar var set alpha 1'
+tag bar var set alpha 1
+echo '> tag bar var set beta []'
+tag bar var set beta []
+echo '> tag bar var append beta 2'
+tag bar var append beta 2
+echo '> tag bar var print'
+tag bar var print
+echo '> tag bar var unset alpha'
+tag bar var unset alpha
+echo '> tag bar var print'
+tag bar var print
+echo '> tag bar var set $ {"gamma": 3}'
+tag bar var set $ '{"gamma": 3}'
+echo '> tag bar var print'
+tag bar var print
+echo '> delete tag bar'
+delete tag bar
+

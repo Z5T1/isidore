@@ -1,0 +1,22 @@
+> create host foo
+> host foo set commissioned 1986-10-21
+> host foo set decommissioned 2015-10-21
+> host foo set description Great Scott!
+> host foo show commissioned
+1986-10-21 00:00:00
+> host foo show decommissioned
+2015-10-21 00:00:00
+> host foo show description
+Great Scott!
+> host foo show all
+foo:
+  vars:
+    isidore:
+      commissioned: '1986-10-21 00:00:00'
+      decommissioned: '2015-10-21 00:00:00'
+      description: Great Scott!
+      tags: {}
+
+> delete host foo
+Host foo has been deleted.
+

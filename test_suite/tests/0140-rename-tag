@@ -1,0 +1,11 @@
+echo '> create tag bar'
+create tag bar
+echo '> rename tag bar'
+rename tag bar
+echo '> rename tag bar bar2'
+rename tag bar bar2
+echo '> show tags'
+show tags
+echo '> delete tag bar2'
+delete tag bar2
+

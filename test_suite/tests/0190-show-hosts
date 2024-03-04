@@ -1,0 +1,7 @@
+echo '> create host foo'
+create host foo
+echo '> show hosts'
+show hosts
+echo '> delete host foo'
+delete host foo
+

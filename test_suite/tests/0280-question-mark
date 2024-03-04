@@ -1,0 +1,97 @@
+echo '> create host foo'
+create host foo
+echo '> create tag bar'
+create tag bar
+echo '> ?'
+?
+echo '> config ?'
+config ?
+echo '> config show ?'
+config show ?
+echo '> config set ?'
+config set ?
+echo '> create ?'
+create ?
+echo '> create host ?'
+create host ?
+echo '> create tag ?'
+create tag ?
+echo '> delete ?'
+delete ?
+echo '> delete host ?'
+delete host ?
+echo '> delete tag ?'
+delete tag ?
+echo '> describe ?'
+describe ?
+echo '> echo ?'
+echo ?
+echo '> host ?'
+host ?
+echo '> host foo ?'
+host foo ?
+echo '> host foo describe ?'
+host foo describe ?
+echo '> host foo set ?'
+host foo set ?
+echo '> host foo show ?'
+host foo show ?
+echo '> host foo tag ?'
+host foo tag ?
+echo '> host foo var ?'
+host foo var ?
+echo '> host foo var append ?'
+host foo var append ?
+echo '> host foo var append beta ?'
+host foo var append beta ?
+echo '> host foo var print ?'
+host foo var print ?
+echo '> host foo var set ?'
+host foo var set ?
+echo '> host foo var set alpha ?'
+host foo var set alpha ?
+echo '> host foo var unset ?'
+host foo var unset ?
+echo '> rename ?'
+rename ?
+echo '> rename host ?'
+rename host ?
+echo '> rename host foo ?'
+rename host foo ?
+echo '> rename tag ?'
+rename tag ?
+echo '> rename tag bar ?'
+rename tag bar ?
+echo '> show ?'
+show ?
+echo '> show inventory ?'
+show inventory ?
+echo '> tag ?'
+tag ?
+echo '> tag bar ?'
+tag bar ?
+echo '> tag bar describe ?'
+tag bar describe ?
+echo '> tag bar set ?'
+tag bar set ?
+echo '> tag bar show ?'
+tag bar show ?
+echo '> tag bar var ?'
+tag bar var ?
+echo '> tag bar var append ?'
+tag bar var append ?
+echo '> tag bar var append beta ?'
+tag bar var append beta ?
+echo '> tag bar var print ?'
+tag bar var print ?
+echo '> tag bar var set ?'
+tag bar var set ?
+echo '> tag bar var set alpha ?'
+tag bar var set alpha ?
+echo '> tag bar var unset ?'
+tag bar var unset ?
+echo '> delete host foo'
+delete host foo
+echo '> delete tag bar'
+delete tag bar
+
