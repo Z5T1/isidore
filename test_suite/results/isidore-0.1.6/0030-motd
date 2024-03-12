@@ -1,0 +1,5 @@
+> config set motd 'This database is currently being used for potentially destructive testing!'
+> config show motd
+This database is currently being used for potentially destructive testing!
+> config set motd none
+

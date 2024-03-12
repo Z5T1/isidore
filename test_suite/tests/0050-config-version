@@ -1,0 +1,2 @@
+echo '> config show version'
+config show version

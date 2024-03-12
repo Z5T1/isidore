@@ -1,0 +1,59 @@
+echo '> create host foo'
+create host foo
+echo '> create host qux'
+create host qux
+echo '> create host den'
+create host den
+echo '> create tag bar'
+create tag bar
+echo '> create tag baz'
+create tag baz
+echo '> host foo set commissioned "1986-10-21"'
+host foo set commissioned "1986-10-21"
+echo '> host qux set commissioned "1986-10-21"'
+host qux set commissioned "1986-10-21"
+echo '> host den set commissioned "1986-10-21"'
+host den set commissioned "1986-10-21"
+echo '> host foo set description "Great Scott!"'
+host foo set description "Great Scott!"
+echo '> host qux set description "Plutonium"'
+host qux set description "Plutonium"
+echo '> host den set description "Fake Plutonium"'
+host den set description "Fake Plutonium"
+echo '> host qux set decommissioned "2015-10-21"'
+host qux set decommissioned "2015-10-21"
+echo '> tag bar set description "Hill Valley, CA"'
+tag bar set description "Hill Valley, CA"
+echo '> tag bar set group "location"'
+tag bar set group "location"
+echo '> tag baz set description "88 MPH"'
+tag baz set description "88 MPH"
+echo '> tag baz set group "max_speed"'
+tag baz set group "max_speed"
+echo '> host foo tag add bar'
+host foo tag add bar
+echo '> host foo tag add baz'
+host foo tag add baz
+echo '> host foo var set alpha 1'
+host foo var set alpha 1
+echo '> tag bar var set beta 2'
+tag bar var set beta 2
+
+echo '> show inventory ini'
+show inventory ini
+
+echo '> host foo tag remove bar'
+host foo tag remove bar
+echo '> host foo tag remove baz'
+host foo tag remove baz
+echo '> delete host foo'
+delete host foo
+echo '> delete host qux'
+delete host qux
+echo '> delete host den'
+delete host den
+echo '> delete tag bar'
+delete tag bar
+echo '> delete tag baz'
+delete tag baz
+

@@ -1,0 +1,18 @@
+> create tag bar
+> create tag baz
+> tag bar set group location
+> tag baz set group max_speed
+> show tag-groups
+location:
+- bar
+max_speed:
+- baz
+ungrouped:
+- all
+- ungrouped
+
+> delete tag bar
+Tag bar has been deleted.
+> delete tag baz
+Tag baz has been deleted.
+

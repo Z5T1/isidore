@@ -1,0 +1,6 @@
+echo '> create tag bar'
+create tag bar
+echo '> create tag bar'
+create tag bar
+echo '> delete tag bar'
+delete tag bar

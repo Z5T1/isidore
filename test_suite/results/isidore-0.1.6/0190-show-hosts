@@ -1,0 +1,6 @@
+> create host foo
+> show hosts
+foo
+> delete host foo
+Host foo has been deleted.
+

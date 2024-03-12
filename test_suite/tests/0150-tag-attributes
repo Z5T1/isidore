@@ -1,0 +1,15 @@
+echo '> create tag bar'
+create tag bar
+echo '> tag bar set group location'
+tag bar set group location
+echo '> tag bar set description 'Hill Valley, CA''
+tag bar set description 'Hill Valley, CA'
+echo '> tag bar show group'
+tag bar show group
+echo '> tag bar show description'
+tag bar show description
+echo '> tag bar show all'
+tag bar show all
+echo '> delete tag bar'
+delete tag bar
+

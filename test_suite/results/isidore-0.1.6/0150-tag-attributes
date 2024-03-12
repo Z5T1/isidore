@@ -1,0 +1,18 @@
+> create tag bar
+> tag bar set group location
+> tag bar set description Hill Valley, CA
+> tag bar show group
+location
+> tag bar show description
+Hill Valley, CA
+> tag bar show all
+bar:
+  hosts: []
+  vars:
+    isidore_tag_bar:
+      description: Hill Valley, CA
+      group: location
+
+> delete tag bar
+Tag bar has been deleted.
+

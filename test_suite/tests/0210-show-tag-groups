@@ -1,0 +1,15 @@
+echo '> create tag bar'
+create tag bar
+echo '> create tag baz'
+create tag baz
+echo '> tag bar set group location'
+tag bar set group location
+echo '> tag baz set group max_speed'
+tag baz set group max_speed
+echo '> show tag-groups'
+show tag-groups
+echo '> delete tag bar'
+delete tag bar
+echo '> delete tag baz'
+delete tag baz
+

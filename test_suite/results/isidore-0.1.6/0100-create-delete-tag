@@ -1,0 +1,6 @@
+> create tag bar
+> create tag bar
+Tag bar already exists
+> delete tag bar
+Tag bar has been deleted.
+

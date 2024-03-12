@@ -1,0 +1,204 @@
+> create host foo
+> create tag bar
+> ?
+^C          clear the current command
+^D          alias for end
+end         go back to the previous prompt
+quit        exit
+?           print this help message
+config      configure the Isidore installation
+create      create various objects (such as hosts and tags)
+delete      delete various objects (such as hosts and tags)
+describe    print details about various data
+echo        print text back to the console
+help        alias for ?
+host        manipulate a host
+rename      rename various objects (such as hosts and tags)
+show        print various data
+tag         manipulate a tag
+version     display Isidore version information
+> config ?
+?           print this help message
+show        print various data about the Isidore installation
+set         modify the Isidore installation
+> config show ?
+?           print this help message
+connection  display information about SQL database connection
+motd        display the message of the day
+name        display the name of the Isidore instance
+version     display Isidore version information
+> config set ?
+?           print this help message
+motd        set the message of the day
+name        set the name of the isidore instance
+> create ?
+?           print this help message
+host        create a new host
+tag         create a new tag
+> create host ?
+?           print this help message
+<hostname>  the hostname for the new host to create
+> create tag ?
+?           print this help message
+<name>      the name of the new tag to create
+> delete ?
+?           print this help message
+host        delete a host
+tag         delete a tag
+> delete host ?
+?           print this help message
+<hostname>  the hostname of the host to delete
+> delete tag ?
+?           print this help message
+<name>      the name of the tag to delete
+> describe ?
+?           print this help message
+hosts       describe all commissioned hosts in the database
+graveyard   describe all decommissioned hosts in the database
+tag-groups  describe all the tag groups in the database
+tags        describe all tags in the database
+> echo ?
+?           print this help message
+<text>      text to print
+> host ?
+?           print this help message
+<hostname>  the name of the host to edit
+> host foo ?
+?           print this help message
+describe    print details about host attributes
+set         modify host attributes
+show        display host attributes
+tag         display and modify this host's tags
+var         display and modify this host's variables
+> host foo describe ?
+?           print this help message
+tags        describe the tags currently assigned to this host
+> host foo set ?
+?           print this help message
+commissioned    set the date the host was commissioned
+description     set the host's description
+decommissioned  set the date the host was decommissioned
+> host foo show ?
+?           print this help message
+all         print all the information about the host
+commissioned    print the date the host was commissioned
+description     print the host's description
+decommissioned  print the date the host was decommissioned
+tags        print the tags currently assigned to this host
+> host foo tag ?
+?           print this help message
+add         add a tag to this host
+list        list the tags currently assigned to this host
+list-detail display a detailed list of tags currently assigned to this host
+remove      remove a tag from this host
+> host foo var ?
+?           print this help message
+append      append a value to a list variable
+print       print a variable
+set         set a variable
+unset       unset (delete) a variable
+> host foo var append ?
+?           print this help message
+<variable>  name of the list variable to append to
+> host foo var append beta ?
+?           print this help message
+<json>      the JSON value to append to the list
+> host foo var print ?
+?           print this help message
+$           print all variables
+<variable>  name of the variable to print
+> host foo var set ?
+?           print this help message
+$           set/replace the entire variable tree
+<variable>  name of the variable to set
+> host foo var set alpha ?
+?           print this help message
+<json>      the JSON value to set the variable to
+> host foo var unset ?
+?           print this help message
+<variable>  name of the variable to unset
+> rename ?
+?           print this help message
+host        rename a host
+tag         rename a tag
+> rename host ?
+?           print this help message
+<hostname>  the old hostname
+> rename host foo ?
+?           print this help message
+<hostname>  the new hostname
+> rename tag ?
+?           print this help message
+<name>      the old tag name
+> rename tag bar ?
+?           print this help message
+<name>      the new tag name
+> show ?
+?           print this help message
+config      print the commmands to populate the database with the current 
+            configuration
+hosts       print all commissioned hosts in the database
+graveyard   print all decommissioned hosts in the database
+inventory   print the full Ansible inventory file
+tag-groups  print all the tag groups in the database
+tags        print all tags in the database
+> show inventory ?
+?           print this help message
+human       print the inventory in a human friendly format
+ini         print the inventory in INI format
+json        print the inventory in JSON format
+yaml        print the inventory in YAML format
+> tag ?
+?           print this help message
+<tagname>  the name of the tag to edit
+> tag bar ?
+?           print this help message
+describe    print details about tag attributes
+host        display and modify hosts that have this tag
+set         modify tag attributes
+show        display tag attributes
+var         display and modify this tag's variables
+> tag bar describe ?
+?           print this help message
+hosts       describe the hosts currently assigned to this tag
+> tag bar set ?
+?           print this help message
+description     set the tag's description
+group           set the tag's group
+> tag bar show ?
+?           print this help message
+all         print all the information about the tag
+description print the tag's description
+group       print the date the tag was commissioned
+hosts       print all hosts that have this tag
+> tag bar var ?
+?           print this help message
+append      append a value to a list variable
+print       print a variable
+set         set a variable
+unset       unset (delete) a variable
+> tag bar var append ?
+?           print this help message
+<variable>  name of the list variable to append to
+> tag bar var append beta ?
+?           print this help message
+<json>      the JSON value to append to the list
+> tag bar var print ?
+?           print this help message
+$           print all variables
+<variable>  name of the variable to print
+> tag bar var set ?
+?           print this help message
+$           set/replace the entire variable tree
+<variable>  name of the variable to set
+> tag bar var set alpha ?
+?           print this help message
+<json>      the JSON value to set the variable to
+> tag bar var unset ?
+?           print this help message
+<variable>  name of the variable to unset
+> delete host foo
+Host foo has been deleted.
+> delete tag bar
+Tag bar has been deleted.
+

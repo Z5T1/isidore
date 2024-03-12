@@ -1,0 +1,26 @@
+> create host foo
+> create tag bar
+> host foo set description Great Scott!
+> tag bar host add foo
+> tag bar host list
+foo
+> tag bar show hosts
+foo
+> tag bar describe hosts
+foo: Great Scott!
+
+> tag bar show all
+bar:
+  hosts:
+  - foo
+  vars:
+    isidore_tag_bar:
+      description: null
+      group: null
+
+> tag bar host remove foo
+> delete tag bar
+Tag bar has been deleted.
+> delete host foo
+Host foo has been deleted.
+
