@@ -40,7 +40,7 @@ class IsidoreCmdline:
         self._isidore = isidore
         self.navigation = {
             'config': {
-                'description': 'Configure the Isidore installation',
+                'description': 'configure the Isidore installation',
                 'args': 'config',
                 'method': self.config,
                 'subcommands': {
@@ -54,53 +54,38 @@ class IsidoreCmdline:
                     }
                 }
             },
-            'show': {
-                'description': 'Show various information',
-                'args': 'show',
-                'method': self.show,
+            'create': {
+                'description': 'create various objects (such as hosts and tags)',
+                'args': 'create',
+                'method': self.create,
                 'subcommands': {
-                    'config': {
-                        'description': 'Print the commands to populate the database with the current configuration',
-                        'function': self.show_config,
+                    'host': {
+                        'description': 'Create a new host',
+                        'function': self.create_host,
                     },
-                    'hosts': {
-                        'description': 'Print all commissioned hosts in the database',
-                        'function': self.show_hosts,
+                    'tag': {
+                        'description': 'Create a new tag',
+                        'function': self.create_tag,
+                    }
+                }
+            },
+            'delete': {
+                'description': 'delete various objects (such as hosts and tags)',
+                'args': 'delete',
+                'method': self.delete,
+                'subcommands': {
+                    'host': {
+                        'description': 'Delete a host',
+                        'function': self.delete_host,
                     },
-                    'inventory': {
-                        'description': 'Print the full Ansible inventory file',
-                        'function': self.show_inventory,
-                        'subcommands': {  # subcommands for show inventory
-                            'human': {
-                                'description': 'Print the inventory in a human-friendly format',
-                            },
-                            'ini': {
-                                'description': 'Print the inventory in INI format',
-                            },
-                            'json': {
-                                'description': 'Print the inventory in JSON format',
-                            },
-                            'yaml': {
-                                'description': 'Print the inventory in YAML format',
-                            }
-                        }
-                    },
-                    'graveyard': {
-                        'description': 'Print all decommissioned hosts in the database',
-                        'function': self.show_graveyard,
-                    },
-                    'tag-groups': {
-                        'description': 'Print all the tag groups in the database',
-                        'function': self.show_taggroups,
-                    },
-                    'tags': {
-                        'description': 'Print all tags in the database',
-                        'function': self.show_tags,
+                    'tag': {
+                        'description': 'Delete a tag',
+                        'function': self.delete_tag,
                     }
                 }
             },
             'describe': {
-                'description': 'Describe various entities',
+                'description': 'print details about various data',
                 'args': 'describe',
                 'method': self.describe,
                 'subcommands': {
@@ -123,47 +108,17 @@ class IsidoreCmdline:
                 }
             },
             'echo': {
-                'description': 'Echo command',
+                'description': 'print text back to the console',
                 'args': 'echo',
                 'method': self.echo
             },
             'help': {
-                'description': 'Help menu',
+                'description': 'alias for ?',
                 'args': 'help',
                 'method': self.help
             },
-            'create': {
-                'description': 'Create new entities',
-                'args': 'create',
-                'method': self.create,
-                'subcommands': {
-                    'host': {
-                        'description': 'Create a new host',
-                        'function': self.create_host,
-                    },
-                    'tag': {
-                        'description': 'Create a new tag',
-                        'function': self.create_tag,
-                    }
-                }
-            },
-            'delete': {
-                'description': 'Delete entities',
-                'args': 'delete',
-                'method': self.delete,
-                'subcommands': {
-                    'host': {
-                        'description': 'Delete a host',
-                        'function': self.delete_host,
-                    },
-                    'tag': {
-                        'description': 'Delete a tag',
-                        'function': self.delete_tag,
-                    }
-                }
-            },
             'host': {
-                'description': 'Operations on a specific host',
+                'description': 'manipulate a host',
                 'args': 'host',
                 'method': self.host,
                 'subcommands': {
@@ -189,8 +144,68 @@ class IsidoreCmdline:
                     }
                 }
             },
+            'rename': {
+                'description': 'rename various objects (such as hosts and tags)',
+                'args': 'rename',
+                'method': self.rename,
+                'subcommands': {
+                    'host': {
+                        'description': 'Rename a host',
+                        'function': self.rename_host,
+                    },
+                    'tag': {
+                        'description': 'Rename a tag',
+                        'function': self.rename_tag,
+                    },
+                }
+            },
+            'show': {
+                'description': 'print various data',
+                'args': 'show',
+                'method': self.show,
+                'subcommands': {
+                    'config': {
+                        'description': 'Print the commands to populate the database with the current configuration',
+                        'function': self.show_config,
+                    },
+                    'hosts': {
+                        'description': 'Print all commissioned hosts in the database',
+                        'function': self.show_hosts,
+                    },
+                    'inventory': {
+                        'description': 'Print the full Ansible inventory file',
+                        'function': self.show_inventory,
+                        'subcommands': {
+                            'human': {
+                                'description': 'Print the inventory in a human-friendly format',
+                            },
+                            'ini': {
+                                'description': 'Print the inventory in INI format',
+                            },
+                            'json': {
+                                'description': 'Print the inventory in JSON format',
+                            },
+                            'yaml': {
+                                'description': 'Print the inventory in YAML format',
+                            },
+                        },
+                    },
+                    'graveyard': {
+                        'description': 'Print all decommissioned hosts in the database',
+                        'function': self.show_graveyard,
+                    },
+                    'tag-groups': {
+                        'description': 'Print all the tag groups in the database',
+                        'function': self.show_taggroups,
+                    },
+                    'tags': {
+                        'description': 'Print all tags in the database',
+                        'function': self.show_tags,
+                    }
+                }
+            },
             'tag': {
-                'description': 'Operations on a specific tag',
+                'description': 'manipulate a tag',
                 'args': 'tag',
                 'method': self.tag,
                 'subcommands': {
@@ -231,18 +246,34 @@ class IsidoreCmdline:
                 }
             },
             'version': {
-                'description': 'Display version information',
+                'description': 'display Isidore version information',
                 'args': 'version',
                 'method': self.version,
                 # No subcommands are necessary for the version command
             },
             # Other commands can be structured similarly
         }
+        self.global_help_items = [
+            ('^C', 'clear the current command'),
+            ('^D', 'alias for end'),
+            ('end', 'go back to the previous prompt'),
+            ('quit', 'exit'),
+            ('?', 'print this help message')
+        ]
+
 
     # Gets the Isidore Command Prompt version
     # @return       The Isidore Command Prompt version
     def getVersion(self):
         return self._version
+
+
+    def print_help_menu(self, help_items, include_global=False):
+        # This is a help menu for future releases. Currently only formats the root help menu
+        combined_help_items = self.global_help_items + help_items if include_global else help_items
+        max_cmd_length = max(len(cmd) for cmd, _ in combined_help_items)
+        for cmd, description in combined_help_items:
+            print(f"{cmd.ljust(max_cmd_length + 4)}{description}")
 
     # Start a subprompt.
     # @param prompt     The existing arguments to display at the
@@ -286,12 +317,7 @@ class IsidoreCmdline:
                 return
             elif line == ['quit']:
                 exit()
-            elif line[0] == '?':
-                print('''\
-^C          clear the current command
-^D          alias for end
-end         go back to the previous prompt
-quit        exit''')
+            # elif line[0] == '?':
 
             func(prompt + line)
 
@@ -313,30 +339,28 @@ quit        exit''')
             else:
                 print(f'Invalid command {args[0]}. Enter ? for help.', file=sys.stderr)
         elif args[0] == '?':
-            self.help(args)
+            root_help_items = [(cmd, self.navigation[cmd]['description']) for cmd in self.navigation]
+            self.print_help_menu(root_help_items, include_global=True)
         else:
             print(f'Invalid command {args[0]}. Enter ? for help.', file=sys.stderr)
 
     # > ?
+
     def help(self, args):
-        help_text = [
-            ('?', 'print this help message'),
+        help_items = [
             ('config', 'configure the Isidore installation'),
-            ('create', 'create various objects (such as hosts and tags)'),
-            ('delete', 'delete various objects (such as hosts and tags)'),
+            ('create', 'create various objects'),
+            ('delete', 'delete various objects'),
             ('describe', 'print details about various data'),
             ('echo', 'print text back to the console'),
             ('help', 'alias for ?'),
             ('host', 'manipulate a host'),
-            ('rename', 'rename various objects (such as hosts and tags)'),
+            ('rename', 'rename various objects'),
             ('show', 'print various data'),
             ('tag', 'manipulate a tag'),
             ('version', 'display Isidore version information'),
         ]
-
-        max_cmd_length = max(len(cmd) for cmd, _ in help_text)
-        for cmd, description in help_text:
-            print(f"{cmd.ljust(max_cmd_length + 4)}{description}")
+        self.print_help_menu(help_items, include_global=True)
 
     # > show
     def show(self, args):
@@ -345,8 +369,15 @@ quit        exit''')
         elif args[1] in self.navigation['show']['subcommands']:
             self.navigation['show']['subcommands'][args[1]]['function'](args)
         elif args[1] == '?':
-            for cmd, details in self.navigation['show']['subcommands'].items():
-                print(f"{cmd}        {details['description']}")
+            print('''\
+?           print this help message
+config      print the commmands to populate the database with the current 
+            configuration
+hosts       print all commissioned hosts in the database
+graveyard   print all decommissioned hosts in the database
+inventory   print the full Ansible inventory file
+tag-groups  print all the tag groups in the database
+tags        print all tags in the database''')
         else:
             print(f'Invalid argument {args[1]}. Enter ? for help.', file=sys.stderr)
 
@@ -432,18 +463,28 @@ quit        exit''')
     # > show inventory
     def show_inventory(self, args):
         if len(args) == 2:
+            # Default to INI format if no specific format is provided
             print(self._isidore.getInventoryIni())
-
         elif len(args) > 2:
             if args[2] == '?':
-                for format, details in self.navigation['show']['subcommands']['inventory']['subcommands'].items():
-                    print(f"{format}        {details['description']}")
+                print('''\
+?           print this help message
+human       print the inventory in a human friendly format
+ini         print the inventory in INI format
+json        print the inventory in JSON format
+yaml        print the inventory in YAML format''')
             elif args[2] in self.navigation['show']['subcommands']['inventory']['subcommands']:
-                inventory_method = f"getInventory{args[2].capitalize()}"
-                if hasattr(self._isidore, inventory_method):
-                    print(getattr(self._isidore, inventory_method)())
+                # Special handling for 'human' format
+                if args[2].lower() == 'human':
+                    inventory_data = self._isidore.getInventory()  # Direct call to getInventory for 'human' format
+                    print(yaml.dump(inventory_data, default_flow_style=False))
                 else:
-                    print(f"Invalid format {args[2]}. Enter ? for help.", file=sys.stderr)
+                    # For other formats, dynamically call the corresponding method
+                    inventory_method = f"getInventory{args[2].capitalize()}"
+                    if hasattr(self._isidore, inventory_method):
+                        print(getattr(self._isidore, inventory_method)())
+                    else:
+                        print(f"Invalid format {args[2]}. Enter ? for help.", file=sys.stderr)
             else:
                 print(f'Invalid format {args[2]}. Enter ? for help.', file=sys.stderr)
 
@@ -477,8 +518,12 @@ quit        exit''')
         elif args[1] in self.navigation['describe']['subcommands']:
             self.navigation['describe']['subcommands'][args[1]]['function'](args)
         elif args[1] == '?':
-            for cmd, details in self.navigation['describe']['subcommands'].items():
-                print(f"{cmd}        {details['description']}")
+            print('''\
+?           print this help message
+hosts       describe all commissioned hosts in the database
+graveyard   describe all decommissioned hosts in the database
+tag-groups  describe all the tag groups in the database
+tags        describe all tags in the database''')
         else:
             print(f'Invalid argument {args[1]}. Enter ? for help.', file=sys.stderr)
 
@@ -528,8 +573,10 @@ quit        exit''')
         elif args[1] in self.navigation['config']['subcommands']:
             self.navigation['config']['subcommands'][args[1]]['function'](args)
         elif args[1] == '?':
-            for cmd, details in self.navigation['config']['subcommands'].items():
-                print(f"{cmd}        {details['description']}")
+            print('''\
+?           print this help message
+show        print various data about the Isidore installation
+set         modify the Isidore installation''')
         else:
             print(f'Invalid argument {args[1]}. Enter ? for help.', file=sys.stderr)
 
@@ -596,8 +643,10 @@ version     display Isidore version information''')
         elif args[1] in self.navigation['create']['subcommands']:
             self.navigation['create']['subcommands'][args[1]]['function'](args)
         elif args[1] == '?':
-            for cmd, details in self.navigation['create']['subcommands'].items():
-                print(f"{cmd}        {details['description']}")
+            print('''\
+?           print this help message
+host        create a new host
+tag         create a new tag''')
         else:
             print(f'Invalid argument {args[1]}. Enter ? for help.', file=sys.stderr)
 
@@ -648,8 +697,10 @@ version     display Isidore version information''')
         elif args[1] in self.navigation['delete']['subcommands']:
             self.navigation['delete']['subcommands'][args[1]]['function'](args)
         elif args[1] == '?':
-            for cmd, details in self.navigation['delete']['subcommands'].items():
-                print(f"{cmd}        {details['description']}")
+            print('''\
+?           print this help message
+host        delete a host
+tag         delete a tag''')
         else:
             print(f'Invalid argument {args[1]}. Enter ? for help.', file=sys.stderr)
 
@@ -758,8 +809,13 @@ version     display Isidore version information''')
             if args[2] in self.navigation['host']['subcommands']:
                 self.navigation['host']['subcommands'][args[2]]['function'](args)
             elif args[2] == '?':
-                for cmd, details in self.navigation['host']['subcommands'].items():
-                    print(f"{cmd}        {details['description']}")
+                print('''\
+?           print this help message
+describe    print details about host attributes
+set         modify host attributes
+show        display host attributes
+tag         display and modify this host's tags
+var         display and modify this host's variables''')
             else:
                 print(f'Invalid command {args[2]}. Enter ? for help.', file=sys.stderr)
 
@@ -1185,7 +1241,7 @@ Enter ? as any argument help.''', file=sys.stderr)
         if len(args) == 1 or (len(args) == 2 and args[1] == '?'):
             print('''\
 ?           print this help message
-<tagname>   the name of the tag to edit''')
+<tagname>  the name of the tag to edit''')
             return
 
         # Fetch the specified tag to see if it exists
@@ -1202,8 +1258,13 @@ Enter ? as any argument help.''', file=sys.stderr)
             if args[2] in self.navigation['tag']['subcommands']:
                 self.navigation['tag']['subcommands'][args[2]]['function'](args)
             elif args[2] == '?':
-                for cmd, details in self.navigation['tag']['subcommands'].items():
-                    print(f"{cmd}        {details['description']}")
+                print('''\
+?           print this help message
+describe    print details about tag attributes
+host        display and modify hosts that have this tag
+set         modify tag attributes
+show        display tag attributes
+var         display and modify this tag's variables''')
             else:
                 print(f'Invalid command {args[2]}. Enter ? for help.', file=sys.stderr)
 
