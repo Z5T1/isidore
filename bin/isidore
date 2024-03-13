@@ -57,4 +57,3 @@ if args.command == []:
 else:
     # Process the one command given on the command line arguments and exit.
     cmd.rootprompt(args.command)
-
